@@ -200,7 +200,7 @@ return require("packer").startup {
 				Variable.g {
 					coq_settings = {
 						display = { icons = { mappings = require("lsp").icons } },
-						keymap = { recommended = false, manual_complete = "<A-Space>" },
+						keymap = { recommended = false, manual_complete = "<A-Space>", jump_to_mark = "<C-j>" },
 						auto_start = "shut-up",
 						clients = {
 							tabnine = {
