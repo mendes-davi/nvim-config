@@ -3,7 +3,6 @@ vim.api.nvim_exec(
 augroup FormatAutogroup
   autocmd!
   autocmd BufWritePost *.lua FormatWrite
-  autocmd BufWritePost *.{tex} FormatWrite
 augroup END
 ]],
 	true
@@ -12,26 +11,6 @@ augroup END
 require("formatter").setup {
 	logging = true,
 	filetype = {
-		-- javascript = {
-		-- 	-- prettier
-		-- 	function()
-		-- 		return {
-		-- 			exe = "prettier",
-		-- 			args = { "--stdin-filepath", vim.api.nvim_buf_get_name(0), "--single-quote" },
-		-- 			stdin = true,
-		-- 		}
-		-- 	end,
-		-- },
-		-- rust = {
-		-- 	-- Rustfmt
-		-- 	function()
-		-- 		return {
-		-- 			exe = "rustfmt",
-		-- 			args = { "--emit=stdout" },
-		-- 			stdin = true,
-		-- 		}
-		-- 	end,
-		-- },
 		tex = {
 			function()
 				return {
@@ -51,32 +30,23 @@ require("formatter").setup {
 				}
 			end,
 		},
-		-- hcl = {
-		-- 	function()
-		-- 		return {
-		-- 			exe = "hclfmt",
-		-- 			args = { "--" },
-		-- 			stdin = true,
-		-- 		}
-		-- 	end,
-		-- },
-		-- nomad = {
-		-- 	function()
-		-- 		return {
-		-- 			exe = "hclfmt",
-		-- 			args = { "--" },
-		-- 			stdin = true,
-		-- 		}
-		-- 	end,
-		-- },
-		-- terraform = {
-		-- 	function()
-		-- 		return {
-		-- 			exe = "hclfmt",
-		-- 			args = { "--" },
-		-- 			stdin = true,
-		-- 		}
-		-- 	end,
-		-- },
+		python = {
+			function()
+				return {
+					exe = "black",
+					args = { "--quiet", "--line-length 98", "-" },
+					stdin = true,
+				}
+			end,
+		},
+		c = {
+			function()
+				return {
+					exe = "clang-format",
+					args = { "-assume-filename=", vim.fn.shellescape(vim.api.nvim_buf_get_name(0)), '-style="{BasedOnStyle: llvm, IndentWidth: 4, ColumnLimit: 98}"' },
+					stdin = true,
+				}
+			end,
+		},
 	},
 }

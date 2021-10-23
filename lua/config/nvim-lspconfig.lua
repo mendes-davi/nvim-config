@@ -58,7 +58,7 @@ vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", si
 -- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true }
 -- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true }
 -- preview definition
--- nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true }
+nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true }
 
 -- diag https://github.com/nvim-lua/diagnostic-nvim/issues/73
 -- nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
@@ -204,7 +204,7 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities {
 		python = {
 			pythonPath = "/home/davi/.local/miniconda3/bin/python",
 			workspaceSymbols = { enabled = true },
-			analysis = { autoSearchPaths = false, useLibraryCodeForTypes = false, diagnosticMode = "openFilesOnly" },
+			analysis = { autoSearchPaths = false, useLibraryCodeForTypes = true, diagnosticMode = "openFilesOnly" },
 		},
 	},
 	on_attach = mix_attach,
@@ -281,7 +281,8 @@ Augroup {
 	LspBufWritePre = {
 		["BufWritePre"] = {
 			{ "*.lua", require("lsp").formatting_sync },
-			{ "*.c", require("lsp").formatting_sync },
+			{ "*.tex", require("lsp").formatting_sync },
+			-- { "*.c", require("lsp").formatting_sync },
 			{ "*.py", require("lsp").formatting_sync },
 		},
 	},
