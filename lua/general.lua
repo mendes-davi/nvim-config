@@ -136,6 +136,8 @@ Option.g {
 	textwidth = 100,
 	-- colorcolumn = "+1", --highlight column after 'textwidth'
 
+	formatoptions = "jql",
+
 	clipboard = "unnamedplus",
 }
 
@@ -325,53 +327,12 @@ Augroup {
 		},
 	},
 
-	-- TmuxRenameWin = {
-	-- 	{
-	-- 		"BufEnter",
-	-- 		"*",
-	-- 		function()
-	-- 			vim.api.nvim_exec(
-	-- 				[[
-	-- if executable('tmux') && strlen($TMUX)
-	-- call system("tmux rename-window nvr:" . expand("%:t"))
-	-- endif
-	-- ]],
-	-- 				true
-	-- 			)
-	-- 		end,
-	-- 	},
-	-- 	{
-	-- 		"VimLeave",
-	-- 		"*",
-	-- 		function()
-	-- 			vim.api.nvim_exec(
-	-- 				[[
-	-- if executable('tmux') && strlen($TMUX)
-	-- call system("tmux rename-window zsh"))
-	-- endif
-	-- ]],
-	-- 				true
-	-- 			)
-	-- 		end,
-	-- 	},
-	-- },
-
 	LaTeX = {
 		{
 			"VimLeave",
 			"*.tex",
 			function()
 				vim.api.nvim_command "VimtexClean"
-			end,
-		},
-	},
-
-	FormatOptions = {
-		{
-			"BufEnter",
-			"*",
-			function()
-				vim.opt.formatoptions = "jql"
 			end,
 		},
 	},
@@ -416,6 +377,7 @@ Augroup {
 			{
 				"tex",
 				function()
+					vim.bo.formatoptions = "jqt"
 					vim.wo.spell = true
 					vim.bo.spelllang = "en_us,pt_br"
 				end,
