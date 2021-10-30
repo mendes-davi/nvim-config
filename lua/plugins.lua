@@ -354,6 +354,7 @@ return require("packer").startup {
 		use {
 			"mfussenegger/nvim-lint",
 			config = [[require('config.nvim-lint')]],
+			nnoremap { "gl", "<CMD> lua require('lint').try_lint()<CR>", { silent = true } },
 		}
 
 		-- " signify show git diff sigs
