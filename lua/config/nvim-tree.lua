@@ -17,7 +17,6 @@ Variable.g {
 	nvim_tree_quit_on_open = 1, -- 0 by default, closes the tree when you open a file
 	-- nvim_tree_follow = 1, -- 0 by default, this option allows the cursor to be updated when entering a buffer
 	nvim_tree_indent_markers = 1, -- 0 by default, this option shows indent markers when folders are open
-	nvim_tree_hide_dotfiles = 1, -- 0 by default, this option hides files and folders starting with a dot `.`
 	nvim_tree_git_hl = 1, -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 	nvim_tree_root_folder_modifier = ":~", -- This is the default. See :help filename-modifiers for more options
 	-- nvim_tree_tab_open = 1, -- 0 by default, will open the tree when entering a new tab and the tree was previously open
@@ -53,4 +52,6 @@ Variable.g {
 require("nvim-tree").setup {
 	-- closes neovim automatically when the tree is the last **WINDOW** in the view
 	auto_close = false,
+	-- 0 by default, this option hides files and folders starting with a dot `.`
+	nvim_tree_hide_dotfiles = 1,
 }
