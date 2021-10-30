@@ -169,7 +169,6 @@ return require("packer").startup {
 		use {
 			"windwp/nvim-autopairs",
 			config = function()
-				require("nvim-autopairs").setup {}
 				require "config.nvim-autopairs"
 			end,
 		}
@@ -318,12 +317,19 @@ return require("packer").startup {
 		-- " ]p pastes on the line below, [p pastes on the line above
 		use "tpope/vim-unimpaired"
 
-		-- " Use gcc to comment out a line (takes a count),
-		-- " gc to comment out the target of a motion (for example, gcap to comment out a paragraph),
-		-- " gc in visual mode to comment out the selection, and gc in operator pending mode to target a comment.
-		-- " You can also use it as a command, either with a range like :7,17Commentary, or
-		-- " as part of a :global invocation like with :g/TODO/Commentary. That's it.
-		use "tpope/vim-commentary"
+		use {
+			"numToStr/Comment.nvim",
+			config = function()
+				require("Comment").setup {
+					-- ignore empty lines for comments
+					ignore = "^$",
+
+					pre_hook = function(ctx)
+						return require("ts_context_commentstring.internal").calculate_commentstring()
+					end,
+				}
+			end,
+		}
 
 		-- Press + to expand the visual selection and _ to shrink it.
 		use "terryma/vim-expand-region"
