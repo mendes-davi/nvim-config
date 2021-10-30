@@ -11,7 +11,6 @@ vim.cmd [[highlight NvimTreeFolderIcon guibg=#1b95e0]]
 Variable.g {
 	nvim_tree_side = "left", -- left by default
 	nvim_tree_width = 30, -- 30 by default
-	nvim_tree_ignore = { ".git", "node_modules", ".cache", ".idea" }, -- empty by default
 	-- nvim_tree_auto_open = 0, -- 0 by default, opens the tree when typing `vim $DIR` or `vim`
 	-- nvim_tree_auto_close = 1, -- 0 by default, closes the tree when it's the last window
 	nvim_tree_quit_on_open = 1, -- 0 by default, closes the tree when you open a file
@@ -54,4 +53,5 @@ require("nvim-tree").setup {
 	auto_close = false,
 	-- 0 by default, this option hides files and folders starting with a dot `.`
 	nvim_tree_hide_dotfiles = 1,
+	nvim_tree_ignore = { ".git", "node_modules", ".cache", ".idea" }, -- empty by default
 }
