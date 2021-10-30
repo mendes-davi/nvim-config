@@ -70,6 +70,7 @@ Option.g {
 
 	-- base configuration
 	title = true,
+	titlestring = [[%t %m (%{expand('%:~:.:h\')}) - NVIM]],
 	timeoutlen = 500, --mapping timeout
 	ttimeoutlen = 100, --keycode timeout
 
