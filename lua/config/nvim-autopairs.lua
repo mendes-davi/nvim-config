@@ -2,6 +2,7 @@ local remap = vim.api.nvim_set_keymap
 local npairs = require "nvim-autopairs"
 
 npairs.setup { map_bs = false }
+require("nvim-autopairs").setup {}
 
 -- these mappings are coq recommended mappings unrelated to nvim-autopairs
 remap("i", "<esc>", [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
@@ -34,5 +35,3 @@ MUtils.BS = function()
 	end
 end
 remap("i", "<bs>", "v:lua.MUtils.BS()", { expr = true, noremap = true })
-
-require("nvim-autopairs").setup {}
