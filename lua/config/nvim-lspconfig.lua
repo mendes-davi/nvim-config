@@ -98,6 +98,8 @@ local mix_attach = function(client)
 	local has_lsp_signature, lsp_signature = pcall(require, "lsp_signature")
 	if has_lsp_signature then
 		local cfg = {
+			toggle_key = "<C-s>",
+			zindex = 50,
 			bind = true, -- This is mandatory, otherwise border config won't get registered.
 			-- If you want to hook lspsaga or other signature handler, pls set to false
 			doc_lines = 10, -- only show one line of comment set to 0 if you do not want API comments be shown
@@ -107,7 +109,7 @@ local mix_attach = function(client)
 			hint_scheme = "String",
 
 			handler_opts = {
-				border = "shadow", -- double, single, shadow, none
+				border = "single", -- double, single, shadow, none
 			},
 			decorator = { "`", "`" }, -- or decorator = {"***", "***"}  decorator = {"**", "**"} see markdown help
 		}
