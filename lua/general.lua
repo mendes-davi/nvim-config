@@ -55,7 +55,7 @@ Option.g {
 	whichwrap = "<,>,[,],h,l",
 
 	-- stylua: ignore
-	listchars = "nbsp:⦸,extends:»,precedes:«,tab:▷⋯,trail:•,space:·",
+	listchars = "nbsp:⦸,extends:»,precedes:«,tab:▷⋯,trail:•,space:·,eol:↲,conceal:┊",
 
 	fillchars = "diff:∙,fold:·,vert:┃",
 
