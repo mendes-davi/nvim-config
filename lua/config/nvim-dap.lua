@@ -8,10 +8,6 @@ nnoremap { "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.inpu
 nnoremap { "<leader>dr", ":lua require'dap'.repl.open()<CR>" }
 nnoremap { "<leader>dl", ":lua require'dap'.run_last()<CR>" }
 
--- Virtual Text Configs
-vim.g.dap_virtual_text = "all frames"
--- vim.g.dap_virtual_text = true
-
 -- nvim-dap setup
 local dap = require "dap"
 -- nvim-dap uses three signs:
@@ -31,6 +27,25 @@ dap.defaults.fallback.external_terminal = {
 
 require("dap.python").setup "/home/davi/.local/miniconda3/bin/python"
 require("dap.python").test_runner = "pytest"
+
+dap.configurations.lua = {
+	{
+		type = "nlua",
+		request = "attach",
+		name = "Attach to running Neovim instance",
+		host = function()
+			local value = vim.fn.input "Host [127.0.0.1]: "
+			if value ~= "" then
+				return value
+			end
+			return "127.0.0.1"
+		end,
+	},
+}
+
+dap.adapters.nlua = function(callback, config)
+	callback { type = "server", host = config.host, port = config.port or 8088 }
+end
 
 vim.api.nvim_exec(
 	[[
