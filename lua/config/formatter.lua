@@ -2,7 +2,7 @@ vim.api.nvim_exec(
 	[[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.lua FormatWrite
+  " autocmd BufWritePost *.lua FormatWrite
 augroup END
 ]],
 	true

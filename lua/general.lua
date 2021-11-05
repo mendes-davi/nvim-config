@@ -424,16 +424,6 @@ Augroup {
 					vim.bo.shiftwidth = 2
 				end,
 			},
-			{
-				"lua",
-				function()
-					vim.bo.expandtab = false
-					vim.bo.tabstop = 2
-					vim.bo.softtabstop = 2
-					vim.bo.shiftwidth = 2
-				end,
-			},
-
 			-- " in makefiles, don't expand tabs to spaces, since actual tab characters are
 			-- " needed, and have indentation at 8 chars to be sure that all indents are tabs
 			{
