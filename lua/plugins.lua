@@ -58,16 +58,6 @@ return require("packer").startup {
 			end,
 		}
 
-		-- #TODO: Unstable [WIP]
-		-- https://github.com/neovim/nvim-lspconfig/pull/863
-		-- use {
-		-- 	"brymer-meneses/grammar-guard.nvim",
-		-- 	requires = "neovim/nvim-lspconfig",
-		-- 	config = function()
-		-- 		require("grammar-guard").init()
-		-- 	end,
-		-- }
-
 		use {
 			"romgrk/barbar.nvim",
 			config = [[require('config.barbar')]],
@@ -106,11 +96,6 @@ return require("packer").startup {
 				noremap { "<leader>nk", ":set nosplitbelow<CR>:new<CR>" }
 			end,
 		}
-
-		-- use {
-		-- 	"vim-test/vim-test",
-		-- 	config = [[require('config.vim-test')]],
-		-- }
 
 		-- Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
 		-- related works: godlygeek/tabular
@@ -168,28 +153,13 @@ return require("packer").startup {
 
 		use {
 			"windwp/nvim-autopairs",
-			config = function()
-				require "config.nvim-autopairs"
-			end,
+			config = [[require('config.nvim-autopairs')]],
 		}
 
-		-- Snippet support
-		-- " https://github.com/SirVer/ultisnips/blob/master/doc/UltiSnips.txt
-		-- " UltiSnips will search each 'runtimepath' directory for the subdirectory names
-		-- " defined in g:UltiSnipsSnippetDirectories in the order they are defined.
-		-- " Note that "snippets" is reserved for snipMate snippets and cannot be used in this list.
-		-- " If the list has only one entry that is an absolute path, UltiSnips will not
-		-- " iterate through &runtimepath but only look in this one directory for snippets.
-		-- " This can lead to significant speedup. This means you will miss out on snippets
-		-- " that are shipped with third party plugins. You'll need to copy them into this
-		-- " directory manually.
-		-- " mkdir -p $HOME/.config/nvim/UltiSnip
-
-		-- use {
-		-- 	"SirVer/ultisnips",
-		-- 	requires = { "honza/vim-snippets" },
-		-- 	config = [[require('config.ultisnips')]],
-		-- }
+		use {
+			"SirVer/ultisnips",
+			config = [[require('config.ultisnips')]],
+		}
 
 		-- complete plugin
 		use {
@@ -199,7 +169,7 @@ return require("packer").startup {
 				Variable.g {
 					coq_settings = {
 						display = { icons = { mappings = require("lsp").icons } },
-						keymap = { recommended = false, manual_complete = "<A-Space>", jump_to_mark = "<C-j>" },
+						keymap = { recommended = false, manual_complete = "<A-Space>" },
 						auto_start = "shut-up",
 						clients = {
 							tabnine = {
@@ -219,12 +189,31 @@ return require("packer").startup {
 					{ src = "nvimlua", short_name = "nLUA", conf_only = true },
 					{ src = "dap" },
 				}
+				COQsources = COQsources or {}
+				local utils = require "coq_3p.utils"
+				COQsources[utils.new_uid(COQsources)] = {
+					name = "UltiSnips",
+					fn = function(args, callback)
+						local items = {}
+
+						-- label      :: display label
+						-- insertText :: string | null, default to `label` if null
+						-- kind       :: int ∈ `vim.lsp.protocol.CompletionItemKind`
+						-- detail     :: doc popup
+
+						for key, val in pairs(vim.fn["UltiSnips#SnippetsInCurrentScope"]()) do
+							local item = {
+								label = tostring(key),
+								insertText = key,
+								detail = tostring(val),
+							}
+							table.insert(items, item)
+						end
+						callback { isIncomplete = true, items = items }
+					end,
+				}
 			end,
 		}
-
-		-- " https://github.com/RishabhRD/nvim-cheat.sh
-		-- " curl -sSf https://cht.sh/:cht.sh > ~/.local/bin/cht.sh && chmod +x ~/.local/bin/cht.sh
-		use "RishabhRD/nvim-cheat.sh"
 
 		use {
 			"mfussenegger/nvim-dap",
@@ -436,29 +425,6 @@ return require("packer").startup {
 			nnoremap { "<A-j>", "<CMD> lua require('Navigator').down()<CR>", { silent = true } },
 			-- nnoremap { "<A-p>", "<CMD> lua require('Navigator').previous()<CR>", { silent = true } },
 		}
-
-		-- --  https://github.com/iamcco/markdown-preview.nvim
-		-- use {
-		-- 	"iamcco/markdown-preview.nvim",
-		-- 	run = function()
-		-- 		vim.cmd "call mkdp#util#install()"
-		-- 	end,
-		-- 	config = [[require('config.markdown-preview')]],
-		-- }
-
-		-- -- https://github.com/plasticboy/vim-markdown#options
-		-- use {
-		-- 	"plasticboy/vim-markdown",
-		-- 	config = [[require('config.vim-markdown')]],
-		-- }
-
-		-- use {
-		-- 	"dhruvasagar/vim-table-mode",
-		-- 	-- For Markdown-compatible tables use
-		-- 	config = function()
-		-- 		vim.g.table_mode_corner = "|"
-		-- 	end,
-		-- }
 
 		use "tversteeg/registers.nvim"
 
