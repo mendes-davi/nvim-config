@@ -59,7 +59,6 @@ vim.g.bufferline = {
 
 	-- Excludes buffers from the tabline
 	exclude_ft = {
-		"javascript",
 		"NvimTree",
 		"packer",
 		"startify",
