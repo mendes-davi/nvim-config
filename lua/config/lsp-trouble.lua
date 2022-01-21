@@ -1,7 +1,7 @@
 require("trouble").setup {
 	height = 10, -- height of the trouble list
 	icons = true, -- use dev-icons for filenames
-	mode = "workspace", -- "workspace" or "document"
+	mode = "workspace_diagnostics", -- "workspace" or "document"
 	fold_open = "", -- icon used for open folds
 	fold_closed = "", -- icon used for closed folds
 	action_keys = { -- key mappings for actions in the trouble list
@@ -28,6 +28,6 @@ require("trouble").setup {
 		hint = "",
 		information = "",
 	},
-	use_lsp_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
+	use_diagnostic_signs = true, -- enabling this will use the signs defined in your lsp client
 }
 vim.api.nvim_set_keymap("n", "<leader>x", "<cmd>LspTroubleToggle<cr>", { silent = true, noremap = true })

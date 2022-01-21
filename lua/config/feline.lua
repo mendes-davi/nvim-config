@@ -1,5 +1,6 @@
 local lsp = require "feline.providers.lsp"
 local vi_mode_utils = require "feline.providers.vi_mode"
+local sev = vim.diagnostic.severity
 
 custom_providers = {
 	lsp_progress = function()
@@ -239,7 +240,7 @@ components.active[2][3] = {
 components.active[2][4] = {
 	provider = "diagnostic_warnings",
 	enabled = function()
-		return lsp.diagnostics_exist "Warning"
+		return lsp.diagnostics_exist "Warn"
 	end,
 	hl = {
 		fg = "yellow",
@@ -261,7 +262,7 @@ components.active[2][5] = {
 components.active[2][6] = {
 	provider = "diagnostic_info",
 	enabled = function()
-		return lsp.diagnostics_exist "Information"
+		return lsp.diagnostics_exist "Info"
 	end,
 	hl = {
 		fg = "skyblue",

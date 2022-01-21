@@ -117,29 +117,29 @@ local mix_attach = function(client)
 	end
 end
 
-if not lsp.hdl_checker then
-	configs.hdl_checker = {
-		default_config = {
-			cmd = { "hdl_checker", "--lsp" },
-			filetypes = { "vhdl", "verilog", "systemverilog" },
-			root_dir = function(fname)
-				-- will look for a parent directory with a .git directory. If none, just
-				-- use the current directory
-				-- return lsp.util.find_git_ancestor(fname) or lsp.util.path.dirname(fname)
-				-- or (not both)
-				-- Will look for the .hdl_checker.config file in a parent directory. If
-				-- none, will use the current directory
-				return lsp.util.root_pattern ".hdl_checker.config"(fname) or lsp.util.path.dirname(fname)
-			end,
-			settings = {},
-		},
-	}
-end
+-- if not lsp.hdl_checker then
+-- 	configs.hdl_checker = {
+-- 		default_config = {
+-- 			cmd = { "hdl_checker", "--lsp" },
+-- 			filetypes = { "vhdl", "verilog", "systemverilog" },
+-- 			root_dir = function(fname)
+-- 				-- will look for a parent directory with a .git directory. If none, just
+-- 				-- use the current directory
+-- 				-- return lsp.util.find_git_ancestor(fname) or lsp.util.path.dirname(fname)
+-- 				-- or (not both)
+-- 				-- Will look for the .hdl_checker.config file in a parent directory. If
+-- 				-- none, will use the current directory
+-- 				return lsp.util.root_pattern ".hdl_checker.config"(fname) or lsp.util.path.dirname(fname)
+-- 			end,
+-- 			settings = {},
+-- 		},
+-- 	}
+-- end
 
-lsp.hdl_checker.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+-- lsp.hdl_checker.setup(coq.lsp_ensure_capabilities {
+-- 	on_attach = mix_attach,
+-- 	capabilities = capabilities,
+-- })
 
 lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
@@ -215,9 +215,14 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities {
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#sumneko_lua
 -- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
+local sumneko_root_path = "/usr"
+local sumneko_binary = "/usr/bin/lua-language-server"
+
 local system_name
 if vim.fn.has "mac" == 1 then
 	system_name = "macOS"
+    sumneko_root_path = "/usr"
+    sumneko_binary = "/usr/local/bin/lua-language-server"
 elseif vim.fn.has "unix" == 1 then
 	system_name = "Linux"
 elseif vim.fn.has "win32" == 1 then
@@ -225,8 +230,6 @@ elseif vim.fn.has "win32" == 1 then
 else
 	print "Unsupported system for sumneko"
 end
-local sumneko_root_path = "/usr"
-local sumneko_binary = "/usr/bin/lua-language-server"
 
 lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
