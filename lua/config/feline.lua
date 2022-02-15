@@ -6,6 +6,13 @@ custom_providers = {
 	lsp_progress = function()
 		return #vim.lsp.buf_get_clients() > 0 and require("lsp").lsp_progress() or ""
 	end,
+	lsp_client_offset_encoding = function()
+		local clients = {}
+		for _, client in pairs(vim.lsp.buf_get_clients(0)) do
+			clients[#clients + 1] = client.name .. ": " .. client.offset_encoding
+		end
+		return table.concat(clients, ", "), "🌵"
+	end,
 }
 
 local force_inactive = {
@@ -154,7 +161,7 @@ components.active[1][3] = {
 		bg = "bg",
 		style = "bold",
 	},
-	right_sep = "",
+	right_sep = " ",
 }
 
 -- gitBranch
@@ -165,6 +172,7 @@ components.active[1][4] = {
 		bg = "bg",
 		style = "bold",
 	},
+	right_sep = " ",
 }
 -- diffAdd
 components.active[1][5] = {
@@ -206,7 +214,8 @@ components.active[1][8] = {
 -- MID
 -- LspName
 components.active[2][1] = {
-	provider = "lsp_client_names",
+	-- provider = "lsp_client_names",
+	provider = "lsp_client_offset_encoding",
 	enabled = checkwidth,
 	hl = {
 		fg = "yellow",
