@@ -150,26 +150,24 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	},
 })
 
--- lsp.grammar_guard.setup {
--- 	on_attach = mix_attach,
--- 	capabilities = capabilities,
--- 	settings = {
--- 		ltex = {
--- 			enabled = { "latex", "tex", "bib", "markdown" },
--- 			language = "pt",
--- 			diagnosticSeverity = "information",
--- 			setenceCacheSize = 2000,
--- 			additionalRules = {
--- 				enablePickyRules = true,
--- 				motherTongue = "pt-BR",
--- 			},
--- 			trace = { server = "verbose" },
--- 			dictionary = {},
--- 			disabledRules = {},
--- 			hiddenFalsePositives = {},
--- 		},
--- 	},
--- }
+lsp.ltex.setup {
+	on_attach = mix_attach,
+	capabilities = capabilities,
+    filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
+    ltex = {
+        language = "pt-BR",
+        diagnosticSeverity = "information",
+        setenceCacheSize = 2000,
+        additionalRules = {
+            enablePickyRules = true,
+            motherTongue = "pt-BR",
+        },
+        trace = { server = "verbose" },
+        dictionary = {},
+        disabledRules = {},
+        hiddenFalsePositives = {},
+    },
+}
 
 lsp.bashls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
