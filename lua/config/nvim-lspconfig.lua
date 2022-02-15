@@ -17,7 +17,7 @@ nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
 -- lspsaga currently can not popup with current name of the symbol in the popup
 -- https://github.com/glepnir/lspsaga.nvim/issues/186
 -- nnoremap <silent> <F2> <cmd>lua require('lspsaga.rename').rename()<CR>
-nnoremap { "<space>ee", "<cmd>lua vim.lsp.diagnostic.show_line_diagnostics()<CR>", silent = true }
+nnoremap { "<space>ee", "<cmd>lua vim.diagnostic.open_float()<CR>", silent = true }
 
 -- toggle diagnostics loclist, open loclist if there are diagnostics severity >= WARN, else show a notify info. if loclist open, close it
 -- nnoremap { "<space>e", "<cmd>lua vim.diagnostic.setloclist({severity = vim.diagnostic.severity.WARN})<CR>", silent = true }
@@ -62,8 +62,8 @@ nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()
 
 -- diag https://github.com/nvim-lua/diagnostic-nvim/issues/73
 -- nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
-nnoremap { "[d", "<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>", silent = true }
-nnoremap { "]d", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", silent = true }
+nnoremap { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", silent = true }
+nnoremap { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", silent = true }
 
 -- lspsaga
 -- lsp provider to find the cursor word definition and reference
