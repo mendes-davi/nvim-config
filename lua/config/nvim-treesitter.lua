@@ -39,7 +39,7 @@ hlmap["punctuation.bracket"] = nil
 
 -- nomad
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.hcl.used_by = { "nomad", "terraform", "tf" }
+parser_config.hcl.filetyp_to_parsename = { "nomad", "terraform", "tf" }
 
 parser_config.matlab = {
   install_info = {
