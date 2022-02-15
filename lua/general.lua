@@ -57,7 +57,7 @@ Option.g {
 	-- stylua: ignore
 	listchars = "nbsp:⦸,extends:»,precedes:«,tab:▷⋯,trail:•,space:·,eol:↲,conceal:┊",
 
-	fillchars = "diff:∙,fold:·,vert:┃",
+	fillchars = "diff:╱,fold:·,vert:┃",
 
 	-- " The delay is governed by vim's updatetime option,
 	-- " default updatetime 4000ms is not good for async update
