@@ -185,6 +185,7 @@ return require("packer").startup {
 			branch = "3p",
 			config = function()
 				require "coq_3p" {
+                    { src = "orgmode", short_name = "ORG" },
 					{ src = "vimtex", short_name = "vTEX" },
 					{ src = "nvimlua", short_name = "nLUA", conf_only = true },
 					{ src = "dap" },
@@ -462,6 +463,12 @@ return require("packer").startup {
 				tnoremap { "<A-o>", [[<C-\><C-n>:RnvimrToggle<CR>]] }
 			end,
 		}
+
+        use {'nvim-orgmode/orgmode',
+        config = function()
+                require('orgmode').setup{}
+        end
+        }
 
 		-- " colorscheme
 		use {
