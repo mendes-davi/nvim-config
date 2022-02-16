@@ -153,20 +153,20 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 lsp.ltex.setup {
 	on_attach = mix_attach,
 	capabilities = capabilities,
-    filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
-    ltex = {
-        language = "pt-BR",
-        diagnosticSeverity = "information",
-        setenceCacheSize = 2000,
-        additionalRules = {
-            enablePickyRules = true,
-            motherTongue = "pt-BR",
-        },
-        trace = { server = "verbose" },
-        dictionary = {},
-        disabledRules = {},
-        hiddenFalsePositives = {},
-    },
+	filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
+	ltex = {
+		language = "pt-BR",
+		diagnosticSeverity = "information",
+		setenceCacheSize = 2000,
+		additionalRules = {
+			enablePickyRules = true,
+			motherTongue = "pt-BR",
+		},
+		trace = { server = "verbose" },
+		dictionary = {},
+		disabledRules = {},
+		hiddenFalsePositives = {},
+	},
 }
 
 lsp.bashls.setup(coq.lsp_ensure_capabilities {
@@ -175,13 +175,17 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 })
 
 -- https://clangd.llvm.org/features.html
-lsp.clangd.setup(coq.lsp_ensure_capabilities {
-	init_options = {
-		clangdFileStatus = true,
+require("clangd_extensions").setup {
+	server = {
+		coq.lsp_ensure_capabilities {
+			init_options = {
+				clangdFileStatus = true,
+			},
+			on_attach = mix_attach,
+			capabilities = capabilities,
+		},
 	},
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+}
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#ccls
 -- https://github.com/MaskRay/ccls/wiki
@@ -219,8 +223,8 @@ local sumneko_binary = "/usr/bin/lua-language-server"
 local system_name
 if vim.fn.has "mac" == 1 then
 	system_name = "macOS"
-    sumneko_root_path = "/usr"
-    sumneko_binary = "/usr/local/bin/lua-language-server"
+	sumneko_root_path = "/usr"
+	sumneko_binary = "/usr/local/bin/lua-language-server"
 elseif vim.fn.has "unix" == 1 then
 	system_name = "Linux"
 elseif vim.fn.has "win32" == 1 then
