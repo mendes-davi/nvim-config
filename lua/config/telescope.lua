@@ -4,9 +4,13 @@
 require("telescope").load_extension "fzy_native"
 require("telescope").load_extension "dotfiles"
 
+nnoremap { "<CR>", "<cmd>Telescope builtin<cr>" }
 nnoremap { "<leader><leader>", "<cmd>lua require('telescope.builtin').find_files()<cr>" }
 nnoremap { "<leader>g", "<cmd>lua require('telescope.builtin').live_grep()<cr>" }
-nnoremap { "<leader>b", "<cmd>lua require('telescope.builtin').buffers()<cr>" }
+nnoremap {
+	"<leader>b",
+	"<cmd>lua require('telescope.builtin').buffers({ignore_current_buffer = true, sort_mru = true, layout_strategy='vertical',layout_config={width=80}})<cr>",
+}
 nnoremap { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>" }
 nnoremap { "<leader>A", "<cmd>lua require('telescope.builtin').lsp_code_actions({layout_strategy='cursor',layout_config={width=50, height = 10}})<cr>" }
 
@@ -15,6 +19,12 @@ local actions = require "telescope.actions"
 ------------------------------
 require("telescope").setup {
 	defaults = {
+		extensions = {
+			fzy_native = {
+				override_generic_sorter = true,
+				override_file_sorter = true,
+			},
+		},
 		mappings = {
 			i = {
 				-- To disable a keymap, put [map] = false
