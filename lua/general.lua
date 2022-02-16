@@ -199,10 +199,6 @@ nnoremap {
 	end,
 }
 
--- Comment
-nmap { "<C-_>", "gcc" }
-vmap { "<C-_>", "gc" }
-imap { "<C-_>", "<C-o>gcc" }
 
 -- " in visual mode you can select text, type tb and it'll be replaced by the command output
 -- " https://vi.stackexchange.com/questions/7388/replace-selection-with-output-of-external-command/17949#17949

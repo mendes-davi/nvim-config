@@ -120,7 +120,7 @@ return require("packer").startup {
 		-- Lang extra
 		use {
 			"neovim/nvim-lspconfig",
-			requires = "rcarriga/nvim-notify",
+			requires = { "rcarriga/nvim-notify", "p00f/clangd_extensions.nvim" },
 			config = [[require('config.nvim-lspconfig')]],
 		}
 
@@ -185,7 +185,7 @@ return require("packer").startup {
 			branch = "3p",
 			config = function()
 				require "coq_3p" {
-                    { src = "orgmode", short_name = "ORG" },
+					{ src = "orgmode", short_name = "ORG" },
 					{ src = "vimtex", short_name = "vTEX" },
 					{ src = "nvimlua", short_name = "nLUA", conf_only = true },
 					{ src = "dap" },
@@ -343,6 +343,9 @@ return require("packer").startup {
 					end,
 				}
 			end,
+			nmap { "<M-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
+			vmap { "<M-/>", "<Esc><cmd>lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" },
+			imap { "<M-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
 		}
 
 		-- Press + to expand the visual selection and _ to shrink it.
@@ -464,11 +467,12 @@ return require("packer").startup {
 			end,
 		}
 
-        use {'nvim-orgmode/orgmode',
-        config = function()
-                require('orgmode').setup{}
-        end
-        }
+		use {
+			"nvim-orgmode/orgmode",
+			config = function()
+				require("orgmode").setup {}
+			end,
+		}
 
 		-- " colorscheme
 		use {
