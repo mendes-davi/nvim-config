@@ -474,6 +474,20 @@ return require("packer").startup {
 			end,
 		}
 
+		use {
+			"t-troebst/perfanno.nvim",
+			config = function()
+				local perfanno = require "perfanno"
+				local util = require "perfanno.util"
+
+				perfanno.setup {
+					-- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300"
+					line_highlights = util.make_bg_highlights("#37343A", "#CC3300", 8),
+					vt_highlight = util.make_fg_highlight "#CC3300",
+				}
+			end,
+		}
+
 		-- " colorscheme
 		use {
 			"sainnhe/sonokai",
@@ -502,6 +516,7 @@ return require("packer").startup {
 			end,
 		}
 	end,
+
 	config = {
 		display = {
 			non_interactive = os.getenv "PACKER_NON_INTERACTIVE" or false,
