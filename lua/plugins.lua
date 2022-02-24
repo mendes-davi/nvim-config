@@ -277,7 +277,7 @@ return require("packer").startup {
 
 		-- quickfix
 		-- " https://github.com/kevinhwang91/nvim-bqf
-		use "kevinhwang91/nvim-bqf"
+		use { "kevinhwang91/nvim-bqf", ft = "qf" }
 
 		use {
 			"nvim-telescope/telescope.nvim",
@@ -352,16 +352,6 @@ return require("packer").startup {
 		use "terryma/vim-expand-region"
 
 		use "wellle/targets.vim"
-
-		-- " Plug 'easymotion/vim-easymotion'
-		-- " like https://github.com/easymotion/vim-easymotion
-		-- " https://github.com/goldfeld/vim-seek
-		-- " emulate easymotion label and jump mode
-		-- "justinmk/vim-sneak"
-		use {
-			"phaazon/hop.nvim",
-			config = [[require('config.hop')]],
-		}
 
 		use {
 			"mg979/vim-visual-multi",
