@@ -13,10 +13,12 @@ Augroup {
 			end,
 		},
 		{
-			"BufEnter",
+			"BufEnter,BuffRead",
 			"*",
 			function()
-				require("lint").try_lint()
+				vim.defer_fn(function()
+					require("lint").try_lint()
+				end, 300)
 			end,
 		},
 	},
