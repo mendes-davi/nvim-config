@@ -287,7 +287,7 @@ lsp.jsonls.setup(coq.lsp_ensure_capabilities {
 Augroup {
 	LspBufWritePre = {
 		["BufWritePre"] = {
-			{ "*.lua", require("lsp").formatting_sync },
+			-- { "*.lua", require("lsp").formatting_sync },
 			{ "*.tex", require("lsp").formatting_sync },
 			-- { "*.c", require("lsp").formatting_sync },
 			{ "*.py", require("lsp").formatting_sync },
