@@ -8,20 +8,22 @@ augroup END
 	true
 )
 
+nnoremap { "<M-f>", "<cmd>Format<CR>" }
+
 require("formatter").setup {
 	logging = true,
 	filetype = {
-        matlab = {
-            function()
-                return {
-                    exe = "mh_style",
-                    args = {"--fix", "--brief", vim.api.nvim_buf_get_name(0)},
-                    stdin = false,
-                    cwd = vim.fn.expand('%:p:h'),
-                    ignore_exitcode = true
-                }
-            end,
-        },
+		matlab = {
+			function()
+				return {
+					exe = "mh_style",
+					args = { "--fix", "--brief", vim.api.nvim_buf_get_name(0) },
+					stdin = false,
+					cwd = vim.fn.expand "%:p:h",
+					ignore_exitcode = true,
+				}
+			end,
+		},
 		tex = {
 			function()
 				return {
