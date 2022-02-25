@@ -472,7 +472,7 @@ return require("packer").startup {
 
 				perfanno.setup {
 					-- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300"
-					line_highlights = util.make_bg_highlights("#37343A", "#CC3300", 8),
+					line_highlights = util.make_bg_highlights("#37343A", "#CC3300", 4),
 					vt_highlight = util.make_fg_highlight "#CC3300",
 				}
 			end,

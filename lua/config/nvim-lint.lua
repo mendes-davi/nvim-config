@@ -13,7 +13,7 @@ Augroup {
 			end,
 		},
 		{
-			"BufEnter,BuffRead",
+			"BufEnter,BufRead",
 			"*",
 			function()
 				vim.defer_fn(function()
