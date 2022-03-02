@@ -71,6 +71,7 @@ nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent =
 
 local lsp = require "lspconfig"
 local configs = require "lspconfig/configs"
+local util = require "lspconfig.util"
 local coq = require "coq"
 
 require("lsp").setup_diagnostic_sign()
@@ -154,18 +155,24 @@ lsp.ltex.setup {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 	filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
-	ltex = {
-		language = "pt-BR",
-		diagnosticSeverity = "information",
-		setenceCacheSize = 2000,
-		additionalRules = {
-			enablePickyRules = true,
-			motherTongue = "pt-BR",
+	root_dir = function(fname)
+		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
+	end,
+    single_file_support = true,
+	settings = {
+		ltex = {
+			language = "pt-BR",
+			diagnosticSeverity = "hint",
+			sentenceCacheSize = 2000,
+			additionalRules = {
+				enablePickyRules = true,
+				motherTongue = "pt-BR",
+			},
+			trace = { server = "off" },
+			dictionary = {},
+			disabledRules = {},
+			hiddenFalsePositives = {},
 		},
-		trace = { server = "verbose" },
-		dictionary = {},
-		disabledRules = {},
-		hiddenFalsePositives = {},
 	},
 }
 
@@ -204,8 +211,9 @@ require("clangd_extensions").setup {
 -- lsp.pyright.setup{}
 local pythonPath = "/home/davi/.local/miniconda3/bin/python"
 if vim.fn.has "mac" == 1 then
-    pythonPath = "/usr/local/Caskroom/miniconda/base/bin/python"
+	pythonPath = "/usr/local/Caskroom/miniconda/base/bin/python"
 elseif vim.fn.has "unix" == 1 then
+else
 	print "Unsupported `pythonPath` for pyright"
 end
 

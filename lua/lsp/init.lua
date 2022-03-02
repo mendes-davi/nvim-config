@@ -2,6 +2,8 @@
 local vim = vim
 local lsp = vim.lsp
 
+local handlers = require "lsp.handlers"
+
 local M = {}
 
 M.set_lsp_omnifunc = function()
