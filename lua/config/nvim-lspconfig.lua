@@ -1,74 +1,3 @@
--- keymap from https://neovim.io/doc/user/lsp.html
--- https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
-nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true }
-
-nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true }
-nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true }
-nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true }
-nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true }
-nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true }
-nnoremap { "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", silent = true }
-nnoremap { "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", silent = true }
-nnoremap { "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", silent = true }
-nnoremap { "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", silent = true }
-nnoremap { "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
-nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
-
--- lspsaga currently can not popup with current name of the symbol in the popup
--- https://github.com/glepnir/lspsaga.nvim/issues/186
--- nnoremap <silent> <F2> <cmd>lua require('lspsaga.rename').rename()<CR>
-nnoremap { "<space>ee", "<cmd>lua vim.diagnostic.open_float()<CR>", silent = true }
-
--- toggle diagnostics loclist, open loclist if there are diagnostics severity >= WARN, else show a notify info. if loclist open, close it
--- nnoremap { "<space>e", "<cmd>lua vim.diagnostic.setloclist({severity = vim.diagnostic.severity.WARN})<CR>", silent = true }
-nnoremap {
-	"<space>e",
-	function()
-		local loc = vim.fn.getloclist(0)
-		if loc and type(loc) == "table" and #loc > 0 then
-			-- close the loclist
-			vim.api.nvim_command "lclose"
-			-- clear the loclist
-			vim.fn.setloclist(0, {})
-			-- require "notify" "close diagnostics loclist."
-			return
-		end
-		-- severity_limit: "Warning" means { "Error", "Warning" } will be valid.
-		-- see https://github.com/neovim/neovim/blob/b3b02eb52943fdc8ba74af3b485e9d11655bc9c9/runtime/lua/vim/lsp/diagnostic.lua#L646
-		local diag = vim.diagnostic.get(0, { severity_limit = vim.diagnostic.severity.WARN })
-		if diag and type(diag) == "table" and #diag > 0 then
-			vim.diagnostic.setloclist { severity_limit = vim.diagnostic.severity.WARN }
-		else
-			require "notify" "no diagnostics meet the severity level >= warn."
-		end
-	end,
-	silent = true,
-}
-
-nnoremap { "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", silent = true }
-nnoremap { "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", silent = true }
-
--- ga has been mapped to vim-easy-align
--- commentary took gc and gcc, so ...
--- lsp builtin code_action
-nnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", silent = true }
-vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", silent = true }
-
--- lspsaga code action
--- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true }
--- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true }
--- preview definition
-nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true }
-
--- diag https://github.com/nvim-lua/diagnostic-nvim/issues/73
--- nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
-nnoremap { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", silent = true }
-nnoremap { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", silent = true }
-
--- lspsaga
--- lsp provider to find the cursor word definition and reference
-nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent = true }
-
 local lsp = require "lspconfig"
 local configs = require "lspconfig/configs"
 local util = require "lspconfig.util"
@@ -88,8 +17,86 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	},
 }
 
+nnoremap { "<space>ee", "<cmd>lua vim.diagnostic.open_float()<CR>", silent = true }
+
+-- toggle diagnostics loclist, open loclist if there are diagnostics severity >= WARN, else show a notify info. if loclist open, close it
+-- nnoremap { "<space>e", "<cmd>lua vim.diagnostic.setloclist({severity = vim.diagnostic.severity.WARN})<CR>", silent = true }
+nnoremap {
+	"<space>e",
+	function()
+		local loc = vim.fn.getloclist(0)
+		if loc and type(loc) == "table" and #loc > 0 then
+			-- close the loclist
+			vim.api.nvim_command "lclose"
+			-- clear the loclist
+			vim.fn.setloclist(0, {})
+			return
+		end
+
+		local diag = vim.diagnostic.get(0, { severity_limit = vim.diagnostic.severity.WARN })
+		if diag and type(diag) == "table" and #diag > 0 then
+			vim.diagnostic.setloclist { severity_limit = vim.diagnostic.severity.WARN }
+		else
+			require "notify"({ "no diagnostics meet the severity level >= warn." }, "INFO", { title = "QF - Diagnostics" })
+		end
+	end,
+	silent = true,
+}
+
+-- diag https://github.com/nvim-lua/diagnostic-nvim/issues/73
+-- nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
+nnoremap { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", silent = true }
+nnoremap { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", silent = true }
+
 --@param client: (required, vim.lsp.client)
-local mix_attach = function(client)
+local mix_attach = function(client, bufnr)
+	-- omnifunc
+	if client.resolved_capabilities.completion == true then
+		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+	end
+
+    -- formatting
+	if client.resolved_capabilities.document_formatting == true then
+		vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", silent = true }
+		vnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", silent = true }
+	end
+
+	-- keymap from https://neovim.io/doc/user/lsp.html
+	-- https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
+	nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true }
+
+	nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true }
+	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true }
+	nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true }
+	nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true }
+	nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true }
+	nnoremap { "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", silent = true }
+	nnoremap { "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", silent = true }
+	nnoremap { "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", silent = true }
+	nnoremap { "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", silent = true }
+	nnoremap { "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
+	nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
+
+	nnoremap { "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", silent = true }
+	nnoremap { "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", silent = true }
+
+	-- ga has been mapped to vim-easy-align
+	-- commentary took gc and gcc, so ...
+	-- lsp builtin code_action
+	nnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", silent = true }
+	vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", silent = true }
+
+	-- lspsaga code action
+	-- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true }
+	-- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true }
+	-- preview definition
+	nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true }
+
+	-- lspsaga
+	-- lsp provider to find the cursor word definition and reference
+	nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent = true }
+
 	-- require("lsp").set_lsp_omnifunc()
 	local has_illuminate, illuminate = pcall(require, "illuminate")
 	if has_illuminate then
@@ -158,7 +165,7 @@ lsp.ltex.setup {
 	root_dir = function(fname)
 		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
 	end,
-    single_file_support = true,
+	single_file_support = true,
 	settings = {
 		ltex = {
 			language = "pt-BR",

@@ -6,10 +6,6 @@ local handlers = require "lsp.handlers"
 
 local M = {}
 
-M.set_lsp_omnifunc = function()
-	vim.api.nvim_command "setlocal omnifunc=v:lua.vim.lsp.omnifunc"
-end
-
 M.formatting_sync = function()
 	vim.lsp.buf.formatting_sync(nil, 1000)
 end

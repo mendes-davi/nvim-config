@@ -85,9 +85,10 @@ local function qf_rename()
 			timeout = 2500,
 		})
 
-		if num_files > 1 then
-			require("utils").qf_populate(entries, "r")
-		end
+        -- FIXME: Requires implementation
+		-- if num_files > 1 then
+		-- 	require("utils").qf_populate(entries, "r")
+		-- end
 	end)
 end
 lsp.buf.rename = qf_rename
