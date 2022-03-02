@@ -36,24 +36,27 @@ table.insert(components.active, {})
 table.insert(components.inactive, {})
 table.insert(components.inactive, {})
 
+local configuration = vim.fn["sonokai#get_configuration"]()
+local palette = vim.fn["sonokai#get_palette"](configuration.style)
 local colors = {
-	bg = "#2d2a2e",
-	black = "#343136",
-	yellow = "#ffd866",
+	bg = palette.bg2[1],
+	black = palette.black[1],
+	yellow = palette.yellow[1],
 	cyan = "#89b482",
 	oceanblue = "#45707a",
-	green = "#a9dc76",
-	orange = "#e78a4e",
+	green = palette.green[1],
+	orange = palette.orange[1],
 	violet = "#d3869b",
 	magenta = "#c14a4a",
 	white = "#a89984",
-	fg = "#e3e1e4",
+	fg = palette.fg[1],
 	skyblue = "#7daea3",
-	red = "#ff6188",
+	red = palette.red[1],
+    grey = palette.grey[1],
 }
 
 local vi_mode_colors = {
-	["NORMAL"] = "green",
+	["NORMAL"] = "grey",
 	["OP"] = "green",
 	["INSERT"] = "red",
 	["VISUAL"] = "skyblue",
@@ -154,8 +157,10 @@ components.active[1][2] = {
 }
 -- filename
 components.active[1][3] = {
-	provider = "file_info",
-	type = "unique",
+	provider = {name = "file_info",
+	opts = {
+		type = "short-path",
+	}},
 	hl = {
 		fg = "white",
 		bg = "bg",
@@ -428,9 +433,9 @@ components.inactive[1][1] = {
 }
 
 require("feline").setup {
-	colors = colors,
-	default_bg = bg,
-	default_fg = fg,
+	theme = colors,
+	default_bg = colors.bg,
+	default_fg = colors.fg,
 	vi_mode_colors = vi_mode_colors,
 	components = components,
 	custom_providers = custom_providers,

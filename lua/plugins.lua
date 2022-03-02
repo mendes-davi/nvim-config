@@ -148,6 +148,27 @@ return require("packer").startup {
 			end,
 		}
 
+		-- notification
+		use {
+			"rcarriga/nvim-notify",
+			config = function()
+				require("notify").setup {
+					-- For stages that change opacity this is treated as the highlight behind the window
+					-- Set this to either a highlight group or an RGB hex value e.g. "#000000"
+					background_colour = function()
+						local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Normal"), "bg#")
+						if group_bg == "" or group_bg == "none" then
+							group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Float"), "bg#")
+							if group_bg == "" or group_bg == "none" then
+								return "#000000"
+							end
+						end
+						return group_bg
+					end,
+				}
+			end,
+		}
+
 		-- """ edting
 		use "chrisbra/NrrwRgn"
 
@@ -482,22 +503,32 @@ return require("packer").startup {
 		use {
 			"sainnhe/sonokai",
 			config = function()
+				local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
+				local v = opt[math.random(1, #opt)]
 				Variable.g {
-					sonokai_style = "shusia",
+					sonokai_better_performance = 1,
+					sonokai_style = v,
 					sonokai_enable_italic = 1,
+					sonokai_diagnostic_virtual_text = "colored",
 					sonokai_disable_italic_comment = 0,
 					sonokai_transparent_background = 1,
+					-- sonokai_current_word = "underline",
 				}
 				vim.go.background = "dark"
 				vim.cmd [[ silent! colorscheme sonokai ]]
+				-- vim.cmd [[hi CurrentWord guifg=#E3F467 guibg=#332248 gui=Bold,undercurl]]
+				-- vim.cmd [[hi TSKeyword gui=Bold]]
 			end,
 		}
+
 		use {
+            opt = true,
 			"sainnhe/edge",
 			config = function()
 				Variable.g {
 					edge_style = "default",
 					edge_enable_italic = 1,
+					edge_diagnostic_virtual_text = "colored",
 					edge_disable_italic_comment = 0,
 					edge_transparent_background = 0,
 				}

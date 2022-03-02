@@ -44,7 +44,7 @@ vim.g.bufferline = {
 	animation = true,
 
 	-- Enable/disable auto-hiding the tab bar when there is a single buffer
-	auto_hide = false,
+	auto_hide = true,
 
 	-- Enable/disable current/total tabpages indicator (top right corner)
 	tabpages = true,
@@ -91,7 +91,7 @@ vim.g.bufferline = {
 	insert_at_end = false,
 
 	-- Sets the maximum padding width with which to surround each tab
-	maximum_padding = 1,
+	maximum_padding = 100,
 
 	-- Sets the maximum buffer name length.
 	maximum_length = 30,
