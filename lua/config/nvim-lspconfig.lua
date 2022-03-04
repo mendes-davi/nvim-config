@@ -161,7 +161,7 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 lsp.ltex.setup {
 	on_attach = mix_attach,
 	capabilities = capabilities,
-	filetypes = { "bib", "gitcommit", "markdown", "org", "plaintex", "rst", "rnoweb", "tex" },
+	filetypes = { "markdown", "org", "plaintex", "tex" },
 	root_dir = function(fname)
 		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
 	end,
