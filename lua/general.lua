@@ -201,7 +201,6 @@ nnoremap {
 	end,
 }
 
-
 -- " in visual mode you can select text, type tb and it'll be replaced by the command output
 -- " https://vi.stackexchange.com/questions/7388/replace-selection-with-output-of-external-command/17949#17949
 vnoremap { "tb", 'c<C-R>=system(@")<CR><ESC>' }
@@ -328,10 +327,22 @@ Augroup {
 
 	LaTeX = {
 		{
-			"VimLeave",
-			"*.tex",
+			"User",
+			"VimtexEventQuit",
 			function()
 				vim.api.nvim_command "VimtexClean"
+			end,
+		},
+		{
+			"User",
+			"VimtexEventCompileFailed",
+			function()
+				local ok, notify = pcall(require, "notify")
+				if ok then
+					notify("Compilation Failed!", "ERROR", {
+						title = "TeX | Vimtex",
+					})
+				end
 			end,
 		},
 	},

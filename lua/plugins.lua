@@ -52,8 +52,14 @@ return require("packer").startup {
 		use {
 			"lervag/vimtex",
 			config = function()
+                local viewer = 'zathura'
+                if vim.fn.has "mac" == 1 then
+                    viewer = 'skim'
+                end
+
 				Variable.g {
-					vimtex_quickfix_mode = 1,
+					vimtex_quickfix_mode = 0,
+                    vimtex_view_method = viewer,
 				}
 			end,
 		}
