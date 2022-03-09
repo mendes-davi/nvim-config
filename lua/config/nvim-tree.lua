@@ -13,7 +13,6 @@ Variable.g {
 	nvim_tree_width = 30, -- 30 by default
 	-- nvim_tree_auto_open = 0, -- 0 by default, opens the tree when typing `vim $DIR` or `vim`
 	-- nvim_tree_auto_close = 1, -- 0 by default, closes the tree when it's the last window
-	nvim_tree_quit_on_open = 1, -- 0 by default, closes the tree when you open a file
 	-- nvim_tree_follow = 1, -- 0 by default, this option allows the cursor to be updated when entering a buffer
 	nvim_tree_indent_markers = 1, -- 0 by default, this option shows indent markers when folders are open
 	nvim_tree_git_hl = 1, -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
@@ -36,6 +35,11 @@ Variable.g {
 		["Makefile"] = 1,
 		["MAKEFILE"] = 1,
 	}, -- List of filenames that gets highlighted with NvimTreeSpecialFile
+}
+
+-- https://github.com/kyazdani42/nvim-tree.lua#setup
+require("nvim-tree").setup {
+	nvim_tree_quit_on_open = 1, -- 0 by default, closes the tree when you open a file
 	nvim_tree_window_picker_exclude = {
 		filetype = {
 			"packer",
@@ -45,10 +49,6 @@ Variable.g {
 			"terminal",
 		},
 	},
-}
-
--- https://github.com/kyazdani42/nvim-tree.lua#setup
-require("nvim-tree").setup {
 	-- closes neovim automatically when the tree is the last **WINDOW** in the view
 	auto_close = false,
 	-- 0 by default, this option hides files and folders starting with a dot `.`
