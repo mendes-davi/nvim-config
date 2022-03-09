@@ -2,7 +2,7 @@
 local api = vim.api
 local M = {}
 
-M.test_runner = "unittest"
+M.test_runner = "pytest"
 
 local is_windows = function()
 	return vim.loop.os_uname().sysname:find("Windows", 1, true) and true
@@ -20,7 +20,7 @@ local get_python_path = function()
 end
 
 local enrich_config = function(config, on_config)
-	if not config.pythonPath then
+	if not config.pythonPath and not config.python then
 		config.pythonPath = get_python_path()
 	end
 	on_config(config)
@@ -29,6 +29,7 @@ end
 local default_setup_opts = {
 	include_configs = true,
 	console = "integratedTerminal",
+	pythonPath = nil,
 }
 
 local default_test_opts = {
@@ -70,8 +71,21 @@ function M.setup(adapter_python_path, opts)
 			type = "python",
 			request = "launch",
 			name = "Launch file",
-			program = "${workspaceFolder}/${file}",
+			program = "${file}",
 			console = opts.console,
+			pythonPath = opts.pythonPath,
+		})
+		table.insert(dap.configurations.python, {
+			type = "python",
+			request = "launch",
+			name = "Launch file with arguments",
+			program = "${file}",
+			args = function()
+				local args_string = vim.fn.input "Arguments: "
+				return vim.split(args_string, " +")
+			end,
+			console = opts.console,
+			pythonPath = opts.pythonPath,
 		})
 		table.insert(dap.configurations.python, {
 			type = "python",
@@ -166,7 +180,7 @@ local function trigger_test(classname, methodname, opts)
 	local test_path
 	local args
 	if test_runner == "unittest" then
-		local path = vim.fn.expand "%:r:s?/?.?"
+		local path = vim.fn.expand "%:r:gs?/?.?"
 		test_path = table.concat(prune_nil { path, classname, methodname }, ".")
 		args = { "-v", test_path }
 	elseif test_runner == "pytest" then

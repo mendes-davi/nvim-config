@@ -16,6 +16,7 @@ local dap = require "dap"
 -- `DapStopped` which defaults to `→` and is used to indicate the position where the debugee is stopped.
 
 vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition", { text = "🟥", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapLogPoint", { text = "✳️ ", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "⭕", texthl = "", linehl = "", numhl = "" })
 
@@ -27,6 +28,9 @@ dap.defaults.fallback.external_terminal = {
 
 require("dap.python").setup "/home/davi/.local/miniconda3/bin/python"
 require("dap.python").test_runner = "pytest"
+nnoremap {"<leader>dn", ":lua require('dap.python').test_method()<CR>", silent = true}
+nnoremap {"<leader>df", ":lua require('dap.python').test_class()<CR>", silent = true}
+vnoremap {"<leader>ds", "<ESC>:lua require('dap.python').debug_selection()<CR>", silent = true}
 
 dap.configurations.lua = {
 	{
@@ -47,11 +51,13 @@ dap.adapters.nlua = function(callback, config)
 	callback { type = "server", host = config.host, port = config.port or 8088 }
 end
 
-vim.api.nvim_exec(
-	[[
-nnoremap <silent> <leader>dn :lua require('dap.python').test_method()<CR>
-nnoremap <silent> <leader>df :lua require('dap.python').test_class()<CR>
-vnoremap <silent> <leader>ds <ESC>:lua require('dap.python').debug_selection()<CR>
-]],
-	true
-)
+local dapui = require("dapui")
+-- dap.listeners.after.event_initialized["dapui_config"] = function()
+  -- dapui.open()
+-- end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end
