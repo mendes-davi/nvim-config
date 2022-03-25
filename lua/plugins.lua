@@ -52,14 +52,14 @@ return require("packer").startup {
 		use {
 			"lervag/vimtex",
 			config = function()
-                local viewer = 'zathura'
-                if vim.fn.has "mac" == 1 then
-                    viewer = 'skim'
-                end
+				local viewer = "zathura"
+				if vim.fn.has "mac" == 1 then
+					viewer = "skim"
+				end
 
 				Variable.g {
 					vimtex_quickfix_mode = 0,
-                    vimtex_view_method = viewer,
+					vimtex_view_method = viewer,
 				}
 			end,
 		}
@@ -528,7 +528,7 @@ return require("packer").startup {
 		}
 
 		use {
-            opt = true,
+			opt = true,
 			"sainnhe/edge",
 			config = function()
 				Variable.g {

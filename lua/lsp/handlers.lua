@@ -85,7 +85,7 @@ local function qf_rename()
 			timeout = 2500,
 		})
 
-        -- FIXME: Requires implementation
+		-- FIXME: Requires implementation
 		-- if num_files > 1 then
 		-- 	require("utils").qf_populate(entries, "r")
 		-- end

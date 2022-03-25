@@ -53,7 +53,7 @@ end
 
 local dapui = require "dapui"
 dap.listeners.after.event_initialized["dapui_config"] = function()
-    vim.cmd 'tab split' -- TODO: open/close new tab with dapui layout
+	vim.cmd "tab split" -- TODO: open/close new tab with dapui layout
 	dapui.open()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()

@@ -52,7 +52,7 @@ local colors = {
 	fg = palette.fg[1],
 	skyblue = "#7daea3",
 	red = palette.red[1],
-    grey = palette.grey[1],
+	grey = palette.grey[1],
 }
 
 local vi_mode_colors = {
@@ -157,10 +157,9 @@ components.active[1][2] = {
 }
 -- filename
 components.active[1][3] = {
-	provider = {name = "file_info",
-	opts = {
+	provider = { name = "file_info", opts = {
 		type = "short-path",
-	}},
+	} },
 	hl = {
 		fg = "white",
 		bg = "bg",

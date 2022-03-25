@@ -55,7 +55,7 @@ local mix_attach = function(client, bufnr)
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 	end
 
-    -- formatting
+	-- formatting
 	if client.resolved_capabilities.document_formatting == true then
 		vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
 		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", silent = true }
@@ -158,7 +158,7 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	},
 })
 
-lsp.ltex.setup (coq.lsp_ensure_capabilities {
+lsp.ltex.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 	filetypes = { "markdown", "org", "plaintex", "tex" },
@@ -191,11 +191,11 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 -- https://clangd.llvm.org/features.html
 require("clangd_extensions").setup {
 	server = {
-			init_options = {
-				clangdFileStatus = true,
-			},
-			on_attach = mix_attach,
-			capabilities = coq.lsp_ensure_capabilities(capabilities),
+		init_options = {
+			clangdFileStatus = true,
+		},
+		on_attach = mix_attach,
+		capabilities = coq.lsp_ensure_capabilities(capabilities),
 	},
 }
 
