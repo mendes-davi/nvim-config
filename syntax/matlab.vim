@@ -18,7 +18,7 @@ endif
 syn keyword matlabStatement		return function
 syn keyword matlabConditional		switch case else elseif end if otherwise break continue
 syn keyword matlabRepeat		do for while
-syn keyword matlabStorageClass		classdef methods properties events persistent global
+syn keyword matlabStorageClass		classdef methods properties events persistent global arguments self
 syn keyword matlabExceptions		try catch rethrow throw
 
 syn keyword matlabTodo			contained  TODO NOTE FIXME XXX
@@ -126,7 +126,7 @@ syn keyword matlabFunc align getpixelposition listfonts selectmoveresize setpixe
 "Controlling Program Execution
 syn keyword matlabFunc uiresume uiwait	
 "Basic Plots and Graphs
-syn keyword matlabFunc box errorbar hold  loglog  plot plot3 plotyy polar semilogx semilogy subplot
+syn keyword matlabFunc box errorbar hold  loglog  plot plot3 plotyy polar semilogx semilogy subplot heatmap colormap
 "Plotting Tools
 syn keyword matlabFunc figurepalette pan plotbrowser plotedit plottools propertyeditor rotate3d  showplottool zoom 
 
