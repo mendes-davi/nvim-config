@@ -3,7 +3,10 @@ alias tl
     TOP_LEVEL = Path(__file__).resolve().parent
 
 snippet fprint
-    print(f'{${1} = }')${0}
+    print(f'{${1} = }') ${0}
+
+snippet TOP
+    TOP${0}
 
 snippet main
     if __name__ == "__main__":
