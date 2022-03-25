@@ -158,7 +158,7 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	},
 })
 
-lsp.ltex.setup {
+lsp.ltex.setup (coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 	filetypes = { "markdown", "org", "plaintex", "tex" },
@@ -181,7 +181,7 @@ lsp.ltex.setup {
 			hiddenFalsePositives = {},
 		},
 	},
-}
+})
 
 lsp.bashls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
@@ -191,13 +191,11 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 -- https://clangd.llvm.org/features.html
 require("clangd_extensions").setup {
 	server = {
-		coq.lsp_ensure_capabilities {
 			init_options = {
 				clangdFileStatus = true,
 			},
 			on_attach = mix_attach,
-			capabilities = capabilities,
-		},
+			capabilities = coq.lsp_ensure_capabilities(capabilities),
 	},
 }
 
