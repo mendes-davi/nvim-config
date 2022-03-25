@@ -21,7 +21,7 @@ map("n", "<A-0>", ":BufferLast<CR>", opts)
 -- Close buffer
 map("n", "<A-e>", ":BufferClose<CR>", opts)
 -- Wipeout buffer
---                 :BufferWipeout<CR>
+map("n", "<A-E>", ":BufferWipeout!<CR>", opts)
 
 -- Close commands
 --                 :BufferCloseAllButCurrent<CR>
