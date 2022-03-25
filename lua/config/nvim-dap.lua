@@ -28,9 +28,9 @@ dap.defaults.fallback.external_terminal = {
 
 require("dap.python").setup "/home/davi/.local/miniconda3/bin/python"
 require("dap.python").test_runner = "pytest"
-nnoremap {"<leader>dn", ":lua require('dap.python').test_method()<CR>", silent = true}
-nnoremap {"<leader>df", ":lua require('dap.python').test_class()<CR>", silent = true}
-vnoremap {"<leader>ds", "<ESC>:lua require('dap.python').debug_selection()<CR>", silent = true}
+nnoremap { "<leader>dn", ":lua require('dap.python').test_method()<CR>", silent = true }
+nnoremap { "<leader>df", ":lua require('dap.python').test_class()<CR>", silent = true }
+vnoremap { "<leader>ds", "<ESC>:lua require('dap.python').debug_selection()<CR>", silent = true }
 
 dap.configurations.lua = {
 	{
@@ -51,13 +51,14 @@ dap.adapters.nlua = function(callback, config)
 	callback { type = "server", host = config.host, port = config.port or 8088 }
 end
 
-local dapui = require("dapui")
--- dap.listeners.after.event_initialized["dapui_config"] = function()
-  -- dapui.open()
--- end
+local dapui = require "dapui"
+dap.listeners.after.event_initialized["dapui_config"] = function()
+    vim.cmd 'tab split' -- TODO: open/close new tab with dapui layout
+	dapui.open()
+end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  dapui.close()
+	dapui.close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
-  dapui.close()
+	dapui.close()
 end
