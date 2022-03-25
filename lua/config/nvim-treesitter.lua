@@ -21,6 +21,15 @@ require("nvim-treesitter.configs").setup {
 	context_commentstring = {
 		enable = true,
 	},
+	incremental_selection = {
+		enable = true,
+		keymaps = {
+			init_selection = "gnn",
+			node_incremental = "grn",
+			scope_incremental = "grc",
+			node_decremental = "grm",
+		},
+	},
 }
 
 -- fixup nvim-treesitter cause luochen1990/rainbow not working problem
@@ -42,10 +51,10 @@ local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.hcl.filetyp_to_parsename = { "nomad", "terraform", "tf" }
 
 parser_config.matlab = {
-  install_info = {
-    url = "https://github.com/mstanciu552/tree-sitter-matlab.git",
-    files = { "src/parser.c" },
-    branch= 'main'
-  },
-  filetype = "matlab", -- if filetype does not agrees with parser name
+	install_info = {
+		url = "https://github.com/mstanciu552/tree-sitter-matlab.git",
+		files = { "src/parser.c" },
+		branch = "main",
+	},
+	filetype = "matlab", -- if filetype does not agrees with parser name
 }
