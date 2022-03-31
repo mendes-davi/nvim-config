@@ -60,6 +60,16 @@ return require("packer").startup {
 				Variable.g {
 					vimtex_quickfix_mode = 0,
 					vimtex_view_method = viewer,
+					vimtex_compiler_latexmk = {
+						options = {
+							"-pdf",
+							"-shell-escape",
+							"-verbose",
+							"-file-line-error",
+							"-synctex=1",
+							"-interaction=nonstopmode",
+						},
+					},
 				}
 			end,
 		}
@@ -521,25 +531,24 @@ return require("packer").startup {
 					-- sonokai_current_word = "underline",
 				}
 				vim.go.background = "dark"
-				vim.cmd [[ silent! colorscheme sonokai ]]
-				-- vim.cmd [[hi CurrentWord guifg=#E3F467 guibg=#332248 gui=Bold,undercurl]]
-				-- vim.cmd [[hi TSKeyword gui=Bold]]
+				-- vim.cmd [[ silent! colorscheme sonokai ]]
 			end,
 		}
 
 		use {
-			opt = true,
-			"sainnhe/edge",
+			"sainnhe/everforest",
 			config = function()
 				Variable.g {
-					edge_style = "default",
-					edge_enable_italic = 1,
-					edge_diagnostic_virtual_text = "colored",
-					edge_disable_italic_comment = 0,
-					edge_transparent_background = 0,
+					everforest_better_performance = 1,
+					everforest_background = "medium",
+					everforest_ui_contrast = "medium",
+					everforest_enable_italic = 1,
+					everforest_diagnostic_virtual_text = "colored",
+					everforest_disable_italic_comment = 0,
+					everforest_transparent_background = 1,
 				}
-				vim.go.background = "light"
-				-- vim.cmd [[ silent! colorscheme edge ]]
+				vim.go.background = "dark"
+				vim.cmd [[ silent! colorscheme everforest ]]
 			end,
 		}
 	end,
