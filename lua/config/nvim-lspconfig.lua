@@ -64,38 +64,38 @@ local mix_attach = function(client, bufnr)
 
 	-- keymap from https://neovim.io/doc/user/lsp.html
 	-- https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
-	nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true }
+	nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true, buffer = bufnr }
 
-	nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true }
-	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true }
-	nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true }
-	nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true }
-	nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true }
-	nnoremap { "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", silent = true }
-	nnoremap { "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", silent = true }
-	nnoremap { "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", silent = true }
-	nnoremap { "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", silent = true }
-	nnoremap { "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
-	nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true }
+	nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true, buffer = bufnr}
+	nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true, buffer = bufnr }
 
-	nnoremap { "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", silent = true }
-	nnoremap { "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", silent = true }
+	nnoremap { "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", silent = true, buffer = bufnr }
+	nnoremap { "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", silent = true, buffer = bufnr }
 
 	-- ga has been mapped to vim-easy-align
 	-- commentary took gc and gcc, so ...
 	-- lsp builtin code_action
-	nnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", silent = true }
-	vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", silent = true }
+	nnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", silent = true, buffer = bufnr }
+	vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", silent = true, buffer = bufnr }
 
 	-- lspsaga code action
-	-- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true }
-	-- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true }
+	-- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true, buffer = bufnr }
+	-- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true, buffer = bufnr }
 	-- preview definition
-	nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true }
+	nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true, buffer = bufnr }
 
 	-- lspsaga
 	-- lsp provider to find the cursor word definition and reference
-	nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent = true }
+	nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent = true, buffer = bufnr }
 
 	-- require("lsp").set_lsp_omnifunc()
 	local has_illuminate, illuminate = pcall(require, "illuminate")
@@ -191,6 +191,11 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 -- https://clangd.llvm.org/features.html
 require("clangd_extensions").setup {
 	server = {
+        settings = {
+            clangd = {
+                Index = { Background = 'Build' },
+            },
+        },
 		init_options = {
 			clangdFileStatus = true,
 		},
