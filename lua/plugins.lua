@@ -1,6 +1,7 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 require "utils"
+require "impatient" -- lewis6991/impatient.nvim
 
 -- make the linter happy
 local use = require("packer").use
@@ -83,20 +84,35 @@ return require("packer").startup {
 		-- Use specific branch, dependency and run lua file after load
 		use {
 			"kyazdani42/nvim-tree.lua",
+			cmd = {
+				"NvimTreeToggle",
+				"NvimTreeOpen",
+				"NvimTreeClose",
+				"NvimTreeFocus",
+				"NvimTreeFindFileToggle",
+				"NvimTreeResize",
+				"NvimTreeCollapse",
+				"NvimTreeCollapseKeepBuffers",
+			},
 			config = [[require('config.nvim-tree')]],
 			requires = { "kyazdani42/nvim-web-devicons" },
 		}
+		map { "<F4>", "<cmd>NvimTreeToggle<CR>" }
+		nnoremap { "<leader>f", "<cmd>NvimTreeToggle<CR>" }
+		nnoremap { "<leader>r", "<cmd>NvimTreeRefresh<CR>" }
+		nnoremap { "<leader>ff", "<cmd>NvimTreeFindFile<CR>" }
 
 		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
 		use {
 			"liuchengxu/vista.vim",
+			cmd = "Vista",
 			config = function()
 				Variable.g {
 					vista_default_executive = "nvim_lsp",
 				}
-				nnoremap { "<F3>", ":Vista!!<CR>" }
 			end,
 		}
+		nnoremap { "<F3>", ":Vista!!<CR>" }
 
 		-- support split window resizing and moving
 		-- resize windows continuously by using typical keymaps of Vim. (h, j, k, l)
@@ -130,6 +146,7 @@ return require("packer").startup {
 		-- https://simnalamburt.github.io/vim-mundo/#configuration
 		use {
 			"simnalamburt/vim-mundo",
+			cmd = { "MundoHide", "MundoShow", "MundoToggle" },
 			config = [[require('config.vim-mundo')]],
 		}
 
@@ -341,10 +358,6 @@ return require("packer").startup {
 			end,
 		}
 
-		-- VCS
-		-- https://github.com/lambdalisue/gina.vim
-		use "lambdalisue/gina.vim"
-
 		use {
 			"famiu/feline.nvim",
 			config = [[require('config.feline')]],
@@ -551,6 +564,9 @@ return require("packer").startup {
 				vim.cmd [[ silent! colorscheme everforest ]]
 			end,
 		}
+
+		use { "tweekmonster/startuptime.vim", cmd = "StartupTime" }
+		use "lewis6991/impatient.nvim"
 	end,
 
 	config = {
