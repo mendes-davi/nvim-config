@@ -38,7 +38,7 @@ lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
 })
 
 -- populate qf list with changes (if multiple files modified)
--- NOTE(vir): now using nvim-notify
+-- https://github.com/ViRu-ThE-ViRuS/configs/blob/master/nvim/lua/lsp-setup/handlers.lua
 local function qf_rename()
 	local position_params = vim.lsp.util.make_position_params()
 	position_params.oldName = vim.fn.expand "<cword>"
@@ -85,10 +85,39 @@ local function qf_rename()
 			timeout = 2500,
 		})
 
-		-- FIXME: Requires implementation
-		-- if num_files > 1 then
-		-- 	require("utils").qf_populate(entries, "r")
-		-- end
+		-- apply f to all elements in table
+		local function foreach(tbl, f)
+			local t = {}
+			for key, value in ipairs(tbl) do
+				t[key] = f(value)
+			end
+			return t
+		end
+
+		-- set qflist and open
+		local function qf_populate(lines, mode, statusline)
+			if mode == nil or type(mode) == "table" then
+				lines = foreach(lines, function(item)
+					return { filename = item, lnum = 1, col = 1, text = item }
+				end)
+				mode = "r"
+			end
+
+			vim.fn.setqflist(lines, mode)
+
+			if not statusline then
+				vim.cmd [[
+                            belowright copen
+                            wincmd p
+                        ]]
+			else
+				vim.cmd(string.format("belowright copen\n%s\nwincmd p", statusline))
+			end
+		end
+
+		if num_files > 1 then
+			qf_populate(entries, "r")
+		end
 	end)
 end
 lsp.buf.rename = qf_rename
