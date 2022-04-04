@@ -219,13 +219,7 @@ require("clangd_extensions").setup {
 -- }
 
 -- lsp.pyright.setup{}
-local pythonPath = "/home/davi/.local/miniconda3/bin/python"
-if vim.fn.has "mac" == 1 then
-	pythonPath = "/usr/local/Caskroom/miniconda/base/bin/python"
-elseif vim.fn.has "unix" == 1 then
-else
-	print "Unsupported `pythonPath` for pyright"
-end
+local pythonPath = require('utils.python').get_python_path()
 
 lsp.pyright.setup(coq.lsp_ensure_capabilities {
 	flags = { debounce_text_changes = 150 },

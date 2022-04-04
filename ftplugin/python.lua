@@ -1,5 +1,11 @@
 local ts_utils = require "nvim-treesitter.ts_utils"
 
+require("dap.python").setup()
+require("dap.python").test_runner = "pytest"
+nnoremap { "<leader>dn", ":lua require('dap.python').test_method()<CR>", silent = true }
+nnoremap { "<leader>df", ":lua require('dap.python').test_class()<CR>", silent = true }
+vnoremap { "<leader>ds", "<ESC>:lua require('dap.python').debug_selection()<CR>", silent = true }
+
 toggle_fstring = function()
 	local winnr = 0
 	local cursor = vim.api.nvim_win_get_cursor(winnr)

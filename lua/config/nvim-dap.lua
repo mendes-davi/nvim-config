@@ -26,12 +26,6 @@ dap.defaults.fallback.external_terminal = {
 	args = { "-e" },
 }
 
-require("dap.python").setup "/home/davi/.local/miniconda3/bin/python"
-require("dap.python").test_runner = "pytest"
-nnoremap { "<leader>dn", ":lua require('dap.python').test_method()<CR>", silent = true }
-nnoremap { "<leader>df", ":lua require('dap.python').test_class()<CR>", silent = true }
-vnoremap { "<leader>ds", "<ESC>:lua require('dap.python').debug_selection()<CR>", silent = true }
-
 dap.configurations.lua = {
 	{
 		type = "nlua",

@@ -4,24 +4,9 @@ local M = {}
 
 M.test_runner = "pytest"
 
-local is_windows = function()
-	return vim.loop.os_uname().sysname:find("Windows", 1, true) and true
-end
-
-local get_python_path = function()
-	local venv_path = os.getenv "VIRTUAL_ENV"
-	if venv_path then
-		if is_windows() then
-			return venv_path .. "\\Scripts\\python.exe"
-		end
-		return venv_path .. "/bin/python"
-	end
-	return nil
-end
-
 local enrich_config = function(config, on_config)
 	if not config.pythonPath and not config.python then
-		config.pythonPath = get_python_path()
+		config.pythonPath = require('utils.python').get_python_path()
 	end
 	on_config(config)
 end
