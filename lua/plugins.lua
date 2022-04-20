@@ -1,7 +1,12 @@
 -- This file can be loaded by calling `lua require('plugins')` from your init.vim
 
 require "utils"
-require "impatient" -- lewis6991/impatient.nvim
+
+-- lewis6991/impatient.nvim
+local ok, _ = pcall(require, "impatient")
+if not ok then
+    print(tostring(ok) .. " impatient")
+end
 
 -- make the linter happy
 local use = require("packer").use
@@ -536,6 +541,7 @@ return require("packer").startup {
 				local v = opt[math.random(1, #opt)]
 				Variable.g {
 					sonokai_better_performance = 1,
+					sonokai_disable_terminal_colors = 1,
 					sonokai_style = v,
 					sonokai_enable_italic = 1,
 					sonokai_diagnostic_virtual_text = "colored",
@@ -553,6 +559,7 @@ return require("packer").startup {
 			config = function()
 				Variable.g {
 					everforest_better_performance = 1,
+					everforest_disable_terminal_colors = 1,
 					everforest_background = "medium",
 					everforest_ui_contrast = "medium",
 					everforest_enable_italic = 1,
