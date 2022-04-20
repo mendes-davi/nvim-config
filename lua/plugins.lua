@@ -5,7 +5,7 @@ require "utils"
 -- lewis6991/impatient.nvim
 local ok, _ = pcall(require, "impatient")
 if not ok then
-    print(tostring(ok) .. " impatient")
+	print(tostring(ok) .. " impatient")
 end
 
 -- make the linter happy
@@ -244,7 +244,6 @@ return require("packer").startup {
 			branch = "3p",
 			config = function()
 				require "coq_3p" {
-					{ src = "orgmode", short_name = "ORG" },
 					{ src = "vimtex", short_name = "vTEX" },
 					{ src = "nvimlua", short_name = "nLUA", conf_only = true },
 					{ src = "dap" },
@@ -509,13 +508,6 @@ return require("packer").startup {
 				}
 				nnoremap { "<A-o>", ":RnvimrToggle<CR>" }
 				tnoremap { "<A-o>", [[<C-\><C-n>:RnvimrToggle<CR>]] }
-			end,
-		}
-
-		use {
-			"nvim-orgmode/orgmode",
-			config = function()
-				require("orgmode").setup {}
 			end,
 		}
 
