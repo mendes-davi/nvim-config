@@ -10,7 +10,6 @@ Variable.g {
 	-- nvim_tree_auto_open = 0, -- 0 by default, opens the tree when typing `vim $DIR` or `vim`
 	-- nvim_tree_auto_close = 1, -- 0 by default, closes the tree when it's the last window
 	-- nvim_tree_follow = 1, -- 0 by default, this option allows the cursor to be updated when entering a buffer
-	nvim_tree_indent_markers = 1, -- 0 by default, this option shows indent markers when folders are open
 	nvim_tree_git_hl = 1, -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
 	nvim_tree_root_folder_modifier = ":~", -- This is the default. See :help filename-modifiers for more options
 	-- nvim_tree_tab_open = 1, -- 0 by default, will open the tree when entering a new tab and the tree was previously open
@@ -50,4 +49,9 @@ require("nvim-tree").setup {
 	-- 0 by default, this option hides files and folders starting with a dot `.`
 	nvim_tree_hide_dotfiles = 1,
 	nvim_tree_ignore = { ".git", "node_modules", ".cache", ".idea" }, -- empty by default
+	renderer = {
+		ident_markers = {
+			enable = false,
+		},
+	},
 }
