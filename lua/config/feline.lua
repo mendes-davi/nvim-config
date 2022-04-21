@@ -242,7 +242,7 @@ components.active[2][2] = {
 components.active[2][3] = {
 	provider = "diagnostic_errors",
 	enabled = function()
-		return lsp.diagnostics_exist "Error"
+		return lsp.diagnostics_exist(vim.diagnostic.severity.ERROR)
 	end,
 	hl = {
 		fg = "red",
@@ -253,7 +253,7 @@ components.active[2][3] = {
 components.active[2][4] = {
 	provider = "diagnostic_warnings",
 	enabled = function()
-		return lsp.diagnostics_exist "Warn"
+		return lsp.diagnostics_exist(vim.diagnostic.severity.WARN)
 	end,
 	hl = {
 		fg = "yellow",
@@ -264,7 +264,7 @@ components.active[2][4] = {
 components.active[2][5] = {
 	provider = "diagnostic_hints",
 	enabled = function()
-		return lsp.diagnostics_exist "Hint"
+		return lsp.diagnostics_exist(vim.diagnostic.severity.HINT)
 	end,
 	hl = {
 		fg = "cyan",
@@ -275,7 +275,7 @@ components.active[2][5] = {
 components.active[2][6] = {
 	provider = "diagnostic_info",
 	enabled = function()
-		return lsp.diagnostics_exist "Info"
+		return lsp.diagnostics_exist(vim.diagnostic.severity.INFO)
 	end,
 	hl = {
 		fg = "skyblue",
