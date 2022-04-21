@@ -67,7 +67,7 @@ local mix_attach = function(client, bufnr)
 	nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true, buffer = bufnr }
 
 	nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true, buffer = bufnr}
+	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true, buffer = bufnr }
 	nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true, buffer = bufnr }
 	nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true, buffer = bufnr }
 	nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true, buffer = bufnr }
@@ -191,11 +191,11 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 -- https://clangd.llvm.org/features.html
 require("clangd_extensions").setup {
 	server = {
-        settings = {
-            clangd = {
-                Index = { Background = 'Build' },
-            },
-        },
+		settings = {
+			clangd = {
+				Index = { Background = "Build" },
+			},
+		},
 		init_options = {
 			clangdFileStatus = true,
 		},
@@ -219,7 +219,7 @@ require("clangd_extensions").setup {
 -- }
 
 -- lsp.pyright.setup{}
-local pythonPath = require('utils.python').get_python_path()
+local pythonPath = require("utils.python").get_python_path()
 
 lsp.pyright.setup(coq.lsp_ensure_capabilities {
 	flags = { debounce_text_changes = 150 },

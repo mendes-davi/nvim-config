@@ -6,7 +6,7 @@ M.test_runner = "pytest"
 
 local enrich_config = function(config, on_config)
 	if not config.pythonPath and not config.python then
-		config.pythonPath = require('utils.python').get_python_path()
+		config.pythonPath = require("utils.python").get_python_path()
 	end
 	on_config(config)
 end
