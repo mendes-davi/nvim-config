@@ -28,7 +28,6 @@ return require("packer").startup {
 		use {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			requires = { "nvim-treesitter/nvim-treesitter" },
-			config = [[require('config.nvim-treesitter-textobjects')]],
 		}
 
 		-- https://github.com/nvim-treesitter/playground
