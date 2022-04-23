@@ -4,9 +4,9 @@
 local pluginman_opt = true
 local pluginman_repo = "https://github.com/wbthomason/packer.nvim"
 local print_err = vim.api.nvim_err_writeln
+local execute = vim.api.nvim_command
 
 local bootstrap = function()
-	local execute = vim.api.nvim_command
 	local fn = vim.fn
 
 	-- opt:   site/pack/packer/opt/packer.nvim
@@ -30,11 +30,15 @@ bootstrap()
 
 -- Only required if you have packer in your `opt` pack
 if pluginman_opt then
-	vim.cmd [[packadd packer.nvim]]
+	execute "packadd packer.nvim"
 end
 
-vim.cmd [[autocmd BufWritePost general.lua source <afile> | PackerCompile]]
-vim.cmd [[autocmd BufWritePost plugins.lua source <afile> | PackerCompile]]
+vim.api.nvim_create_autocmd("BufWritePost", {
+	pattern = { "general.lua", "plugins.lua" },
+	callback = function(...)
+		execute "source <afile> | PackerCompile"
+	end,
+})
 
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","

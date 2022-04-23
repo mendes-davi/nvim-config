@@ -286,8 +286,8 @@ nnoremap { "<C-i>", "<C-i>zz", silent = true }
 vnoremap { "<", "<gv" }
 vnoremap { ">", ">gv" }
 
--- " reselect last inserted text
-nnoremap { "gV", "`[v`]" }
+-- " reselect last pasted text
+nnoremap { "gp", "`[v`]" }
 
 --   " hide annoying quit message
 nnoremap { "<C-c>", "<C-c>:echo<cr>" }
@@ -311,8 +311,6 @@ cnoremap { "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<CR
 nnoremap { "<leader>s", ":normal! mz[s1z=`z<CR>" }
 nnoremap { "<leader>w", ":wq<cr>" }
 nnoremap { "<leader>wq", ":wq<cr>" }
--- nnoremap { "<leader>ss", ":wq<cr>" }
-noremap { "<leader><leader>r", ":source ~/.config/nvim/init.lua<cr>" }
 
 Augroup {
 	AutoResizeSplits = {

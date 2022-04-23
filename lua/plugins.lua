@@ -138,7 +138,7 @@ return require("packer").startup {
 		-- related works: godlygeek/tabular
 		use {
 			"junegunn/vim-easy-align",
-			config = function() -- Start interactive EasyAlign in visual mode (e.g. vipga)        xmap{ "ga", "<Plug>(EasyAlign)" }
+			config = function()
 				-- Start interactive EasyAlign for a motion/text object (e.g. gaip)
 				nmap { "ga", "<Plug>(EasyAlign)" }
 				-- Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -265,6 +265,7 @@ return require("packer").startup {
 								label = tostring(key),
 								insertText = key,
 								detail = tostring(val),
+								kind = vim.lsp.protocol.CompletionItemKind.Snippet,
 							}
 							table.insert(items, item)
 						end
