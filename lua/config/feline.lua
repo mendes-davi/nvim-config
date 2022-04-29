@@ -1,43 +1,72 @@
+-- vim: foldlevel=1
 local lsp = require "feline.providers.lsp"
 local vi_mode_utils = require "feline.providers.vi_mode"
-local sev = vim.diagnostic.severity
+local severity = vim.diagnostic.severity
 
-custom_providers = {
+local custom_providers = {
 	lsp_progress = function()
 		return #vim.lsp.buf_get_clients() > 0 and require("lsp").lsp_progress() or ""
 	end,
 	lsp_client_offset_encoding = function()
 		local clients = {}
 		for _, client in pairs(vim.lsp.buf_get_clients(0)) do
-			clients[#clients + 1] = client.name .. ": " .. client.offset_encoding
+			clients[#clients + 1] = client.name .. ":" .. client.offset_encoding
 		end
 		return table.concat(clients, ", "), "🌵"
 	end,
+	file_format_icon = function()
+		local icons = {
+			UNIX = "",
+			MAC = "",
+			DOS = "",
+		}
+		local os = vim.bo.fileformat:upper()
+		return icons[os] .. " " .. os
+	end,
 }
 
+local checkwidth = function()
+	local squeeze_width = vim.fn.winwidth(0) / 2
+	if squeeze_width > 50 then
+		return true
+	end
+	return false
+end
+
 local force_inactive = {
-	filetypes = {},
-	buftypes = {},
+	filetypes = {
+		"NvimTree",
+		"dbui",
+		"packer",
+		"startify",
+		"fugitive",
+		"fugitiveblame",
+		"qf",
+		"help",
+		"Trouble",
+		"DiffviewFiles",
+		"dapui_watches",
+		"dapui_stacks",
+		"dapui_breakpoints",
+		"dapui_scopes",
+		"vista_kind",
+	},
+	buftypes = {
+		"terminal",
+		"prompt",
+	},
 	bufnames = {},
 }
 
--- Initialize the components table
-local components = {
-	active = {},
-	inactive = {},
-}
-
--- Insert three sections (left, mid and right) for the active statusline
-table.insert(components.active, {})
-table.insert(components.active, {})
-table.insert(components.active, {})
-
--- Insert two sections (left and right) for the inactive statusline
-table.insert(components.inactive, {})
-table.insert(components.inactive, {})
-
+-- TODO: Feline colors for everforest
 local configuration = vim.fn["sonokai#get_configuration"]()
 local palette = vim.fn["sonokai#get_palette"](configuration.style)
+-- local configuration = vim.fn['everforest#get_configuration']()
+-- local palette = vim.fn['everforest#get_palette'](configuration.background)
+if configuration.transparent_background == 1 then
+	palette.bg1 = palette.none
+end
+
 local colors = {
 	bg = palette.bg2[1],
 	black = palette.black[1],
@@ -91,343 +120,308 @@ local vi_mode_text = {
 	["NONE"] = "<>",
 }
 
-local buffer_not_empty = function()
-	if vim.fn.empty(vim.fn.expand "%:t") ~= 1 then
-		return true
-	end
-	return false
-end
-
-local checkwidth = function()
-	local squeeze_width = vim.fn.winwidth(0) / 2
-	if squeeze_width > 40 then
-		return true
-	end
-	return false
-end
-
-force_inactive.filetypes = {
-	"NvimTree",
-	"dbui",
-	"packer",
-	"startify",
-	"fugitive",
-	"fugitiveblame",
-	"qf",
-	"help",
-	"Trouble",
-	"DiffviewFiles",
-}
-
-force_inactive.buftypes = {
-	"terminal",
-}
-
--- LEFT
--- vi-mode
-components.active[1][1] = {
-	provider = function()
-		return " " .. vi_mode_utils.get_vim_mode() .. " "
-	end,
-	hl = function()
-		local val = {}
-
-		val.bg = vi_mode_utils.get_mode_color()
-		val.fg = "black"
-		val.style = "bold"
-
-		return val
-	end,
-	right_sep = "",
-}
-
--- vi-symbol
-components.active[1][2] = {
-	provider = function()
-		return vi_mode_text[vi_mode_utils.get_vim_mode()] or ""
-	end,
-	hl = function()
-		local val = {}
-		val.fg = vi_mode_utils.get_mode_color()
-		val.bg = "bg"
-		val.style = "bold"
-		return val
-	end,
-	right_sep = " ",
-}
--- filename
-components.active[1][3] = {
-	provider = { name = "file_info", opts = {
-		type = "short-path",
-	} },
-	hl = {
-		fg = "white",
-		bg = "bg",
-		style = "bold",
+local my = {
+	-- LEFT
+	-- vi-mode
+	vi_mode = {
+		provider = function()
+			return " " .. vi_mode_utils.get_vim_mode() .. " "
+		end,
+		hl = function()
+			local val = {}
+			val.bg = vi_mode_utils.get_mode_color()
+			val.fg = "black"
+			val.style = "bold"
+			return val
+		end,
+		right_sep = "",
 	},
-	right_sep = " ",
-}
-
--- gitBranch
-components.active[1][4] = {
-	provider = "git_branch",
-	hl = {
-		fg = "yellow",
-		bg = "bg",
-		style = "bold",
+	-- vi-symbol
+	vi_symbol = {
+		provider = function()
+			return vi_mode_text[vi_mode_utils.get_vim_mode()] or ""
+		end,
+		hl = function()
+			local val = {}
+			val.fg = vi_mode_utils.get_mode_color()
+			val.bg = "bg"
+			val.style = "bold"
+			return val
+		end,
+		right_sep = " ",
 	},
-	right_sep = " ",
-}
--- diffAdd
-components.active[1][5] = {
-	provider = "git_diff_added",
-	hl = {
-		fg = "green",
-		bg = "bg",
-		style = "bold",
-	},
-}
--- diffModfified
-components.active[1][6] = {
-	provider = "git_diff_changed",
-	hl = {
-		fg = "orange",
-		bg = "bg",
-		style = "bold",
-	},
-}
--- diffRemove
-components.active[1][7] = {
-	provider = "git_diff_removed",
-	hl = {
-		fg = "red",
-		bg = "bg",
-		style = "bold",
-	},
-}
-
-components.active[1][8] = {
-	provider = ' %{&spell?&spelllang:""} ',
-	hl = {
-		fg = "green",
-		bg = "bg",
-		style = "bold",
-	},
-}
-
--- MID
--- LspName
-components.active[2][1] = {
-	-- provider = "lsp_client_names",
-	provider = "lsp_client_offset_encoding",
-	enabled = checkwidth,
-	hl = {
-		fg = "yellow",
-		bg = "bg",
-		style = "bold",
-	},
-	right_sep = " ",
-}
-components.active[2][2] = {
-	provider = "lsp_progress",
-	enabled = checkwidth,
-	hl = {
-		fg = "yellow",
-		bg = "bg",
-		style = "bold",
-	},
-	right_sep = " ",
-}
--- diagnosticErrors
-components.active[2][3] = {
-	provider = "diagnostic_errors",
-	enabled = function()
-		return lsp.diagnostics_exist(vim.diagnostic.severity.ERROR)
-	end,
-	hl = {
-		fg = "red",
-		style = "bold",
-	},
-}
--- diagnosticWarn
-components.active[2][4] = {
-	provider = "diagnostic_warnings",
-	enabled = function()
-		return lsp.diagnostics_exist(vim.diagnostic.severity.WARN)
-	end,
-	hl = {
-		fg = "yellow",
-		style = "bold",
-	},
-}
--- diagnosticHint
-components.active[2][5] = {
-	provider = "diagnostic_hints",
-	enabled = function()
-		return lsp.diagnostics_exist(vim.diagnostic.severity.HINT)
-	end,
-	hl = {
-		fg = "cyan",
-		style = "bold",
-	},
-}
--- diagnosticInfo
-components.active[2][6] = {
-	provider = "diagnostic_info",
-	enabled = function()
-		return lsp.diagnostics_exist(vim.diagnostic.severity.INFO)
-	end,
-	hl = {
-		fg = "skyblue",
-		style = "bold",
-	},
-}
-
--- RIGHT
-
--- -- fileIcon
--- components.active[3][1] = {
--- 	provider = function()
--- 		local filename = vim.fn.expand "%:t"
--- 		local extension = vim.fn.expand "%:e"
--- 		local icon = require("nvim-web-devicons").get_icon(filename, extension)
--- 		if icon == nil then
--- 			icon = ""
--- 		end
--- 		return icon
--- 	end,
--- 	hl = function()
--- 		local val = {}
--- 		local filename = vim.fn.expand "%:t"
--- 		local extension = vim.fn.expand "%:e"
--- 		local icon, name = require("nvim-web-devicons").get_icon(filename, extension)
--- 		if icon ~= nil then
--- 			val.fg = vim.fn.synIDattr(vim.fn.hlID(name), "fg")
--- 		else
--- 			val.fg = "white"
--- 		end
--- 		val.bg = "bg"
--- 		val.style = "bold"
--- 		return val
--- 	end,
--- 	right_sep = " ",
--- }
-
--- -- fileType
--- components.active[3][2] = {
--- 	provider = "file_type",
--- 	hl = function()
--- 		local val = {}
--- 		local filename = vim.fn.expand "%:t"
--- 		local extension = vim.fn.expand "%:e"
--- 		local icon, name = require("nvim-web-devicons").get_icon(filename, extension)
--- 		if icon ~= nil then
--- 			val.fg = vim.fn.synIDattr(vim.fn.hlID(name), "fg")
--- 		else
--- 			val.fg = "white"
--- 		end
--- 		val.bg = "bg"
--- 		val.style = "bold"
--- 		return val
--- 	end,
--- 	right_sep = " ",
--- }
-
--- -- fileSize
--- components.active[3][3] = {
--- 	provider = "file_size",
--- 	enabled = function()
--- 		return vim.fn.getfsize(vim.fn.expand "%:t") > 0
--- 	end,
--- 	hl = {
--- 		fg = "skyblue",
--- 		bg = "bg",
--- 		style = "bold",
--- 	},
--- 	right_sep = " ",
--- }
-
--- -- fileFormat
--- components.active[3][4] = {
--- 	provider = function()
--- 		return "" .. vim.bo.fileformat:upper() .. ""
--- 	end,
--- 	hl = {
--- 		fg = "white",
--- 		bg = "bg",
--- 		style = "bold",
--- 	},
--- 	right_sep = " ",
--- }
--- -- fileEncode
--- components.active[3][5] = {
--- 	provider = "file_encoding",
--- 	hl = {
--- 		fg = "white",
--- 		bg = "bg",
--- 		style = "bold",
--- 	},
--- 	right_sep = " ",
--- }
-
--- lineInfo
-components.active[3][1] = {
-	provider = "position",
-	enabled = checkwidth,
-	hl = {
-		fg = "white",
-		bg = "bg",
-		style = "bold",
-	},
-	right_sep = " ",
-}
--- linePercent
-components.active[3][2] = {
-	provider = "line_percentage",
-	enabled = checkwidth,
-	hl = {
-		fg = "white",
-		bg = "bg",
-		style = "bold",
-	},
-	right_sep = " ",
-}
--- scrollBar
-components.active[3][3] = {
-	provider = "scroll_bar",
-	enabled = checkwidth,
-	hl = {
-		fg = "yellow",
-		bg = "bg",
-	},
-}
-
--- INACTIVE
-
--- fileType
-components.inactive[1][1] = {
-	provider = "file_type",
-	hl = {
-		fg = "black",
-		bg = "cyan",
-		style = "bold",
-	},
-	left_sep = {
-		str = " ",
+	-- filename
+	file_info = {
+		provider = {
+			name = "file_info",
+			opts = {
+				type = "short-path",
+				file_readonly_icon = "  ",
+				file_modified_icon = "",
+			},
+		},
+		short_provider = {
+			name = "file_info",
+			opts = {
+				type = "base-only",
+			},
+		},
 		hl = {
-			fg = "NONE",
-			bg = "cyan",
+			fg = "white",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- gitBranch
+	git_branch = {
+		provider = "git_branch",
+		hl = {
+			fg = "yellow",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = "",
+	},
+	-- diffAdd
+	git_diff_added = {
+		provider = "git_diff_added",
+		hl = {
+			fg = "green",
+			bg = "bg",
+			style = "bold",
 		},
 	},
-	right_sep = {
-		{
+	-- diffModfified
+	git_diff_changed = {
+		provider = "git_diff_changed",
+		hl = {
+			fg = "orange",
+			bg = "bg",
+			style = "bold",
+		},
+	},
+	-- diffRemove
+	git_diff_removed = {
+		provider = "git_diff_removed",
+		hl = {
+			fg = "red",
+			bg = "bg",
+			style = "bold",
+		},
+	},
+	-- spellLang
+	spelllang = {
+		provider = ' %{&spell?&spelllang:""} ',
+		hl = {
+			fg = "green",
+			bg = "bg",
+			style = "bold",
+		},
+	},
+
+	-- MID
+	-- LspName
+	lsp_client_with_offset = {
+		-- provider = "lsp_client_names",
+		provider = "lsp_client_offset_encoding",
+		enabled = checkwidth,
+		hl = {
+			fg = "yellow",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	lsp_progress = {
+		provider = "lsp_progress",
+		enabled = checkwidth,
+		hl = {
+			fg = "yellow",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- diagnosticErrors
+	diagnostic_errors = {
+		provider = "diagnostic_errors",
+		enabled = function()
+			return lsp.diagnostics_exist(severity.ERROR)
+		end,
+		hl = {
+			fg = "red",
+			style = "bold",
+		},
+	},
+	-- diagnosticWarn
+	diagnostic_warnings = {
+		provider = "diagnostic_warnings",
+		enabled = function()
+			return lsp.diagnostics_exist(severity.WARN)
+		end,
+		hl = {
+			fg = "yellow",
+			style = "bold",
+		},
+	},
+	-- diagnosticHint
+	diagnostics_hints = {
+		provider = "diagnostic_hints",
+		enabled = function()
+			return lsp.diagnostics_exist(severity.HINT)
+		end,
+		hl = {
+			fg = "cyan",
+			style = "bold",
+		},
+	},
+	-- diagnosticInfo
+	diagnostic_infos = {
+		provider = "diagnostic_info",
+		enabled = function()
+			return lsp.diagnostics_exist(severity.INFO)
+		end,
+		hl = {
+			fg = "skyblue",
+			style = "bold",
+		},
+	},
+
+	-- RIGHT
+	-- fileSize
+	file_size = {
+		provider = "file_size",
+		enabled = function()
+			return vim.fn.getfsize(vim.fn.expand "%:t") > 0
+		end,
+		hl = {
+			fg = "skyblue",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- fileFormat
+	file_format = {
+		provider = "file_format_icon",
+		enabled = function()
+			return vim.bo.fileformat:upper() ~= "UNIX"
+		end,
+		hl = {
+			fg = "skyblue",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- fileEncode
+	file_encoding = {
+		provider = "file_encoding",
+		enabled = function()
+			return vim.bo.fileencoding:upper() ~= "UTF-8"
+		end,
+		hl = {
+			fg = "skyblue",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- lineInfo
+	line_info = {
+		provider = "position",
+		enabled = checkwidth,
+		hl = {
+			fg = "white",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- linePercent
+	line_percentage = {
+		provider = "line_percentage",
+		enabled = checkwidth,
+		hl = {
+			fg = "white",
+			bg = "bg",
+			style = "bold",
+		},
+		right_sep = " ",
+	},
+	-- scrollBar
+	scroll_bar = {
+		provider = "scroll_bar",
+		enabled = checkwidth,
+		hl = {
+			fg = "yellow",
+			bg = "bg",
+		},
+	},
+
+	-- INACTIVE
+	inactive_filetype = {
+		provider = "file_type",
+		hl = {
+			fg = "black",
+			bg = "cyan",
+			style = "bold",
+		},
+		left_sep = {
 			str = " ",
 			hl = {
 				fg = "NONE",
 				bg = "cyan",
 			},
 		},
-		" ",
+		right_sep = {
+			{
+				str = " ",
+				hl = {
+					fg = "NONE",
+					bg = "cyan",
+				},
+			},
+			" ",
+		},
+	},
+}
+
+-- Initialize the components table
+local components = {
+	active = {
+		{
+			my.vi_mode,
+			my.vi_symbol,
+			my.file_info,
+			my.git_branch,
+			my.git_diff_added,
+			my.git_diff_changed,
+			my.git_diff_removed,
+			my.spelllang,
+		},
+		{
+			my.lsp_client_with_offset,
+			my.lsp_progress,
+			my.diagnostic_errors,
+			my.diagnostic_warnings,
+			my.diagnostics_hints,
+			my.diagnostic_infos,
+		},
+		{
+			-- my.file_size,
+			my.file_format,
+			my.file_encoding,
+			my.line_info,
+			my.line_percentage,
+			my.scroll_bar,
+		},
+	},
+	inactive = {
+		{
+			my.inactive_filetype,
+		},
 	},
 }
 
@@ -440,3 +434,27 @@ require("feline").setup {
 	custom_providers = custom_providers,
 	force_inactive = force_inactive,
 }
+
+-- https://github.com/etrnal70/ditsdots/blob/master/.config/nvim/lua/config/autocmds.lua
+-- Disable Feline on CmdlineEnter
+local prev_laststatus = vim.o.laststatus
+vim.api.nvim_create_autocmd("CmdlineEnter", {
+	pattern = "*",
+	callback = function()
+		prev_laststatus = vim.o.laststatus
+		vim.o.laststatus = 0
+		vim.opt.statusline = " "
+		if prev_laststatus == 2 then
+			vim.cmd "hi StatusLineNC guibg=NONE"
+		end
+		vim.cmd "redraws"
+	end,
+})
+-- Enable Feline on CmdlineLeave
+vim.api.nvim_create_autocmd("CmdlineLeave", {
+	pattern = "*",
+	callback = function()
+		vim.o.laststatus = prev_laststatus
+		vim.opt.statusline = "%{%v:lua.require'feline'.statusline()%}"
+	end,
+})
