@@ -65,6 +65,7 @@ vim.g.bufferline = {
 		"fugitive",
 		"fugitiveblame",
 		"vista_kind",
+        "dap-repl",
 	},
 	exclude_name = { "package.json" },
 

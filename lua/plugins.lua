@@ -113,6 +113,7 @@ return require("packer").startup {
 			config = function()
 				Variable.g {
 					vista_default_executive = "nvim_lsp",
+                    vista_disable_statusline = 1,
 				}
 			end,
 		}

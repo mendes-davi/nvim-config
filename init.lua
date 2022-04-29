@@ -35,9 +35,7 @@ end
 
 vim.api.nvim_create_autocmd("BufWritePost", {
 	pattern = { "general.lua", "plugins.lua" },
-	callback = function(...)
-		execute "source <afile> | PackerCompile"
-	end,
+	command = "source <afile> | PackerCompile",
 })
 
 vim.g.mapleader = " "
