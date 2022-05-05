@@ -113,7 +113,7 @@ return require("packer").startup {
 			config = function()
 				Variable.g {
 					vista_default_executive = "nvim_lsp",
-                    vista_disable_statusline = 1,
+					vista_disable_statusline = 1,
 				}
 			end,
 		}
@@ -211,11 +211,6 @@ return require("packer").startup {
 		use "chrisbra/NrrwRgn"
 
 		use {
-			"windwp/nvim-autopairs",
-			config = [[require('config.nvim-autopairs')]],
-		}
-
-		use {
 			"SirVer/ultisnips",
 			config = [[require('config.ultisnips')]],
 		}
@@ -224,11 +219,12 @@ return require("packer").startup {
 		use {
 			"ms-jpq/coq_nvim",
 			branch = "coq",
+			requires = { "windwp/nvim-autopairs" },
 			setup = function()
 				Variable.g {
 					coq_settings = {
 						display = { icons = { mappings = require("lsp").icons } },
-						keymap = { recommended = false, manual_complete = "<A-Space>" },
+						keymap = { recommended = false, jump_to_mark = "<C-j>", manual_complete = "<A-Space>" },
 						auto_start = "shut-up",
 						clients = {
 							tabnine = {
@@ -238,41 +234,12 @@ return require("packer").startup {
 					},
 				}
 			end,
+			config = [[require('config.coq')]],
 		}
 		use {
 			"ms-jpq/coq.thirdparty",
 			branch = "3p",
-			config = function()
-				require "coq_3p" {
-					{ src = "vimtex", short_name = "vTEX" },
-					{ src = "nvimlua", short_name = "nLUA", conf_only = true },
-					{ src = "dap" },
-				}
-				COQsources = COQsources or {}
-				local utils = require "coq_3p.utils"
-				COQsources[utils.new_uid(COQsources)] = {
-					name = "UltiSnips",
-					fn = function(args, callback)
-						local items = {}
-
-						-- label      :: display label
-						-- insertText :: string | null, default to `label` if null
-						-- kind       :: int ∈ `vim.lsp.protocol.CompletionItemKind`
-						-- detail     :: doc popup
-
-						for key, val in pairs(vim.fn["UltiSnips#SnippetsInCurrentScope"]()) do
-							local item = {
-								label = tostring(key),
-								insertText = key,
-								detail = tostring(val),
-								kind = vim.lsp.protocol.CompletionItemKind.Snippet,
-							}
-							table.insert(items, item)
-						end
-						callback { isIncomplete = true, items = items }
-					end,
-				}
-			end,
+			config = [[require('config.coq_3p')]],
 		}
 
 		use {

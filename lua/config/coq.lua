@@ -1,18 +1,20 @@
 local remap = vim.api.nvim_set_keymap
 local npairs = require "nvim-autopairs"
 
-npairs.setup { map_bs = false }
-require("nvim-autopairs").setup {}
+local feedkeys = function(key, mode)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
 
--- these mappings are coq recommended mappings unrelated to nvim-autopairs
+npairs.setup {
+	map_cr = false,
+	map_bs = false,
+	map_c_h = true,
+}
+
 remap("i", "<esc>", [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
 remap("i", "<c-c>", [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
-remap("i", "<tab>", [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
-remap("i", "<s-tab>", [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
 
--- skip it, if you use another global object
 _G.MUtils = {}
-
 MUtils.CR = function()
 	if vim.fn.pumvisible() ~= 0 then
 		if vim.fn.complete_info({ "selected" }).selected ~= -1 then
@@ -35,3 +37,27 @@ MUtils.BS = function()
 	end
 end
 remap("i", "<bs>", "v:lua.MUtils.BS()", { expr = true, noremap = true })
+
+MUtils.TAB = function()
+	if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
+		feedkeys("<Plug>(ultisnips_expand)", "m")
+	elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+		feedkeys("<Plug>(ultisnips_jump_forward)", "m")
+	elseif vim.fn.pumvisible() ~= 0 then
+		feedkeys("<c-n>", "n")
+	else
+		feedkeys("<tab>", "n")
+	end
+end
+inoremap { "<tab>", MUtils.TAB }
+
+MUtils.S_TAB = function()
+	if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+		feedkeys("<Plug>(ultisnips_jump_backward)", "m")
+	elseif vim.fn.pumvisible() ~= 0 then
+		feedkeys("<c-p>", "n")
+	else
+		feedkeys("<bs>", "n")
+	end
+end
+inoremap { "<s-tab>", MUtils.S_TAB }
