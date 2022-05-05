@@ -1,13 +1,3 @@
-vim.api.nvim_exec(
-	[[
-augroup FormatAutogroup
-  autocmd!
-  " autocmd BufWritePost *.lua FormatWrite
-augroup END
-]],
-	true
-)
-
 nnoremap { "<M-f>", "<cmd>Format<CR>" }
 
 require("formatter").setup {
