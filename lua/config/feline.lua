@@ -12,7 +12,7 @@ local custom_providers = {
 		for _, client in pairs(vim.lsp.buf_get_clients(0)) do
 			clients[#clients + 1] = client.name .. ":" .. client.offset_encoding
 		end
-		return table.concat(clients, ", "), "🌵"
+		return table.concat(clients, ", "), "🗲 "
 	end,
 	file_format_icon = function()
 		local icons = {
@@ -60,7 +60,7 @@ local force_inactive = {
 
 -- TODO: Feline colors for everforest
 local configuration = vim.fn["sonokai#get_configuration"]()
-local palette = vim.fn["sonokai#get_palette"](configuration.style)
+local palette = vim.fn["sonokai#get_palette"](configuration.style, configuration.colors_override)
 -- local configuration = vim.fn['everforest#get_configuration']()
 -- local palette = vim.fn['everforest#get_palette'](configuration.background)
 if configuration.transparent_background == 1 then
