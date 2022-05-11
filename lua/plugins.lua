@@ -37,7 +37,7 @@ return require("packer").startup {
 			config = function()
 				nnoremap {
 					"<Leader>hl",
-					[[:call luaeval("require'nvim-treesitter-playground.hl-info'.show_hl_captures()")<CR>]],
+					[[<cmd> call luaeval("require'nvim-treesitter-playground.hl-info'.show_hl_captures()")<CR>]],
 				}
 			end,
 		}
@@ -101,10 +101,10 @@ return require("packer").startup {
 			config = [[require('config.nvim-tree')]],
 			requires = { "kyazdani42/nvim-web-devicons" },
 		}
-		map { "<F4>", "<cmd>NvimTreeToggle<CR>" }
-		nnoremap { "<leader>f", "<cmd>NvimTreeToggle<CR>" }
-		nnoremap { "<leader>r", "<cmd>NvimTreeRefresh<CR>" }
-		nnoremap { "<leader>ff", "<cmd>NvimTreeFindFile<CR>" }
+		map { "<F4>", "<cmd> NvimTreeToggle<CR>" }
+		nnoremap { "<leader>f", "<cmd> NvimTreeToggle<CR>" }
+		nnoremap { "<leader>r", "<cmd> NvimTreeRefresh<CR>" }
+		nnoremap { "<leader>ff", "<cmd> NvimTreeFindFile<CR>" }
 
 		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
 		use {
@@ -117,7 +117,7 @@ return require("packer").startup {
 				}
 			end,
 		}
-		nnoremap { "<F3>", ":Vista!!<CR>" }
+		nnoremap { "<F3>", "<cmd> Vista!!<CR>" }
 
 		-- support split window resizing and moving
 		-- resize windows continuously by using typical keymaps of Vim. (h, j, k, l)
@@ -154,6 +154,8 @@ return require("packer").startup {
 			cmd = { "MundoHide", "MundoShow", "MundoToggle" },
 			config = [[require('config.vim-mundo')]],
 		}
+		nnoremap { "<F9>", "<cmd> MundoToggle<CR>" }
+		nnoremap { "<leader>h", "<cmd> MundoToggle<cr>" }
 
 		-- Lang extra
 		use {
@@ -331,7 +333,7 @@ return require("packer").startup {
 		}
 
 		use {
-			"famiu/feline.nvim",
+			"feline-nvim/feline.nvim",
 			config = [[require('config.feline')]],
 		}
 
@@ -365,9 +367,9 @@ return require("packer").startup {
 					end,
 				}
 			end,
-			nmap { "<M-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
-			vmap { "<M-/>", "<Esc><cmd>lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" },
-			imap { "<M-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
+			nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
+			vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" },
+			imap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
 		}
 
 		-- Press + to expand the visual selection and _ to shrink it.
@@ -383,7 +385,7 @@ return require("packer").startup {
 		use {
 			"mfussenegger/nvim-lint",
 			config = [[require('config.nvim-lint')]],
-			nnoremap { "gl", "<CMD> lua require('lint').try_lint()<CR>", { silent = true } },
+			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>" },
 		}
 
 		-- " signify show git diff sigs
@@ -423,7 +425,7 @@ return require("packer").startup {
 				require("zen-mode").setup {
 					plugins = { tmux = { enabled = true } },
 				}
-				nnoremap { "<A-d>", ":ZenMode<CR>" }
+				nnoremap { "<A-d>", "<cmd> ZenMode<CR>" }
 			end,
 		}
 
@@ -435,11 +437,11 @@ return require("packer").startup {
 					disable_on_zoom = false,
 				}
 			end,
-			nnoremap { "<A-h>", "<CMD> lua require('Navigator').left()<CR>", { silent = true } },
-			nnoremap { "<A-k>", "<CMD> lua require('Navigator').up()<CR>", { silent = true } },
-			nnoremap { "<A-l>", "<CMD> lua require('Navigator').right()<CR>", { silent = true } },
-			nnoremap { "<A-j>", "<CMD> lua require('Navigator').down()<CR>", { silent = true } },
-			-- nnoremap { "<A-p>", "<CMD> lua require('Navigator').previous()<CR>", { silent = true } },
+			nnoremap { "<A-h>", "<cmd> lua require('Navigator').left()<CR>" },
+			nnoremap { "<A-k>", "<cmd> lua require('Navigator').up()<CR>" },
+			nnoremap { "<A-l>", "<cmd> lua require('Navigator').right()<CR>" },
+			nnoremap { "<A-j>", "<cmd> lua require('Navigator').down()<CR>" },
+			-- nnoremap { "<A-p>", "<cmd> lua require('Navigator').previous()<CR>", },
 		}
 
 		use "tversteeg/registers.nvim"
@@ -474,8 +476,8 @@ return require("packer").startup {
 					-- gw cd
 					-- yw pwd
 				}
-				nnoremap { "<A-o>", ":RnvimrToggle<CR>" }
-				tnoremap { "<A-o>", [[<C-\><C-n>:RnvimrToggle<CR>]] }
+				nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
+				tnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
 			end,
 		}
 

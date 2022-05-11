@@ -1,6 +1,3 @@
-nnoremap { "<F9>", ":MundoToggle<CR>" }
-nnoremap { "<leader>h", ":MundoToggle<cr>" }
-
 Variable.g {
 	-- Default: 1 (auto preview diff)
 	mundo_auto_preview = 1,

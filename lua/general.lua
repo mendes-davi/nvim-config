@@ -70,7 +70,9 @@ Option.g {
 
 	-- base configuration
 	title = true,
-	titlestring = [[%t %m (%{expand('%:~:.:h\')}) - NVIM]],
+	-- titlestring is: filename [+=-] (relative-short-path) - NVIM
+	titlestring = [[%t %m (%{pathshorten(fnamemodify(expand('%'), ':~:.'))}) - NVIM]],
+	titlelen = 50, -- default is 85
 	timeoutlen = 500, --mapping timeout
 	ttimeoutlen = 100, --keycode timeout
 
@@ -170,7 +172,7 @@ Option.b {}
 -------------------------------------------------------------------
 -- keybinds
 -------------------------------------------------------------------
-nnoremap { "<leader><leader>x", "<cmd>source %<CR>" }
+nnoremap { "<leader><leader>x", "<cmd> source %<CR>" }
 
 nnoremap { "c", '"_c' }
 nnoremap { "<S-Tab>", "za" }
@@ -186,7 +188,7 @@ inoremap { "jk", "<Esc>" }
 
 nnoremap { "<leader>vs", "<C-w>v<C-w>l" }
 nnoremap { "<leader>hs", "<C-w>s" }
-nnoremap { "<leader>vsa", ":vert sba<cr>" }
+nnoremap { "<leader>vsa", "<cmd> vert sba<cr>" }
 
 -- " quick list/nolist toggle
 -- :set list! list?<cr>
@@ -219,16 +221,16 @@ vmap { "<leader>s", ":sort<cr>" }
 
 --   " remap arrow keys
 --   " tab shortcuts
-map { "<leader>tn", ":tabnew<CR>" }
-map { "<leader>tc", ":tabclose<CR>" }
+map { "<leader>tn", "<cmd> tabnew<CR>" }
+map { "<leader>tc", "<cmd> tabclose<CR>" }
 
 --   " quick switch buf
-nnoremap { "<up>", ":bprev<CR>" }
-nnoremap { "<down>", ":bnext<CR>" }
+nnoremap { "<up>", "<cmd> bprev<CR>" }
+nnoremap { "<down>", "<cmd> bnext<CR>" }
 
 --   " quick switch tab window
-nnoremap { "<right>", ":tabnext<CR>" }
-nnoremap { "<left>", ":tabprev<CR>" }
+nnoremap { "<right>", "<cmd> tabnext<CR>" }
+nnoremap { "<left>", "<cmd> tabprev<CR>" }
 noremap { "<leader>1", "1gt", silent = true }
 noremap { "<leader>2", "2gt", silent = true }
 noremap { "<leader>3", "3gt", silent = true }
@@ -240,11 +242,7 @@ noremap { "<leader>8", "8gt", silent = true }
 noremap { "<leader>9", "9gt", silent = true }
 noremap { "<leader>0", ":tabo<CR>", silent = true }
 
---   " smash escape
---   inoremap jk <esc>
---   inoremap kj <esc>
-
---   " chage cursor position in insert mode
+--   " change cursor position in insert mode
 inoremap { "<C-h>", "<left>" }
 inoremap { "<C-l>", "<right>" }
 
@@ -263,10 +261,10 @@ nnoremap { "q/", "q/i" }
 nnoremap { "q?", "q?i" }
 
 --   " folds
-nnoremap { "zr", "zr:echo &foldlevel<cr>" }
-nnoremap { "zm", "zm:echo &foldlevel<cr>" }
-nnoremap { "zR", "zR:echo &foldlevel<cr>" }
-nnoremap { "zM", "zM:echo &foldlevel<cr>" }
+nnoremap { "zr", "zr<cmd> echo &foldlevel<cr>" }
+nnoremap { "zm", "zm<cmd> echo &foldlevel<cr>" }
+nnoremap { "zR", "zR<cmd> echo &foldlevel<cr>" }
+nnoremap { "zM", "zM<cmd> echo &foldlevel<cr>" }
 
 --   " screen line scroll
 nnoremap { "j", "gj" }
@@ -290,27 +288,25 @@ vnoremap { ">", ">gv" }
 nnoremap { "gp", "`[v`]" }
 
 --   " hide annoying quit message
-nnoremap { "<C-c>", "<C-c>:echo<cr>" }
+nnoremap { "<C-c>", "<C-c><cmd> echo<cr>" }
 
 --   " general
 --   " nnoremap <BS> :set hlsearch! hlsearch?<cr>
 --   " better nohl via https://vi.stackexchange.com/a/252
-nnoremap { "<BS>", ':let @/=""<cr>' }
+nnoremap { "<BS>", '<cmd> let @/=""<cr>' }
 --   " Press Space to turn off highlighting and clear any message already displayed.
 --   " nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
 
 --   " leave without save
-map { "<A-s>", ":write<CR>" }
-imap { "<A-s>", "<ESC>l:write<CR>" }
+map { "<A-s>", "<cmd> write<CR>", nowait = true }
+imap { "<A-s>", "<cmd> write<CR>", nowait = true }
 
--- map { "<leader>x", ":qa!<CR>" }
-map { "<leader>q", ":q<CR>" }
+--   " save as sudo
 cnoremap { "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<CR>" }
+
 -- " Automatically fix the last misspelled word and jump back to where you were.
 -- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
-nnoremap { "<leader>s", ":normal! mz[s1z=`z<CR>" }
-nnoremap { "<leader>w", ":wq<cr>" }
-nnoremap { "<leader>wq", ":wq<cr>" }
+nnoremap { "<leader>s", "<cmd> normal! mz[s1z=`z<CR>" }
 
 Augroup {
 	AutoResizeSplits = {
@@ -464,22 +460,9 @@ Augroup {
 				end,
 			},
 			{
-				"*.hcl",
+				"*.m",
 				function()
-					vim.api.nvim_command "setlocal filetype=hcl"
-				end,
-			},
-			{
-				"*.nomad",
-				function()
-					vim.api.nvim_command "setlocal filetype=hcl"
-					vim.api.nvim_command "setlocal filetype=nomad"
-				end,
-			},
-			{
-				".tf",
-				function()
-					vim.api.nvim_command "setlocal filetype=terraform"
+					vim.api.nvim_command "setlocal filetype=matlab"
 				end,
 			},
 		},
