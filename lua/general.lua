@@ -40,7 +40,7 @@ Option.g {
 	-- enable persistent undo so that undo history persists across vim sessions
 	undofile = true,
 	cmdheight = 1,
-	laststatus = 2,
+	laststatus = 3,
 	--  -- INSERT -- is unnecessary anymore because the mode information is displayed in the statusline
 	showmode = false,
 	-- Set completeopt to have a better completion experience
@@ -70,8 +70,8 @@ Option.g {
 
 	-- base configuration
 	title = true,
-	-- titlestring is: filename [+=-] (relative-short-path) - NVIM
-	titlestring = [[%t %m (%{pathshorten(fnamemodify(expand('%'), ':~:.'))}) - NVIM]],
+	-- titlestring is: relative-short-path [+=-] - NVIM
+	titlestring = [[%{pathshorten(fnamemodify(expand('%'), ':~:.'))} %m - NVIM]],
 	titlelen = 50, -- default is 85
 	timeoutlen = 500, --mapping timeout
 	ttimeoutlen = 100, --keycode timeout
@@ -172,7 +172,7 @@ Option.b {}
 -------------------------------------------------------------------
 -- keybinds
 -------------------------------------------------------------------
-nnoremap { "<leader><leader>x", "<cmd> source %<CR>" }
+nnoremap { "<leader><leader>x", ":source %<CR>" }
 
 nnoremap { "c", '"_c' }
 nnoremap { "<S-Tab>", "za" }

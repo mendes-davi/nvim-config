@@ -38,6 +38,18 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 	command = "source <afile> | PackerCompile",
 })
 
+-- https://github.com/neovim/neovim/issues/11330
+if os.getenv("TERM"):match "alacritty" ~= nil then
+	vim.api.nvim_create_autocmd({ "VimEnter" }, {
+		callback = function()
+			local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
+			vim.defer_fn(function()
+				vim.loop.kill(pid, WINCH)
+			end, 10)
+		end,
+	})
+end
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
