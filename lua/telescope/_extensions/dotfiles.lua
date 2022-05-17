@@ -9,7 +9,7 @@ local dotfiles_list = function(opts)
 	local dir = opts.path or ""
 	local list = {}
 
-	local p = io.popen( "git --git-dir=$HOME/.dots ls-files")
+	local p = io.popen "git --git-dir=$HOME/.dots ls-files"
 	for file in p:lines() do
 		table.insert(list, home .. file)
 	end
