@@ -217,6 +217,9 @@ return require("packer").startup {
 			config = [[require('config.luasnip')]],
 		}
 
+        -- LuaSnip source for coq_nvim
+		use { "~/repo/coq_luasnip" }
+
 		-- complete plugin
 		use {
 			"ms-jpq/coq_nvim",
