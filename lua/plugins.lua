@@ -213,8 +213,8 @@ return require("packer").startup {
 		use "chrisbra/NrrwRgn"
 
 		use {
-			"SirVer/ultisnips",
-			config = [[require('config.ultisnips')]],
+			"L3MON4D3/LuaSnip",
+			config = [[require('config.luasnip')]],
 		}
 
 		-- complete plugin
@@ -226,12 +226,16 @@ return require("packer").startup {
 				Variable.g {
 					coq_settings = {
 						display = { icons = { mappings = require("lsp").icons } },
-						keymap = { recommended = false, jump_to_mark = "<C-j>", manual_complete = "<A-Space>" },
+						keymap = {
+							recommended = false,
+							jump_to_mark = "",
+							bigger_preview = "",
+							manual_complete = "<A-Space>",
+						},
 						auto_start = "shut-up",
 						clients = {
-							tabnine = {
-								enabled = false,
-							},
+							tabnine = { enabled = false },
+							snippets = { enabled = false },
 						},
 					},
 				}

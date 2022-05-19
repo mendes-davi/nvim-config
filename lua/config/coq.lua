@@ -39,11 +39,7 @@ end
 remap("i", "<bs>", "v:lua.MUtils.BS()", { expr = true, noremap = true })
 
 MUtils.TAB = function()
-	if vim.fn.complete_info()["selected"] == -1 and vim.fn["UltiSnips#CanExpandSnippet"]() == 1 then
-		feedkeys("<Plug>(ultisnips_expand)", "m")
-	elseif vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-		feedkeys("<Plug>(ultisnips_jump_forward)", "m")
-	elseif vim.fn.pumvisible() ~= 0 then
+	if vim.fn.pumvisible() ~= 0 then
 		feedkeys("<c-n>", "n")
 	else
 		feedkeys("<tab>", "n")
@@ -52,9 +48,7 @@ end
 inoremap { "<tab>", MUtils.TAB }
 
 MUtils.S_TAB = function()
-	if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-		feedkeys("<Plug>(ultisnips_jump_backward)", "m")
-	elseif vim.fn.pumvisible() ~= 0 then
+	if vim.fn.pumvisible() ~= 0 then
 		feedkeys("<c-p>", "n")
 	else
 		feedkeys("<bs>", "n")
