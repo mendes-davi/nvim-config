@@ -167,12 +167,6 @@ return require("packer").startup {
 		-- https://github.com/ray-x/lsp_signature.nvim
 		use "ray-x/lsp_signature.nvim"
 
-		-- https://github.com/glepnir/lspsaga.nvim
-		use {
-			"tami5/lspsaga.nvim",
-			config = [[require('config.lspsaga')]],
-		}
-
 		-- A pretty diagnostics list to help you solve all the trouble your code is causing.
 		-- https://github.com/folke/lsp-trouble.nvim
 		use {
