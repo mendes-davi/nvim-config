@@ -1,6 +1,10 @@
 local ls = require "luasnip"
 local types = require "luasnip.util.types"
 
+local feedkeys = function(key, mode)
+	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
+end
+
 ls.config.set_config {
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
@@ -8,7 +12,12 @@ ls.config.set_config {
 	ext_opts = {
 		[types.choiceNode] = {
 			active = {
-				virt_text = { { " <- Current Choice", "NonTest" } },
+				virt_text = { { "﬋", "Orange" } },
+			},
+		},
+		[types.insertNode] = {
+			active = {
+				virt_text = { { "﫦", "Blue" } },
 			},
 		},
 	},
@@ -37,6 +46,8 @@ end, { silent = true })
 vim.keymap.set({ "i", "s" }, "<c-l>", function()
 	if ls.choice_active() then
 		ls.change_choice(1)
+	else
+		feedkeys("<right>", "n")
 	end
 end, { silent = true })
 
