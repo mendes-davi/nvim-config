@@ -1,5 +1,4 @@
 local lsp = require "lspconfig"
-local configs = require "lspconfig/configs"
 local util = require "lspconfig.util"
 local coq = require "coq"
 
@@ -50,54 +49,92 @@ nnoremap { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", silent = true }
 
 --@param client: (required, vim.lsp.client)
 local mix_attach = function(client, bufnr)
+	local supports = client.supports_method
+	local lsp = vim.lsp.buf
+
+	nnoremap { "<Leader>wa", lsp.add_workspace_folder, silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wr", lsp.remove_workspace_folder, silent = true, buffer = bufnr }
+	nnoremap {
+		"<Leader>wl",
+		function()
+			return vim.pretty_print(vim.lsp.buf.list_workspace_folders())
+		end,
+		silent = true,
+		buffer = bufnr,
+	}
+
 	-- omnifunc
-	if client.resolved_capabilities.completion == true then
+	if supports "textDocument/completion" then
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
 	end
 
 	-- formatting
-	if client.resolved_capabilities.document_formatting == true then
+	if supports "textDocument/formatting" then
 		vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.formatting()<CR>", silent = true }
-		vnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", silent = true }
+		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", silent = true, buffer = bufnr }
+	end
+	if supports "textDocument/rangeFormatting" then
+		vnoremap { "<leader>gq", lsp.range_formatting, silent = true, buffer = bufnr }
 	end
 
-	-- keymap from https://neovim.io/doc/user/lsp.html
-	-- https://github.com/neovim/nvim-lspconfig#keybindings-and-completion
-	nnoremap { "gD", "<Cmd>lua vim.lsp.buf.declaration()<CR>", silent = true, buffer = bufnr }
+	if supports "textDocument/declaration" then
+		nnoremap { "gD", lsp.declaration, silent = true, buffer = bufnr }
+	end
 
-	nnoremap { "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "K", "<Cmd>lua vim.lsp.buf.hover()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<C-k>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "gr", "<cmd>lua vim.lsp.buf.references()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<Leader>wa", "<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<Leader>wr", "<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<Leader>wl", "<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<Leader>D", "<cmd>lua vim.lsp.buf.type_definition()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<Leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "<F2>", "<cmd>lua vim.lsp.buf.rename()<CR>", silent = true, buffer = bufnr }
+	if supports "textDocument/definition" then
+		nnoremap { "gd", lsp.definition, silent = true, buffer = bufnr }
+	end
 
-	nnoremap { "g0", "<cmd>lua vim.lsp.buf.document_symbol()<CR>", silent = true, buffer = bufnr }
-	nnoremap { "gW", "<cmd>lua vim.lsp.buf.workspace_symbol()<CR>", silent = true, buffer = bufnr }
+	if supports "textDocument/hover" then
+		nnoremap { "K", lsp.hover, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/signatureHelp" then
+		nnoremap { "<C-k>", lsp.signature_help, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/implementation" then
+		nnoremap { "gi", lsp.implementation, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/references" then
+		nnoremap { "gr", lsp.references, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/typeDefinition" then
+		nnoremap { "<Leader>D", lsp.type_definition, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/rename" then
+		nnoremap { "<Leader>rn", lsp.rename, silent = true, buffer = bufnr }
+		nnoremap { "<F2>", lsp.rename, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/documentSymbol" then
+		nnoremap { "g0", lsp.document_symbol, silent = true, buffer = bufnr }
+	end
+
+	if supports "textDocument/symbol" then
+		nnoremap { "gW", lsp.workspace_symbol, silent = true, buffer = bufnr }
+	end
 
 	-- ga has been mapped to vim-easy-align
 	-- commentary took gc and gcc, so ...
 	-- lsp builtin code_action
-	nnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", silent = true, buffer = bufnr }
-	vnoremap { "<leader>ca", "<cmd>'<,'>lua vim.lsp.buf.range_code_action()<CR>", silent = true, buffer = bufnr }
+	if supports "textDocument/codeAction" then
+		nnoremap { "<leader>ca", lsp.code_action, silent = true, buffer = bufnr }
+		vnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", silent = true, buffer = bufnr }
+	end
 
-	-- lspsaga code action
-	-- nnoremap { "ca", "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", silent = true, buffer = bufnr }
-	-- vnoremap { "ca", "<cmd>'<,'>lua require('lspsaga.codeaction').range_code_action()<CR>", silent = true, buffer = bufnr }
-	-- preview definition
-	nnoremap { "<leader>K", "<cmd>lua require'lspsaga.provider'.preview_definition()<CR>", silent = true, buffer = bufnr }
+	if supports "textDocument/prepareCallHierarchy" then
+		nnoremap { "ghi", lsp.incoming_calls, silent = true, buffer = bufnr }
+		nnoremap { "gho", lsp.outgoing_calls, silent = true, buffer = bufnr }
+	end
 
-	-- lspsaga
-	-- lsp provider to find the cursor word definition and reference
-	nnoremap { "gh", "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", silent = true, buffer = bufnr }
+	-- if supports "textDocument/codeLens" then
+	-- 	nnoremap { "ghl", "<cmd>lua vim.lsp.codelens.run()<CR>", silent = true, buffer = bufnr }
+	-- end
 
-	-- require("lsp").set_lsp_omnifunc()
 	local has_illuminate, illuminate = pcall(require, "illuminate")
 	if has_illuminate then
 		illuminate.on_attach(client)
@@ -301,15 +338,13 @@ lsp.jsonls.setup(coq.lsp_ensure_capabilities {
 	capabilities = capabilities,
 })
 
--- Use LSP omni-completion
-
 Augroup {
 	LspBufWritePre = {
 		["BufWritePre"] = {
 			-- { "*.lua", require("lsp").formatting_sync },
 			{ "*.tex", require("lsp").formatting_sync },
 			-- { "*.c", require("lsp").formatting_sync },
-			{ "*.py", require("lsp").formatting_sync },
+			-- { "*.py", require("lsp").formatting_sync },
 		},
 	},
 }
