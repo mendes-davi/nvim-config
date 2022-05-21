@@ -346,22 +346,24 @@ Augroup {
 		},
 	},
 
+	SetupList = {
+		-- Toggle list on Visual Mode
+		{
+			"ModeChanged",
+			"*:[vV]",
+			function(args)
+				if vim.opt_local.list._value == false then
+					vim.opt_local.list = true
+					vim.api.nvim_create_autocmd("ModeChanged", {
+						pattern = "[vV]:*",
+						command = "setlocal nolist",
+						once = true,
+					})
+				end
+			end,
+		},
+	},
 	SetupCursor = {
-		-- disable cursorline when insert/visual mode
-		{
-			"InsertLeave,WinEnter",
-			"*",
-			function()
-				vim.go.cursorline = true
-			end,
-		},
-		{
-			"InsertEnter,WinLeave",
-			"*",
-			function()
-				vim.go.cursorline = false
-			end,
-		},
 		-- restore-cursor
 		{
 			"BufReadPost",
@@ -387,21 +389,21 @@ Augroup {
 				"tex",
 				function()
 					vim.bo.formatoptions = "jqt"
-					vim.wo.spell = true
+					vim.opt_local.spell = true
 					vim.bo.spelllang = "en_us,pt_br"
 				end,
 			},
 			{
 				"python",
 				function()
-					vim.wo.foldmethod = "indent"
+					vim.opt_local.foldmethod = "indent"
 				end,
 			},
 			{
 				"markdown",
 				function()
-					vim.wo.list = false
-					vim.wo.spell = true
+					vim.opt_local.list = false
+					vim.opt_local.spell = true
 					vim.bo.spelllang = "en_us,pt_br"
 				end,
 			},
@@ -443,9 +445,6 @@ Augroup {
 					vim.bo.softtabstop = 0
 					vim.bo.tabstop = 4
 					vim.bo.shiftwidth = 4
-					-- iunmap <Tab>
-					-- https://github.com/nanotee/nvim-lua-guide#defining-mappings
-					vim.api.nvim_del_keymap("i", "<Tab>")
 				end,
 			},
 		},
