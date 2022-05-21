@@ -190,6 +190,11 @@ nnoremap { "<leader>vs", "<C-w>v<C-w>l" }
 nnoremap { "<leader>hs", "<C-w>s" }
 nnoremap { "<leader>vsa", "<cmd> vert sba<cr>" }
 
+noremap { "<leader>nh", ":set nosplitright<CR>:vnew<CR>" }
+noremap { "<leader>nl", ":set splitright<CR>:vnew<CR>" }
+noremap { "<leader>nj", ":set splitbelow<CR>:new<CR>" }
+noremap { "<leader>nk", ":set nosplitbelow<CR>:new<CR>" }
+
 -- " quick list/nolist toggle
 -- :set list! list?<cr>
 nnoremap {

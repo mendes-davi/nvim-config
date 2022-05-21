@@ -34,16 +34,15 @@ return require("packer").startup {
 		use {
 			"nvim-treesitter/playground",
 			requires = { "nvim-treesitter/nvim-treesitter" },
-			config = function()
-				nnoremap {
-					"<Leader>hl",
-					[[<cmd> call luaeval("require'nvim-treesitter-playground.hl-info'.show_hl_captures()")<CR>]],
-				}
+			cmd = { "TSPlaygroundToggle", "TSNodeUnderCursor", "TSCaptureUnderCursor" },
+			setup = function()
+				nnoremap { "<Leader>hl", "<cmd>TSCaptureUnderCursor<CR>" }
 			end,
 		}
 
 		use {
 			"JoosepAlviste/nvim-ts-context-commentstring",
+			event = "BufReadPost",
 			requires = { "nvim-treesitter/nvim-treesitter" },
 		}
 
@@ -88,6 +87,7 @@ return require("packer").startup {
 		-- Use specific branch, dependency and run lua file after load
 		use {
 			"kyazdani42/nvim-tree.lua",
+			requires = { "kyazdani42/nvim-web-devicons" },
 			cmd = {
 				"NvimTreeToggle",
 				"NvimTreeOpen",
@@ -98,13 +98,14 @@ return require("packer").startup {
 				"NvimTreeCollapse",
 				"NvimTreeCollapseKeepBuffers",
 			},
+			setup = function()
+				map { "<F4>", "<cmd> NvimTreeToggle<CR>" }
+				nnoremap { "<leader>f", "<cmd> NvimTreeToggle<CR>" }
+				nnoremap { "<leader>r", "<cmd> NvimTreeRefresh<CR>" }
+				nnoremap { "<leader>ff", "<cmd> NvimTreeFindFile<CR>" }
+			end,
 			config = [[require('config.nvim-tree')]],
-			requires = { "kyazdani42/nvim-web-devicons" },
 		}
-		map { "<F4>", "<cmd> NvimTreeToggle<CR>" }
-		nnoremap { "<leader>f", "<cmd> NvimTreeToggle<CR>" }
-		nnoremap { "<leader>r", "<cmd> NvimTreeRefresh<CR>" }
-		nnoremap { "<leader>ff", "<cmd> NvimTreeFindFile<CR>" }
 
 		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
 		use {
@@ -116,21 +117,20 @@ return require("packer").startup {
 					vista_disable_statusline = 1,
 				}
 			end,
+			setup = function()
+				nnoremap { "<F3>", "<cmd> Vista!!<CR>" }
+			end,
 		}
-		nnoremap { "<F3>", "<cmd> Vista!!<CR>" }
 
 		-- support split window resizing and moving
 		-- resize windows continuously by using typical keymaps of Vim. (h, j, k, l)
 		use {
 			"simeji/winresizer",
+			key = "<C-e>",
 			config = function()
 				Variable.g {
 					winresizer_start_key = "<C-e>",
 				}
-				noremap { "<leader>nh", ":set nosplitright<CR>:vnew<CR>" }
-				noremap { "<leader>nl", ":set splitright<CR>:vnew<CR>" }
-				noremap { "<leader>nj", ":set splitbelow<CR>:new<CR>" }
-				noremap { "<leader>nk", ":set nosplitbelow<CR>:new<CR>" }
 			end,
 		}
 
@@ -153,9 +153,11 @@ return require("packer").startup {
 			"simnalamburt/vim-mundo",
 			cmd = { "MundoHide", "MundoShow", "MundoToggle" },
 			config = [[require('config.vim-mundo')]],
+			setup = function()
+				nnoremap { "<F9>", "<cmd> MundoToggle<CR>" }
+				nnoremap { "<leader>h", "<cmd> MundoToggle<cr>" }
+			end,
 		}
-		nnoremap { "<F9>", "<cmd> MundoToggle<CR>" }
-		nnoremap { "<leader>h", "<cmd> MundoToggle<cr>" }
 
 		-- Lang extra
 		use {
@@ -211,7 +213,7 @@ return require("packer").startup {
 			config = [[require('config.luasnip')]],
 		}
 
-        -- LuaSnip source for coq_nvim
+		-- LuaSnip source for coq_nvim
 		use { "~/repo/coq_luasnip" }
 
 		-- complete plugin
@@ -354,10 +356,11 @@ return require("packer").startup {
 		use "tpope/vim-repeat"
 		-- " unimpaired has many useful maps, like
 		-- " ]p pastes on the line below, [p pastes on the line above
-		use "tpope/vim-unimpaired"
+		-- use "tpope/vim-unimpaired"
 
 		use {
 			"numToStr/Comment.nvim",
+			event = "BufRead",
 			config = function()
 				require("Comment").setup {
 					-- ignore empty lines for comments
@@ -367,10 +370,10 @@ return require("packer").startup {
 						return require("ts_context_commentstring.internal").calculate_commentstring()
 					end,
 				}
+				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" }
+				vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" }
+				imap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" }
 			end,
-			nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
-			vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" },
-			imap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" },
 		}
 
 		-- Press + to expand the visual selection and _ to shrink it.
@@ -380,11 +383,13 @@ return require("packer").startup {
 
 		use {
 			"mg979/vim-visual-multi",
+			key = "<C-n>",
 			branch = "master",
 		}
 
 		use {
 			"mfussenegger/nvim-lint",
+			event = "BufRead",
 			config = [[require('config.nvim-lint')]],
 			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>" },
 		}
@@ -396,6 +401,7 @@ return require("packer").startup {
 		-- Use dependency and run lua function after load
 		use {
 			"lewis6991/gitsigns.nvim",
+			event = "BufRead",
 			requires = { "nvim-lua/plenary.nvim" },
 			config = [[require('config.gitsigns')]],
 		}
@@ -499,6 +505,7 @@ return require("packer").startup {
 		-- " colorscheme
 		use {
 			"sainnhe/sonokai",
+			opt = true,
 			config = function()
 				local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
 				local v = opt[math.random(1, #opt)]
@@ -519,7 +526,7 @@ return require("packer").startup {
 
 		use {
 			"sainnhe/everforest",
-			config = function()
+			setup = function()
 				Variable.g {
 					everforest_better_performance = 1,
 					everforest_disable_terminal_colors = 1,
@@ -530,6 +537,8 @@ return require("packer").startup {
 					everforest_disable_italic_comment = 0,
 					everforest_transparent_background = 1,
 				}
+			end,
+			config = function()
 				vim.go.background = "dark"
 				vim.cmd [[ silent! colorscheme everforest ]]
 			end,
