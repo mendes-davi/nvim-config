@@ -59,5 +59,6 @@ vim.g.maplocalleader = ","
 require "utils"
 
 require "general"
+require "autocmds"
 
 local plugins = require "plugins"
