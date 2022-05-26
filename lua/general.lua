@@ -108,6 +108,7 @@ Option.g {
 	wildmenu = true, --show list for autocomplete
 	wildmode = "longest:full,full", -- Command-line completion mode
 	wildignorecase = true,
+	wildcharm = vim.fn.char2nr "", -- <C-z>
 
 	splitbelow = true,
 	splitright = true,
@@ -176,6 +177,40 @@ nnoremap { "<leader><leader>x", ":source %<CR>" }
 
 nnoremap { "c", '"_c' }
 nnoremap { "<S-Tab>", "za" }
+
+-- `<Tab>`/`<S-Tab>` to move between matches without leaving incremental search.
+-- Note dependency on `'wildcharm'` being set to `<C-z>` in order for this to
+-- work.
+local t = function(key)
+	return vim.api.nvim_replace_termcodes(key, true, true, true)
+end
+local is_search = function()
+	local cmdtype = vim.fn.getcmdtype()
+	return cmdtype == "/" or cmdtype == "?"
+end
+
+cnoremap {
+	"<Tab>",
+	function()
+		if is_search() then
+			return t "<CR>/<C-r>/"
+		else
+			return t "<C-z>"
+		end
+	end,
+	expr = true,
+}
+cnoremap {
+	"<S-Tab>",
+	function()
+		if is_search() then
+			return t "<CR>?<C-r>/"
+		else
+			return t "<S-Tab>"
+		end
+	end,
+	expr = true,
+}
 
 nnoremap {
 	"<leader>hello",
@@ -307,7 +342,7 @@ map { "<A-s>", "<cmd> write<CR>", nowait = true }
 imap { "<A-s>", "<cmd> write<CR>", nowait = true }
 
 --   " save as sudo
-cnoremap { "w!!", "execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<CR>" }
+vim.cmd "cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<CR>"
 
 -- " Automatically fix the last misspelled word and jump back to where you were.
 -- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
