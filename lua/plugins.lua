@@ -419,11 +419,7 @@ return require("packer").startup {
 		-- " Integrates with Neovim's LSP client for intelligent highlighting.
 		use {
 			"rrethy/vim-illuminate",
-			config = function()
-				Variable.g {
-					Illuminate_ftblacklist = { "NvimTree" },
-				}
-			end,
+			config = [[require('config.illuminate')]],
 		}
 
 		use {
