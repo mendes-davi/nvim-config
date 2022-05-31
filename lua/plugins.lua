@@ -563,6 +563,8 @@ return require("packer").startup {
 			config = function()
 				vim.go.background = "dark"
 				vim.cmd [[ silent! colorscheme everforest ]]
+				vim.cmd [[ set pumblend=15 ]]
+				vim.cmd [[ hi PmenuSel blend=0]]
 			end,
 		}
 
