@@ -48,6 +48,7 @@ return require("packer").startup {
 
 		use {
 			"lewis6991/spellsitter.nvim",
+			event = "BufReadPost",
 			config = function()
 				require("spellsitter").setup()
 			end,
@@ -55,6 +56,7 @@ return require("packer").startup {
 
 		use {
 			"lervag/vimtex",
+			ft = { "tex", "latex", "bib" },
 			config = function()
 				local viewer = "zathura"
 				if vim.fn.has "mac" == 1 then
@@ -126,7 +128,7 @@ return require("packer").startup {
 		-- resize windows continuously by using typical keymaps of Vim. (h, j, k, l)
 		use {
 			"simeji/winresizer",
-			key = "<C-e>",
+			keys = "<C-e>",
 			config = function()
 				Variable.g {
 					winresizer_start_key = "<C-e>",
@@ -312,7 +314,7 @@ return require("packer").startup {
 
 		use {
 			"nvim-telescope/telescope.nvim",
-			requires = { "nvim-lua/popup.nvim", "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzy-native.nvim", run = "make" } },
+			requires = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzy-native.nvim", run = "make" } },
 			config = [[require('config.telescope')]],
 		}
 
@@ -376,14 +378,11 @@ return require("packer").startup {
 			end,
 		}
 
-		-- Press + to expand the visual selection and _ to shrink it.
-		use "terryma/vim-expand-region"
-
 		use "wellle/targets.vim"
 
 		use {
 			"mg979/vim-visual-multi",
-			key = "<C-n>",
+			keys = "<C-n>",
 			branch = "master",
 		}
 
@@ -406,7 +405,18 @@ return require("packer").startup {
 			config = [[require('config.gitsigns')]],
 		}
 
-		use "sindrets/diffview.nvim"
+		use {
+			"sindrets/diffview.nvim",
+			cmd = {
+				"DiffviewClose",
+				"DiffviewFileHistory",
+				"DiffviewFocusFiles",
+				"DiffviewOpen",
+				"DiffviewRefresh",
+				"DiffviewToggleFiles",
+			},
+			requires = { "nvim-lua/plenary.nvim" },
+		}
 
 		use {
 			"norcalli/nvim-colorizer.lua",
@@ -424,11 +434,14 @@ return require("packer").startup {
 
 		use {
 			"folke/zen-mode.nvim",
+			cmd = { "ZenMode" },
+			setup = function()
+				nnoremap { "<A-d>", "<cmd> ZenMode<CR>" }
+			end,
 			config = function()
 				require("zen-mode").setup {
 					plugins = { tmux = { enabled = true } },
 				}
-				nnoremap { "<A-d>", "<cmd> ZenMode<CR>" }
 			end,
 		}
 
@@ -439,12 +452,12 @@ return require("packer").startup {
 					auto_save = "current",
 					disable_on_zoom = false,
 				}
+				nnoremap { "<A-h>", "<cmd> lua require('Navigator').left()<CR>" }
+				nnoremap { "<A-k>", "<cmd> lua require('Navigator').up()<CR>" }
+				nnoremap { "<A-l>", "<cmd> lua require('Navigator').right()<CR>" }
+				nnoremap { "<A-j>", "<cmd> lua require('Navigator').down()<CR>" }
+				-- nnoremap { "<A-p>", "<cmd> lua require('Navigator').previous()<CR>", }
 			end,
-			nnoremap { "<A-h>", "<cmd> lua require('Navigator').left()<CR>" },
-			nnoremap { "<A-k>", "<cmd> lua require('Navigator').up()<CR>" },
-			nnoremap { "<A-l>", "<cmd> lua require('Navigator').right()<CR>" },
-			nnoremap { "<A-j>", "<cmd> lua require('Navigator').down()<CR>" },
-			-- nnoremap { "<A-p>", "<cmd> lua require('Navigator').previous()<CR>", },
 		}
 
 		use "tversteeg/registers.nvim"
@@ -460,15 +473,12 @@ return require("packer").startup {
 		}
 
 		use {
-			"rmagatti/session-lens",
-			requires = { "rmagatti/auto-session", "nvim-telescope/telescope.nvim" },
-			config = function()
-				require("session-lens").setup()
-			end,
-		}
-
-		use {
 			"kevinhwang91/rnvimr",
+			cmd = { "RnvimrToggle", "RnvimrResize", "RnvimrStartBackground" },
+			setup = function()
+				nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
+				tnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
+			end,
 			config = function()
 				Variable.g {
 					rnvimr_enable_ex = 1,
@@ -479,13 +489,29 @@ return require("packer").startup {
 					-- gw cd
 					-- yw pwd
 				}
-				nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
-				tnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
 			end,
 		}
 
 		use {
 			"t-troebst/perfanno.nvim",
+			cmd = {
+				"PerfAnnotate",
+				"PerfAnnotateFunction",
+				"PerfAnnotateSelection",
+				"PerfCycleFormat",
+				"PerfHottestLines",
+				"PerfHottestLinesFunction",
+				"PerfHottestLinesSelection",
+				"PerfHottestSymbols",
+				"PerfLoadCallGraph",
+				"PerfLoadFlameGraph",
+				"PerfLoadFlat",
+				"PerfLuaProfileStart",
+				"PerfLuaProfileStop",
+				"PerfPickEvent",
+				"PerfToggleAnnotations",
+			},
+
 			config = function()
 				local perfanno = require "perfanno"
 				local util = require "perfanno.util"

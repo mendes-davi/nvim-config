@@ -45,7 +45,7 @@ if os.getenv("TERM"):match "alacritty" ~= nil then
 			local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
 			vim.defer_fn(function()
 				vim.loop.kill(pid, WINCH)
-			end, 10)
+			end, 100)
 		end,
 	})
 end
