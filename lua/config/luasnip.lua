@@ -6,6 +6,7 @@ local feedkeys = function(key, mode)
 end
 
 ls.config.set_config {
+    store_selection_keys="<Tab>",
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
@@ -24,7 +25,7 @@ ls.config.set_config {
 }
 
 -- Load Snippets
-require("luasnip.loaders.from_lua").load { paths = "~/.config/nvim/lua/snips/ft" }
+require("luasnip.loaders.from_lua").lazy_load { paths = "~/.config/nvim/lua/snips/ft" }
 
 -- <c-j> is my expansion key
 -- this will expand the current item or jump to the next item within the snippet.

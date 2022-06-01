@@ -193,7 +193,7 @@ return {
 
 	-- bold & italic (in math mode)
 	s({ trig = "bf", dscr = "bold" }, fmta([[\mathbf{<>}<>]], { i(1), i(0) }), { condition = tex.in_mathzone }),
-	s({ trig = "it", dscr = "italic" }, fmta([[\mathbf{<>}<>]], { i(1), i(0) }), { condition = tex.in_mathzone }),
+	s({ trig = "it", dscr = "italic" }, fmta([[\mathit{<>}<>]], { i(1), i(0) }), { condition = tex.in_mathzone }),
 	-- bold & italic (in text mode)
 	s({ trig = "bf", dscr = "bold" }, fmta([[\textbf{<>}<>]], { i(1), i(0) }), { condition = tex.in_text }),
 	s({ trig = "it", dscr = "italic" }, fmta([[\textit{<>}<>]], { i(1), i(0) }), { condition = tex.in_text }),
