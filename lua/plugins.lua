@@ -343,11 +343,6 @@ return require("packer").startup {
 		}
 
 		use {
-			"mhinz/vim-startify",
-			config = [[require('config.vim-startify')]],
-		}
-
-		use {
 			"mhartington/formatter.nvim",
 			config = [[require('config.formatter')]],
 		}
@@ -474,7 +469,6 @@ return require("packer").startup {
 
 		use {
 			"kevinhwang91/rnvimr",
-			cmd = { "RnvimrToggle", "RnvimrResize", "RnvimrStartBackground" },
 			setup = function()
 				nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
 				tnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
