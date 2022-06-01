@@ -1,4 +1,4 @@
-nnoremap { "<M-f>", "<cmd>Format<CR>" }
+nnoremap { "<A-f>", "<cmd> Format<CR>" }
 
 require("formatter").setup {
 	logging = true,

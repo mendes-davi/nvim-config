@@ -462,6 +462,6 @@ vim.api.nvim_create_autocmd("CmdlineLeave", {
 	pattern = "*",
 	callback = function()
 		vim.o.laststatus = prev_laststatus
-		vim.opt.statusline = "%{%v:lua.require'feline'.statusline()%}"
+		vim.opt.statusline = "%{%v:lua.require'feline'.generate_statusline()%}"
 	end,
 })

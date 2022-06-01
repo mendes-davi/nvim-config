@@ -1,27 +1,3 @@
-Variable.g {
-	nvim_tree_side = "left", -- left by default
-	nvim_tree_width = 30, -- 30 by default
-	nvim_tree_git_hl = 1, -- 0 by default, will enable file highlight for git attributes (can be used without the icons).
-	nvim_tree_root_folder_modifier = ":~", -- This is the default. See :help filename-modifiers for more options
-	nvim_tree_allow_resize = 1, -- 0 by default, will not resize the tree when opening a file
-	--If 0, do not show the icons for one of 'git' 'folder' and 'files'
-	--1 by default, notice that if 'files' is 1, it will only display
-	--if nvim-web-devicons is installed and on your runtimepath
-	nvim_tree_show_icons = {
-		git = 1,
-		folders = 1,
-		files = 1,
-		folder_arrows = 1,
-	},
-	nvim_tree_special_files = {
-		["go.mod"] = 1,
-		["Cargo.toml"] = 1,
-		["README.md"] = 1,
-		["Makefile"] = 1,
-		["MAKEFILE"] = 1,
-	}, -- List of filenames that gets highlighted with NvimTreeSpecialFile
-}
-
 local lib = require "nvim-tree.lib"
 local view = require "nvim-tree.view"
 
@@ -95,6 +71,9 @@ require("nvim-tree").setup {
 	},
 	git = {
 		enable = false,
+	},
+	renderer = {
+		special_files = { "go.mod", "Cargo.toml", "README.md", "Makefile", "MAKEFILE" },
 	},
 }
 
