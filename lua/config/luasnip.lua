@@ -6,7 +6,7 @@ local feedkeys = function(key, mode)
 end
 
 ls.config.set_config {
-    store_selection_keys="<Tab>",
+	store_selection_keys = "<Tab>",
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
 	enable_autosnippets = true,
