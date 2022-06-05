@@ -16,7 +16,7 @@ Variable.g {
 -------------------------------------------------------------------
 
 Option.g {
-	fileencodings = "ucs-bom,utf-8,cp936,gb18030,big5,euc-jp,euc-kr,latin1",
+	fileencodings = "ucs-bom,utf-8,default,latin1",
 	encoding = "utf-8", -- "set encoding for text
 	--     " enable true colors
 	-- " If you're using tmux version 2.2 or later, you can remove the outermost $TMUX check and use tmux's 24-bit color support
