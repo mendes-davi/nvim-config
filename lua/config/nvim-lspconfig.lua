@@ -271,32 +271,11 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities {
 	capabilities = capabilities,
 })
 
--- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#sumneko_lua
--- set the path to the sumneko installation; if you previously installed via the now deprecated :LspInstall, use
-local sumneko_root_path = "/usr"
-local sumneko_binary = "/usr/bin/lua-language-server"
-
-local system_name
-if vim.fn.has "mac" == 1 then
-	system_name = "macOS"
-	sumneko_root_path = "/usr"
-	sumneko_binary = "/usr/local/bin/lua-language-server"
-elseif vim.fn.has "unix" == 1 then
-	system_name = "Linux"
-elseif vim.fn.has "win32" == 1 then
-	system_name = "Windows"
-else
-	print "Unsupported system for sumneko"
-end
-
 lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 	log_level = vim.lsp.protocol.MessageType.Log,
 	message_level = vim.lsp.protocol.MessageType.Log,
-	-- https://github.com/sumneko/lua-language-server/wiki/Setting-without-VSCode#neovim-with-built-in-lsp-client
-	-- https://github.com/sumneko/lua-language-server/blob/7a63f98e41305e8deb114164e86a621881a5a2bc/script/config.lua#L96
-	cmd = { sumneko_binary, "-E", sumneko_root_path .. "/main.lua" },
 	settings = {
 		Lua = {
 			runtime = {
