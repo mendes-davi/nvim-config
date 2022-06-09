@@ -195,30 +195,30 @@ lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	},
 })
 
-lsp.ltex.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-	filetypes = { "markdown", "org", "plaintex", "tex" },
-	root_dir = function(fname)
-		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
-	end,
-	single_file_support = true,
-	settings = {
-		ltex = {
-			language = "pt-BR",
-			diagnosticSeverity = "hint",
-			sentenceCacheSize = 2000,
-			additionalRules = {
-				enablePickyRules = true,
-				motherTongue = "pt-BR",
-			},
-			trace = { server = "off" },
-			dictionary = {},
-			disabledRules = {},
-			hiddenFalsePositives = {},
-		},
-	},
-})
+-- lsp.ltex.setup(coq.lsp_ensure_capabilities {
+-- 	on_attach = mix_attach,
+-- 	capabilities = capabilities,
+-- 	filetypes = { "markdown", "org", "plaintex", "tex" },
+-- 	root_dir = function(fname)
+-- 		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
+-- 	end,
+-- 	single_file_support = true,
+-- 	settings = {
+-- 		ltex = {
+-- 			language = "pt-BR",
+-- 			diagnosticSeverity = "hint",
+-- 			sentenceCacheSize = 2000,
+-- 			additionalRules = {
+-- 				enablePickyRules = true,
+-- 				motherTongue = "pt-BR",
+-- 			},
+-- 			trace = { server = "off" },
+-- 			dictionary = {},
+-- 			disabledRules = {},
+-- 			hiddenFalsePositives = {},
+-- 		},
+-- 	},
+-- })
 
 lsp.bashls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
