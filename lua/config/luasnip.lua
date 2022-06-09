@@ -9,16 +9,17 @@ ls.config.set_config {
 	store_selection_keys = "<Tab>",
 	history = true,
 	updateevents = "TextChanged,TextChangedI",
+	delete_check_events = "TextChanged,InsertEnter",
 	enable_autosnippets = true,
 	ext_opts = {
 		[types.choiceNode] = {
 			active = {
-				virt_text = { { "﬋", "Orange" } },
+				virt_text = { { "", "Orange" } },
 			},
 		},
 		[types.insertNode] = {
 			active = {
-				virt_text = { { "﫦", "Blue" } },
+				virt_text = { { "", "Blue" } },
 			},
 		},
 	},
