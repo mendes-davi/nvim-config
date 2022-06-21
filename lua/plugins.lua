@@ -280,7 +280,26 @@ return require("packer").startup {
 			requires = { "mfussenegger/nvim-dap" },
 			config = function()
 				require("dapui").setup {
-					sidebar = { size = 40 },
+					layouts = {
+						{
+							elements = {
+								"scopes",
+								"breakpoints",
+								"stacks",
+								"watches",
+							},
+							size = 40,
+							position = "left",
+						},
+						{
+							elements = {
+								"repl",
+								"console",
+							},
+							size = 10,
+							position = "bottom",
+						},
+					},
 				}
 			end,
 		}
