@@ -438,30 +438,3 @@ require("feline").setup {
 	custom_providers = custom_providers,
 	force_inactive = force_inactive,
 }
-
--- https://github.com/etrnal70/ditsdots/blob/master/.config/nvim/lua/config/autocmds.lua
-local id = vim.api.nvim_create_augroup("FelineFade", { clear = true })
--- Disable Feline on CmdlineEnter
-local prev_laststatus = vim.o.laststatus
-vim.api.nvim_create_autocmd("ModeChanged", {
-	group = id,
-	pattern = "*:c",
-	callback = function()
-		prev_laststatus = vim.o.laststatus
-		vim.o.laststatus = 0
-		vim.opt.statusline = " "
-		if prev_laststatus == 2 then
-			vim.cmd "hi StatusLineNC guibg=NONE"
-		end
-		vim.cmd "redraws"
-	end,
-})
--- Enable Feline on CmdlineLeave
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-	group = id,
-	pattern = "*",
-	callback = function()
-		vim.o.laststatus = prev_laststatus
-		vim.opt.statusline = "%{%v:lua.require'feline'.generate_statusline()%}"
-	end,
-})
