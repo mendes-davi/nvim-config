@@ -19,6 +19,7 @@ local make_mapper = function(mode, defaults, opts)
 
 	local lhs = opts.lhs or args[1]
 	local rhs = opts.rhs or args[2]
+	map_args.desc = opts.desc or args[3]
 	local map_opts = vim.tbl_extend("force", defaults, map_args)
 
 	if type(rhs) == "string" or type(rhs) == "function" then

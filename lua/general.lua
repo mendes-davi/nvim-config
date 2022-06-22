@@ -173,8 +173,6 @@ Option.b {}
 -------------------------------------------------------------------
 -- keybinds
 -------------------------------------------------------------------
-nnoremap { "<leader><leader>x", ":source %<CR>" }
-
 nnoremap { "c", '"_c' }
 nnoremap { "<S-Tab>", "za" }
 
@@ -212,82 +210,13 @@ cnoremap {
 	expr = true,
 }
 
-nnoremap {
-	"<leader>X",
-	function()
-		local qf_open = false
-		for _, win in pairs(vim.fn.getwininfo()) do
-			if win["quickfix"] == 1 then
-				qf_open = true
-			end
-		end
-		if qf_open == true then
-			vim.cmd "cclose"
-			return
-		end
-		if not vim.tbl_isempty(vim.fn.getqflist()) then
-			vim.cmd "copen"
-			if vim.b.bqf_enabled or false then
-				vim.api.nvim_feedkeys([['"]], "im", false)
-			end
-		else
-			vim.notify("[QF] - is empty", vim.log.levels.INFO)
-		end
-	end,
-}
-
-nnoremap {
-	"<leader>hello",
-	function()
-		print "Hello world, from lua"
-	end,
-}
-
 inoremap { "jk", "<Esc>" }
-
-nnoremap { "<leader>vs", "<C-w>v<C-w>l" }
-nnoremap { "<leader>hs", "<C-w>s" }
-nnoremap { "<leader>vsa", "<cmd> vert sba<cr>" }
-
-noremap { "<leader>nh", ":set nosplitright<CR>:vnew<CR>" }
-noremap { "<leader>nl", ":set splitright<CR>:vnew<CR>" }
-noremap { "<leader>nj", ":set splitbelow<CR>:new<CR>" }
-noremap { "<leader>nk", ":set nosplitbelow<CR>:new<CR>" }
-
--- " quick list/nolist toggle
--- :set list! list?<cr>
-nnoremap {
-	"<leader>lt",
-	function()
-		if vim.wo.list then
-			vim.wo.list = false
-		else
-			vim.wo.list = true
-		end
-	end,
-}
 
 -- " in visual mode you can select text, type tb and it'll be replaced by the command output
 -- " https://vi.stackexchange.com/questions/7388/replace-selection-with-output-of-external-command/17949#17949
 vnoremap { "tb", 'c<C-R>=system(@")<CR><ESC>' }
 
--- " formatting shortcuts
---   nmap <leader>fef :call Preserve("normal gg=G")<CR>
---   nmap <leader>f$ :call StripTrailingWhitespace()<CR>
-vmap { "<leader>s", ":sort<cr>" }
-
---   " eval vimscript by line or visual selection
---   "nmap <silent> <leader>e :call ExecVimSource(line('.'), line('.'))<CR>
---   "vmap <silent> <leader>e :call ExecVimSource(line('v'), line('.'))<CR>
-
---   " toggle paste
---   " map <F6> :set invpaste<CR>:set paste?<CR>
-
 --   " remap arrow keys
---   " tab shortcuts
-map { "<leader>tn", "<cmd> tabnew<CR>" }
-map { "<leader>tc", "<cmd> tabclose<CR>" }
-
 --   " quick switch buf
 nnoremap { "<up>", "<cmd> bprev<CR>" }
 nnoremap { "<down>", "<cmd> bnext<CR>" }
@@ -295,16 +224,6 @@ nnoremap { "<down>", "<cmd> bnext<CR>" }
 --   " quick switch tab window
 nnoremap { "<right>", "<cmd> tabnext<CR>" }
 nnoremap { "<left>", "<cmd> tabprev<CR>" }
-noremap { "<leader>1", "1gt", silent = true }
-noremap { "<leader>2", "2gt", silent = true }
-noremap { "<leader>3", "3gt", silent = true }
-noremap { "<leader>4", "4gt", silent = true }
-noremap { "<leader>5", "5gt", silent = true }
-noremap { "<leader>6", "6gt", silent = true }
-noremap { "<leader>7", "7gt", silent = true }
-noremap { "<leader>8", "8gt", silent = true }
-noremap { "<leader>9", "9gt", silent = true }
-noremap { "<leader>0", ":tabo<CR>", silent = true }
 
 --   " change cursor position in insert mode
 inoremap { "<C-h>", "<left>" }
@@ -367,7 +286,3 @@ imap { "<A-s>", "<cmd> write<CR>", nowait = true }
 
 --   " save as sudo
 vim.cmd "cabbrev w!! execute 'silent! write !sudo tee % >/dev/null' <bar> edit!<CR>"
-
--- " Automatically fix the last misspelled word and jump back to where you were.
--- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
-nnoremap { "<leader>s", "<cmd> normal! mz[s1z=`z<CR>" }

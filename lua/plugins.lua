@@ -35,9 +35,6 @@ return require("packer").startup {
 			"nvim-treesitter/playground",
 			requires = { "nvim-treesitter/nvim-treesitter" },
 			cmd = { "TSPlaygroundToggle", "TSNodeUnderCursor", "TSCaptureUnderCursor" },
-			setup = function()
-				nnoremap { "<Leader>hl", "<cmd>TSCaptureUnderCursor<CR>" }
-			end,
 		}
 
 		use {
@@ -102,9 +99,6 @@ return require("packer").startup {
 			},
 			setup = function()
 				map { "<F4>", "<cmd> NvimTreeToggle<CR>" }
-				nnoremap { "<leader>f", "<cmd> NvimTreeToggle<CR>" }
-				nnoremap { "<leader>r", "<cmd> NvimTreeRefresh<CR>" }
-				nnoremap { "<leader>ff", "<cmd> NvimTreeFindFile<CR>" }
 			end,
 			config = [[require('config.nvim-tree')]],
 		}
@@ -157,8 +151,12 @@ return require("packer").startup {
 			config = [[require('config.vim-mundo')]],
 			setup = function()
 				nnoremap { "<F9>", "<cmd> MundoToggle<CR>" }
-				nnoremap { "<leader>h", "<cmd> MundoToggle<cr>" }
 			end,
+		}
+
+		use {
+			"folke/which-key.nvim",
+			config = [[require('config.which-key')]],
 		}
 
 		-- Lang extra
@@ -473,8 +471,6 @@ return require("packer").startup {
 				-- nnoremap { "<A-p>", "<cmd> lua require('Navigator').previous()<CR>", }
 			end,
 		}
-
-		use "tversteeg/registers.nvim"
 
 		use {
 			"bfredl/nvim-miniyank",
