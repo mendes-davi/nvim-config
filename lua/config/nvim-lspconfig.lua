@@ -16,49 +16,19 @@ capabilities.textDocument.completion.completionItem.resolveSupport = {
 	},
 }
 
-nnoremap { "<space>ee", "<cmd>lua vim.diagnostic.open_float()<CR>", silent = true }
-
--- toggle diagnostics loclist, open loclist if there are diagnostics severity >= WARN, else show a notify info. if loclist open, close it
--- nnoremap { "<space>e", "<cmd>lua vim.diagnostic.setloclist({severity = vim.diagnostic.severity.WARN})<CR>", silent = true }
-nnoremap {
-	"<space>e",
-	function()
-		local loc = vim.fn.getloclist(0)
-		if loc and type(loc) == "table" and #loc > 0 then
-			-- close the loclist
-			vim.api.nvim_command "lclose"
-			-- clear the loclist
-			vim.fn.setloclist(0, {})
-			return
-		end
-
-		local diag = vim.diagnostic.get(0, { severity_limit = vim.diagnostic.severity.WARN })
-		if diag and type(diag) == "table" and #diag > 0 then
-			vim.diagnostic.setloclist { severity_limit = vim.diagnostic.severity.WARN }
-		else
-			require "notify"({ "no diagnostics meet the severity level >= warn." }, "INFO", { title = "QF - Diagnostics" })
-		end
-	end,
-	silent = true,
-}
-
--- diag https://github.com/nvim-lua/diagnostic-nvim/issues/73
--- nnoremap <leader>dn <cmd>lua vim.lsp.diagnostic.goto_next { wrap = false }<CR>
-nnoremap { "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", silent = true }
-nnoremap { "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", silent = true }
-
 --@param client: (required, vim.lsp.client)
 local mix_attach = function(client, bufnr)
 	local supports = client.supports_method
 	local lsp = vim.lsp.buf
 
-	nnoremap { "<Leader>wa", lsp.add_workspace_folder, silent = true, buffer = bufnr }
-	nnoremap { "<Leader>wr", lsp.remove_workspace_folder, silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wa", lsp.add_workspace_folder, "LSP Add Workspace Folder", silent = true, buffer = bufnr }
+	nnoremap { "<Leader>wr", lsp.remove_workspace_folder, "LSP Remove Workspace Folder", silent = true, buffer = bufnr }
 	nnoremap {
 		"<Leader>wl",
 		function()
 			return vim.pretty_print(vim.lsp.buf.list_workspace_folders())
 		end,
+		"LSP List Workspace Folders",
 		silent = true,
 		buffer = bufnr,
 	}
@@ -71,22 +41,22 @@ local mix_attach = function(client, bufnr)
 	-- formatting
 	if supports "textDocument/formatting" then
 		vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
-		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", silent = true, buffer = bufnr }
+		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", "LSP Format", silent = true, buffer = bufnr }
 	end
 	if supports "textDocument/rangeFormatting" then
-		vnoremap { "<leader>gq", lsp.range_formatting, silent = true, buffer = bufnr }
+		vnoremap { "<leader>gq", lsp.range_formatting, "LSP Format", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/declaration" then
-		nnoremap { "gD", lsp.declaration, silent = true, buffer = bufnr }
+		nnoremap { "gD", lsp.declaration, "LSP Declaration", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/definition" then
-		nnoremap { "gd", lsp.definition, silent = true, buffer = bufnr }
+		nnoremap { "gd", lsp.definition, "LSP Definition", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/hover" then
-		nnoremap { "K", lsp.hover, silent = true, buffer = bufnr }
+		nnoremap { "K", lsp.hover, "LSP Hover", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/signatureHelp" then
@@ -94,41 +64,41 @@ local mix_attach = function(client, bufnr)
 	end
 
 	if supports "textDocument/implementation" then
-		nnoremap { "gi", lsp.implementation, silent = true, buffer = bufnr }
+		nnoremap { "gi", lsp.implementation, "LSP Implementation", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/references" then
-		nnoremap { "gr", lsp.references, silent = true, buffer = bufnr }
+		nnoremap { "gr", lsp.references, "LSP References", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/typeDefinition" then
-		nnoremap { "<Leader>D", lsp.type_definition, silent = true, buffer = bufnr }
+		nnoremap { "<Leader>D", lsp.type_definition, "LSP Type Definition", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/rename" then
-		nnoremap { "<Leader>rn", lsp.rename, silent = true, buffer = bufnr }
-		nnoremap { "<F2>", lsp.rename, silent = true, buffer = bufnr }
+		nnoremap { "<Leader>rn", lsp.rename, "LSP Rename", silent = true, buffer = bufnr }
+		nnoremap { "<F2>", lsp.rename, "LSP Rename", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/documentSymbol" then
-		nnoremap { "g0", lsp.document_symbol, silent = true, buffer = bufnr }
+		nnoremap { "g0", lsp.document_symbol, "LSP Document Symbols", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/symbol" then
-		nnoremap { "gW", lsp.workspace_symbol, silent = true, buffer = bufnr }
+		nnoremap { "gW", lsp.workspace_symbol, "LSP Workspace Symbols", silent = true, buffer = bufnr }
 	end
 
 	-- ga has been mapped to vim-easy-align
 	-- commentary took gc and gcc, so ...
 	-- lsp builtin code_action
 	if supports "textDocument/codeAction" then
-		nnoremap { "<leader>ca", lsp.code_action, silent = true, buffer = bufnr }
-		vnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", silent = true, buffer = bufnr }
+		nnoremap { "<leader>ca", lsp.code_action, "LSP Code Action", silent = true, buffer = bufnr }
+		vnoremap { "<leader>ca", "<cmd>lua vim.lsp.buf.range_code_action()<CR>", "LSP Code Action", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/prepareCallHierarchy" then
-		nnoremap { "ghi", lsp.incoming_calls, silent = true, buffer = bufnr }
-		nnoremap { "gho", lsp.outgoing_calls, silent = true, buffer = bufnr }
+		nnoremap { "ghi", lsp.incoming_calls, "LSP Incoming Calls", silent = true, buffer = bufnr }
+		nnoremap { "gho", lsp.outgoing_calls, "LSP Outgoing Calls", silent = true, buffer = bufnr }
 	end
 
 	-- if supports "textDocument/codeLens" then
