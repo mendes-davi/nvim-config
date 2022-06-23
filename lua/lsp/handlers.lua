@@ -59,13 +59,13 @@ local function qf_rename()
 			end
 
 			vim.lsp.handlers["textDocument/rename"](err, result, ...)
-            if not result.changes then
-                return
-            end
+			if not result.changes then
+				return
+			end
 
 			local notification, entries = "", {}
 			local num_files, num_updates = 0, 0
-            -- FIXME: pyright sends a different `result` table arrangement
+			-- FIXME: pyright sends a different `result` table arrangement
 			for uri, edits in pairs(result.changes or {}) do
 				num_files = num_files + 1
 				local bufnr = vim.uri_to_bufnr(uri)
