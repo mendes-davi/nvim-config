@@ -55,5 +55,4 @@ end, { silent = true })
 
 vim.keymap.set("i", "<c-u>", require "luasnip.extras.select_choice")
 
--- Reload Snippets
-vim.keymap.set("n", "<leader><leader>s", ":source ~/.config/nvim/lua/config/luasnip.lua<CR>")
+vim.keymap.set({"i", "v"}, "<c-f>", "<cmd>lua require('luasnip.extras.otf').on_the_fly('s')<cr>", { desc = "LuaSnips Register Snippet" })
