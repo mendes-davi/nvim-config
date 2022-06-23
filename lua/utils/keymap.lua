@@ -33,6 +33,32 @@ local make_mapper = function(mode, defaults, opts)
 	end
 
 	vim.keymap.set(mode, lhs, rhs, map_opts)
+
+	-- Register which-key labels
+	local ok, wk = pcall(require, "which-key")
+	if ok and (map_opts.desc ~= nil) then
+		local wk_opts = {
+			mode = mode,
+			prefix = "",
+			buffer = map_opts.buffer or nil,
+			silent = map_opts.silent or false,
+			noremap = not map_opts.remap or false,
+			nowait = map_opts.nowait or false,
+		}
+
+		if type(mode) == "string" then
+			if mode ~= "o" then
+				wk.register({ [lhs] = { map_opts.desc } }, wk_opts)
+			end
+		elseif type(mode) == "table" then
+			for _, m in pairs(mode) do
+				if m ~= "o" then
+					wk_opts.mode = m
+					wk.register({ [lhs] = { map_opts.desc } }, wk_opts)
+				end
+			end
+		end
+	end
 end
 
 --- Helper function for ":map".
