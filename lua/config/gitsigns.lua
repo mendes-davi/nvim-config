@@ -23,11 +23,44 @@ gs.setup {
 	sign_priority = 6,
 	on_attach = function(bufnr)
 		local gs = package.loaded.gitsigns
+		local wk_ok, wk = pcall(require, "which-key")
 
-		local function map(mode, l, r, opts)
+		local function map(mode, lhs, rhs, opts)
 			opts = opts or {}
 			opts.buffer = bufnr
-			vim.keymap.set(mode, l, r, opts)
+
+			if wk_ok and opts.desc ~= nil then
+				local wk_opts = {
+					mode = mode,
+					prefix = "",
+					buffer = opts.buffer,
+					silent = opts.silent or false,
+					noremap = opts.noremap or false,
+					nowait = opts.nowait or false,
+				}
+
+				if type(mode) == "string" then
+					-- Registering label for operator-pending mode would cause duplicate labels
+					if mode == "o" then
+						opts.desc = "which_key_ignore"
+					end
+
+					-- Use which-key
+					wk.register({ [lhs] = { rhs, opts.desc } }, wk_opts)
+				elseif type(mode) == "table" then
+					for _, m in pairs(mode) do
+						if m == "o" then
+							opts.desc = "which_key_ignore"
+						end
+
+						wk_opts.mode = m
+						wk.register({ [lhs] = { rhs, opts.desc } }, wk_opts)
+					end
+				end
+			else
+				-- Use LUA API
+				vim.keymap.set(mode, lhs, rhs, opts)
+			end
 		end
 
 		-- Navigation
@@ -39,7 +72,7 @@ gs.setup {
 				gs.next_hunk()
 			end)
 			return "<Ignore>"
-		end, { expr = true })
+		end, { expr = true, desc = "Next Hunk" })
 
 		map("n", "[c", function()
 			if vim.wo.diff then
@@ -49,24 +82,24 @@ gs.setup {
 				gs.prev_hunk()
 			end)
 			return "<Ignore>"
-		end, { expr = true })
+		end, { expr = true, desc = "Previous Hunk" })
 
 		-- Actions
-		map({ "n", "v" }, "<leader>hs", ":Gitsigns stage_hunk<CR>")
-		map({ "n", "v" }, "<leader>hr", ":Gitsigns reset_hunk<CR>")
-		map("n", "<leader>hS", gs.stage_buffer)
-		map("n", "<leader>hu", gs.undo_stage_hunk)
-		map("n", "<leader>hR", gs.reset_buffer)
-		map("n", "<leader>hP", gs.preview_hunk)
-		map("n", "<leader>hb", function()
+		map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", { desc = "Stage Hunk" })
+		map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", { desc = "Reset Hunk" })
+		map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage Buffer" })
+		map("n", "<leader>gu", gs.undo_stage_hunk, { desc = "Unstage Hunk" })
+		map("n", "<leader>gR", gs.reset_buffer, { desc = "Reset Buffer" })
+		map("n", "<leader>gp", gs.preview_hunk, { desc = "Preview Hunk" })
+		map("n", "<leader>gb", function()
 			gs.blame_line { full = true }
-		end)
-		map("n", "<leader>tb", gs.toggle_current_line_blame)
-		map("n", "<leader>hd", gs.diffthis)
-		map("n", "<leader>hD", function()
+		end, { desc = "Blame" })
+		map("n", "<leader>gB", gs.toggle_current_line_blame, { desc = "Toggle Blame" })
+		map("n", "<leader>gd", gs.diffthis, { desc = "Diff This" })
+		map("n", "<leader>gD", function()
 			gs.diffthis "~"
-		end)
-		map("n", "<leader>td", gs.toggle_deleted)
+		end, { desc = "Diff This ~" })
+		map("n", "<leader>gx", gs.toggle_deleted, { desc = "Toggle Deleted" })
 
 		-- Text object
 		map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>")
