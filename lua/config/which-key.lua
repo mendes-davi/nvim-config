@@ -63,6 +63,7 @@ which_key.setup {
 		-- most people should not need to change this
 		i = { "j", "k" },
 		v = { "j", "k" },
+		n = { ":" },
 	},
 }
 
@@ -77,49 +78,130 @@ local opts = {
 
 local mappings = {
 	["<leader>"] = {
-		name = "",
-		x = { "<cmd>source %<CR>", "Source %" },
+		name = "Utils",
+		x = { ":source %<CR>", "Source %", silent = false },
+		s = { ":source ~/.config/nvim/lua/config/luasnip.lua<CR>", "Reload LuaSnips", silent = false },
 	},
+
+	p = {
+		name = "Packer",
+		c = { "<cmd>PackerCompile<cr>", "Compile" },
+		i = { "<cmd>PackerInstall<cr>", "Install" },
+		s = { "<cmd>PackerSync<cr>", "Sync" },
+		S = { "<cmd>PackerStatus<cr>", "Status" },
+		u = { "<cmd>PackerUpdate<cr>", "Update" },
+	},
+
+	d = {
+		name = "Debug",
+		b = { "<cmd>lua require'dap'.toggle_breakpoint()<CR>", "Breakpoint" },
+		c = { "<cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", "Conditional Breakpoint" },
+		l = { "<cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", "Log Breakpoint" },
+		C = { "<cmd>lua require'dap'.continue()<cr>", "Step Continue" },
+		i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
+		o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
+		O = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
+		r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "REPL" },
+		R = { "<cmd>lua require'dap'.run_last()<cr>", "Last" },
+		u = { "<cmd>lua require'dapui'.toggle()<cr>", "UI" },
+		x = { "<cmd>lua require'dap'.terminate()<cr>", "Exit" },
+	},
+
+	T = {
+		name = "Treesitter",
+		h = { "<cmd>TSCaptureUnderCursor<CR>", "TS Highlight" },
+		p = { "<cmd>TSPlaygroundToggle<CR>", "TS Playground" },
+	},
+
 	t = {
-		name = "Tab Pages",
+		name = "Tab/Terminal",
 		c = { "<cmd>tabc<CR>", "Close Tab" },
 		n = { "<cmd>tabn<CR>", "New Tab" },
 	},
-	f = {
-		name = "NvimTree",
-		f = { "<cmd>NvimTreeToggle<CR>", "Toggle NvimTree" },
-		r = { "<cmd>NvimTreeRefresh<CR>", "Refresh NvimTree" },
-		F = { "<cmd>NvimTreeFindFile<CR>", "Find File in NvimTree" },
-	},
-	l = {
-		name = "",
-		t = { require("utils.functions").toggle_opt("wo", "list"), "Toggle List" },
-	},
-	v = {
-		name = "Vertical Split",
-		a = { "<cmd>vert sba<CR>", "Vertical Split Each" },
-		s = { "<C-w>v<C-w>l", "Vertical Split" },
-	},
-	h = {
-		name = "",
-		h = { "<cmd>MundoToggle<cr>", "Toggle Mundo" },
-		s = { "<C-w>s", "Horizontal Split" },
-		l = { "<cmd>TSCaptureUnderCursor<CR>", "TS Capture Cursor" },
-	},
+
 	S = {
-		name = "New Split",
+		name = "Split",
 		h = { ":set nosplitright<CR>:vnew<CR>", "Split Left" },
 		l = { ":set splitright<CR>:vnew<CR>", "Split Right" },
 		j = { ":set splitbelow<CR>:new<CR>", "Split Below" },
 		k = { ":set nosplitbelow<CR>:new<CR>", "Split Above" },
+		v = { "<C-w>v<C-w>l", "Vertical Split" },
+		V = { "<cmd>vert sba<CR>", "Vertical Split Each" },
+		n = { "<C-w>s", "Horizontal Split" },
 	},
 
-	x = { "<cmd>TroubleToggle<CR>", "Toggle Trouble" },
-	X = { require("utils.functions").toggle_qf, "Toggle QF" },
+	o = {
+		name = "Options",
+		l = { require("utils.functions").toggle_opt("wo", "list"), "List" },
+		s = { require("utils.functions").toggle_opt("wo", "spell"), "Spell" },
+		w = { require("utils.functions").toggle_opt("o", "wrap"), "Wrap" },
+		r = { require("utils.functions").toggle_opt("o", "relativenumber"), "Relative" },
+	},
 
+	f = {
+		name = "Find",
+		b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+		c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
+		f = {
+			"<cmd>lua require('telescope.builtin').find_files(require('telescope.themes').get_dropdown{previewer = false})<cr>",
+			"Find files",
+		},
+		g = { "<cmd>Telescope live_grep theme=ivy<cr>", "Find Text" },
+		h = { "<cmd>Telescope help_tags<cr>", "Help" },
+		l = { "<cmd>Telescope resume<cr>", "Last Search" },
+		M = { "<cmd>Telescope man_pages<cr>", "Man Pages" },
+		r = { "<cmd>Telescope oldfiles<cr>", "Recent File" },
+		R = { "<cmd>Telescope registers<cr>", "Registers" },
+		k = { "<cmd>Telescope keymaps<cr>", "Keymaps" },
+		C = { "<cmd>Telescope commands<cr>", "Commands" },
+		F = { "<cmd>NvimTreeFindFile<CR>", "Find in NvimTree" },
+		T = { "<cmd>TodoTrouble<CR>", "Find TODOs" },
+	},
+
+	g = {
+		name = "Git",
+		D = {
+			name = "Diffview",
+			c = { "<cmd>DiffviewClose<CR>", "Close" },
+			h = { "<cmd>DiffviewFileHistory<CR>", "File History" },
+			f = { "<cmd>DiffviewFocusFiles<CR>", "Focus Files" },
+			o = { "<cmd>DiffviewOpen<CR>", "Open" },
+			r = { "<cmd>DiffviewRefresh<CR>", "Refresh" },
+			t = { "<cmd>DiffviewToggleFiles<CR>", "Toggle Files" },
+		},
+	},
+
+	l = {
+		name = "LSP",
+		a = {
+			"<cmd>lua require('telescope.builtin').lsp_code_actions({layout_strategy='cursor',layout_config={width=50, height = 10}})<cr>",
+			"Code Actions",
+		},
+		d = {
+			"<cmd>Telescope diagnostics<cr>",
+			"Diagnostics",
+		},
+		f = { "<cmd>lua vim.lsp.buf.format({ async = true })<cr>", "Format" },
+		i = { "<cmd>LspInfo<cr>", "Info" },
+		l = { require("utils.functions").toggle_diagnostics_loclist, "Loclist Diagnostics" },
+		o = { "<cmd>Vista!!<cr>", "Vista Outline" },
+		r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+		R = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
+		s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
+		S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols" },
+		t = { require("utils.functions").toggle_diagnostics, "Toggle Diagnostics" },
+	},
+
+	e = { "<cmd>NvimTreeToggle<CR>", "NvimTree" },
 	-- " Automatically fix the last misspelled word and jump back to where you were.
 	-- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
 	s = { "<cmd>normal! mz[s1z=`z<CR>", "Fix Last Misspelled Word" },
+	b = { "<cmd>lua require('telescope.builtin').buffers()<cr>", "Buffers" },
+	x = { "<cmd>TroubleToggle<CR>", "Toggle Trouble" },
+
+	E = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Diagnostics" },
+	U = { "<cmd>MundoToggle<cr>", "Toggle Mundo" },
+	X = { require("utils.functions").toggle_qf, "Toggle QF" },
 
 	["0"] = { "<cmd>tabo<CR>", "Close All Other Tabs" },
 }
@@ -135,7 +217,8 @@ local v_opts = {
 }
 
 local v_mappings = {
-	v = { ":sort<CR>", "Sort Lines" },
+	g = { name = "Git" },
+	s = { ":sort<CR>", "Sort Lines" },
 }
 which_key.register(v_mappings, v_opts)
 
@@ -145,3 +228,22 @@ local nv_mappings = {
 }
 which_key.register(nv_mappings, opts)
 which_key.register(nv_mappings, v_opts)
+
+local no_prefix_opts = {
+	mode = "n", -- NORMAL mode
+	prefix = "",
+	buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+	silent = true, -- use `silent` when creating keymaps
+	noremap = true, -- use `noremap` when creating keymaps
+	nowait = false, -- use `nowait` when creating keymaps
+}
+
+local no_prefix_mappings = {
+	["]"] = {
+		d = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Next Diagnostic" },
+	},
+	["["] = {
+		d = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Previous Diagnostic" },
+	},
+}
+which_key.register(no_prefix_mappings, no_prefix_opts)

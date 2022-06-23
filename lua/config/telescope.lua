@@ -15,13 +15,6 @@ nnoremap {
 		end
 	end,
 }
-nnoremap { "<leader>g", "<cmd>lua require('telescope.builtin').live_grep()<cr>" }
-nnoremap {
-	"<leader>b",
-	"<cmd>lua require('telescope.builtin').buffers({ignore_current_buffer = true, sort_mru = true, layout_strategy='vertical',layout_config={width=80}})<cr>",
-}
-nnoremap { "<leader>fh", "<cmd>lua require('telescope.builtin').help_tags()<cr>" }
-nnoremap { "<leader>A", "<cmd>lua require('telescope.builtin').lsp_code_actions({layout_strategy='cursor',layout_config={width=50, height = 10}})<cr>" }
 
 -- Global remapping
 ------------------------------
@@ -60,6 +53,12 @@ require("telescope").setup {
 		},
 	},
 	pickers = {
+		buffers = {
+			ignore_current_buffer = true,
+			sort_mru = true,
+			layout_strategy = "vertical",
+			layout_config = { width = 80 },
+		},
 		git_files = {
 			show_untracked = false,
 		},

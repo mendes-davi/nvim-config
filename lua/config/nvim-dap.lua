@@ -2,11 +2,6 @@ nnoremap { "<F5>", ":lua require'dap'.continue()<CR>" }
 nnoremap { "<F6>", ":lua require'dap'.step_over()<CR>" }
 nnoremap { "<F7>", ":lua require'dap'.step_into()<CR>" }
 nnoremap { "<F8>", ":lua require'dap'.step_out()<CR>" }
-nnoremap { "<leader>bp", ":lua require'dap'.toggle_breakpoint()<CR>" }
-nnoremap { "<leader>bc", ":lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>" }
-nnoremap { "<leader>lp", ":lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>" }
-nnoremap { "<leader>dr", ":lua require'dap'.repl.open()<CR>" }
-nnoremap { "<leader>dl", ":lua require'dap'.run_last()<CR>" }
 
 -- nvim-dap setup
 local dap = require "dap"

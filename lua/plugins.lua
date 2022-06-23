@@ -98,7 +98,7 @@ return require("packer").startup {
 				"NvimTreeCollapseKeepBuffers",
 			},
 			setup = function()
-				map { "<F4>", "<cmd> NvimTreeToggle<CR>" }
+				map { "<F4>", "<cmd> NvimTreeToggle<CR>", "NvimTree" }
 			end,
 			config = [[require('config.nvim-tree')]],
 		}
@@ -114,7 +114,7 @@ return require("packer").startup {
 				}
 			end,
 			setup = function()
-				nnoremap { "<F3>", "<cmd> Vista!!<CR>" }
+				nnoremap { "<F3>", "<cmd> Vista!!<CR>", "Vista Outline" }
 			end,
 		}
 
@@ -150,7 +150,7 @@ return require("packer").startup {
 			cmd = { "MundoHide", "MundoShow", "MundoToggle" },
 			config = [[require('config.vim-mundo')]],
 			setup = function()
-				nnoremap { "<F9>", "<cmd> MundoToggle<CR>" }
+				nnoremap { "<F9>", "<cmd> MundoToggle<CR>", "Toggle Mundo" }
 			end,
 		}
 
@@ -188,7 +188,8 @@ return require("packer").startup {
 		use {
 			"rcarriga/nvim-notify",
 			config = function()
-				require("notify").setup {
+				local notify = require "notify"
+				notify.setup {
 					-- For stages that change opacity this is treated as the highlight behind the window
 					-- Set this to either a highlight group or an RGB hex value e.g. "#000000"
 					background_colour = function()
@@ -202,6 +203,7 @@ return require("packer").startup {
 						return group_bg
 					end,
 				}
+				vim.notify = notify
 			end,
 		}
 
@@ -402,7 +404,7 @@ return require("packer").startup {
 			"mfussenegger/nvim-lint",
 			event = "BufRead",
 			config = [[require('config.nvim-lint')]],
-			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>" },
+			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>", "Lint" },
 		}
 
 		-- " signify show git diff sigs
