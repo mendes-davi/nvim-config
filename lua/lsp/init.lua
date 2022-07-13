@@ -7,7 +7,7 @@ local handlers = require "lsp.handlers"
 local M = {}
 
 M.formatting_sync = function()
-	vim.lsp.buf.formatting_sync(nil, 1000)
+	vim.lsp.buf.format { async = false, timeout_ms = 1000 }
 end
 
 -- https://www.reddit.com/r/neovim/comments/l00zzb/improve_style_of_builtin_lsp_diagnostic_messages/gjt2hek/
