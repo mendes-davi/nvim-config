@@ -75,7 +75,7 @@ Augroup {
 				function()
 					vim.bo.formatoptions = "jqt"
 					vim.opt_local.spell = true
-					vim.bo.spelllang = "en_us,pt_br"
+					vim.bo.spelllang = "en_us,pt"
 				end,
 			},
 			{
@@ -89,7 +89,7 @@ Augroup {
 				function()
 					vim.opt_local.list = false
 					vim.opt_local.spell = true
-					vim.bo.spelllang = "en_us,pt_br"
+					vim.bo.spelllang = "en_us,pt"
 				end,
 			},
 			{
