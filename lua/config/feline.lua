@@ -205,7 +205,9 @@ local my = {
 		enabled = function()
 			return vim.wo.spell and checkwidth()
 		end,
-		provider = " " .. vim.o.spelllang:upper(),
+		provider = function()
+			return " " .. vim.o.spelllang:upper()
+		end,
 		hl = {
 			fg = "fg",
 			bg = "bg",
