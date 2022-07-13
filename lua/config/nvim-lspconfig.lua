@@ -227,6 +227,7 @@ require("clangd_extensions").setup {
 
 -- lsp.pyright.setup{}
 local pythonPath = require("utils.python").get_python_path()
+local stubPath = require("utils.python").get_stubs_path()
 
 lsp.pyright.setup(coq.lsp_ensure_capabilities {
 	flags = { debounce_text_changes = 150 },
@@ -234,7 +235,7 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities {
 		python = {
 			pythonPath = pythonPath,
 			workspaceSymbols = { enabled = true },
-			analysis = { autoSearchPaths = false, useLibraryCodeForTypes = true, diagnosticMode = "openFilesOnly" },
+			analysis = { autoSearchPaths = false, useLibraryCodeForTypes = true, diagnosticMode = "openFilesOnly", stubPath = stubPath },
 		},
 	},
 	on_attach = mix_attach,
