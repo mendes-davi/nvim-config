@@ -42,23 +42,25 @@ local commands = function(opts)
 		end
 	end
 
-	pickers.new(opts, {
-		prompt_title = "Dap Commands",
-		finder = finders.new_table {
-			results = results,
-		},
-		sorter = conf.generic_sorter(opts),
-		attach_mappings = function(prompt_bufnr)
-			actions.select_default:replace(function()
-				local selection = action_state.get_selected_entry()
-				actions.close(prompt_bufnr)
+	pickers
+		.new(opts, {
+			prompt_title = "Dap Commands",
+			finder = finders.new_table {
+				results = results,
+			},
+			sorter = conf.generic_sorter(opts),
+			attach_mappings = function(prompt_bufnr)
+				actions.select_default:replace(function()
+					local selection = action_state.get_selected_entry()
+					actions.close(prompt_bufnr)
 
-				dap[selection.value]()
-			end)
+					dap[selection.value]()
+				end)
 
-			return true
-		end,
-	}):find()
+				return true
+			end,
+		})
+		:find()
 end
 
 local configurations = function(opts)
@@ -75,35 +77,37 @@ local configurations = function(opts)
 		return
 	end
 
-	pickers.new(opts, {
-		prompt_title = "Dap Configurations",
-		finder = finders.new_table {
-			results = results,
-			entry_maker = function(entry)
-				return {
-					value = entry,
-					display = entry.type .. ": " .. entry.name,
-					ordinal = entry.type .. ": " .. entry.name,
-					preview_command = function(entry, bufnr)
-						local output = vim.split(vim.inspect(entry.value), "\n")
-						vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, output)
-					end,
-				}
+	pickers
+		.new(opts, {
+			prompt_title = "Dap Configurations",
+			finder = finders.new_table {
+				results = results,
+				entry_maker = function(entry)
+					return {
+						value = entry,
+						display = entry.type .. ": " .. entry.name,
+						ordinal = entry.type .. ": " .. entry.name,
+						preview_command = function(entry, bufnr)
+							local output = vim.split(vim.inspect(entry.value), "\n")
+							vim.api.nvim_buf_set_lines(bufnr, 0, -1, true, output)
+						end,
+					}
+				end,
+			},
+			sorter = conf.generic_sorter(opts),
+			attach_mappings = function(prompt_bufnr)
+				actions.select_default:replace(function()
+					local selection = action_state.get_selected_entry()
+					actions.close(prompt_bufnr)
+
+					dap.run(selection.value)
+				end)
+
+				return true
 			end,
-		},
-		sorter = conf.generic_sorter(opts),
-		attach_mappings = function(prompt_bufnr)
-			actions.select_default:replace(function()
-				local selection = action_state.get_selected_entry()
-				actions.close(prompt_bufnr)
-
-				dap.run(selection.value)
-			end)
-
-			return true
-		end,
-		previewer = previewers.display_content.new(opts),
-	}):find()
+			previewer = previewers.display_content.new(opts),
+		})
+		:find()
 end
 
 local list_breakpoints = function(opts)
@@ -165,24 +169,26 @@ local variables = function(opts)
 		table.insert(results, v)
 	end
 
-	pickers.new(opts, {
-		prompt_title = "Dap Variables",
-		finder = finders.new_table {
-			results = results,
-			entry_maker = function(entry)
-				return {
-					value = entry,
-					ordinal = string.format("%s(%s) = %s", entry.name, entry.type, entry.value),
-					display = string.format("%s(%s) = %s", entry.name, entry.type, entry.value:gsub("\n", "")),
-					filename = frame.source.path,
-					lnum = entry.lnum or 1,
-					col = entry.col or 0,
-				}
-			end,
-		},
-		sorter = conf.generic_sorter(opts),
-		previewer = conf.grep_previewer(opts),
-	}):find()
+	pickers
+		.new(opts, {
+			prompt_title = "Dap Variables",
+			finder = finders.new_table {
+				results = results,
+				entry_maker = function(entry)
+					return {
+						value = entry,
+						ordinal = string.format("%s(%s) = %s", entry.name, entry.type, entry.value),
+						display = string.format("%s(%s) = %s", entry.name, entry.type, entry.value:gsub("\n", "")),
+						filename = frame.source.path,
+						lnum = entry.lnum or 1,
+						col = entry.col or 0,
+					}
+				end,
+			},
+			sorter = conf.generic_sorter(opts),
+			previewer = conf.grep_previewer(opts),
+		})
+		:find()
 end
 
 local frames = function(opts)
@@ -195,64 +201,68 @@ local frames = function(opts)
 	end
 	local frames = session.threads[session.stopped_thread_id].frames
 
-	pickers.new(opts, {
-		prompt_title = "Jump to frame",
-		finder = finders.new_table {
-			results = frames,
-			entry_maker = function(frame)
-				return {
-					value = frame,
-					display = frame.name,
-					ordinal = frame.name,
-					filename = frame.source and frame.source.path or "",
-					lnum = frame.line or 1,
-					col = frame.column or 0,
-				}
+	pickers
+		.new(opts, {
+			prompt_title = "Jump to frame",
+			finder = finders.new_table {
+				results = frames,
+				entry_maker = function(frame)
+					return {
+						value = frame,
+						display = frame.name,
+						ordinal = frame.name,
+						filename = frame.source and frame.source.path or "",
+						lnum = frame.line or 1,
+						col = frame.column or 0,
+					}
+				end,
+			},
+			sorter = conf.generic_sorter(opts),
+			attach_mappings = function(prompt_bufnr)
+				actions.select_default:replace(function()
+					local selection = action_state.get_selected_entry()
+					actions.close(prompt_bufnr)
+
+					session:_frame_set(selection.value)
+				end)
+
+				return true
 			end,
-		},
-		sorter = conf.generic_sorter(opts),
-		attach_mappings = function(prompt_bufnr)
-			actions.select_default:replace(function()
-				local selection = action_state.get_selected_entry()
-				actions.close(prompt_bufnr)
-
-				session:_frame_set(selection.value)
-			end)
-
-			return true
-		end,
-		previewer = conf.grep_previewer(opts),
-	}):find()
+			previewer = conf.grep_previewer(opts),
+		})
+		:find()
 end
 
 return telescope.register_extension {
 	setup = function()
 		require("dap.ui").pick_one = function(items, prompt, label_fn, cb)
 			local opts = {}
-			pickers.new(opts, {
-				prompt_title = prompt,
-				finder = finders.new_table {
-					results = items,
-					entry_maker = function(entry)
-						return {
-							value = entry,
-							display = label_fn(entry),
-							ordinal = label_fn(entry),
-						}
+			pickers
+				.new(opts, {
+					prompt_title = prompt,
+					finder = finders.new_table {
+						results = items,
+						entry_maker = function(entry)
+							return {
+								value = entry,
+								display = label_fn(entry),
+								ordinal = label_fn(entry),
+							}
+						end,
+					},
+					sorter = conf.generic_sorter(opts),
+					attach_mappings = function(prompt_bufnr)
+						actions.select_default:replace(function()
+							local selection = action_state.get_selected_entry()
+							actions.close(prompt_bufnr)
+
+							cb(selection.value)
+						end)
+
+						return true
 					end,
-				},
-				sorter = conf.generic_sorter(opts),
-				attach_mappings = function(prompt_bufnr)
-					actions.select_default:replace(function()
-						local selection = action_state.get_selected_entry()
-						actions.close(prompt_bufnr)
-
-						cb(selection.value)
-					end)
-
-					return true
-				end,
-			}):find()
+				})
+				:find()
 		end
 	end,
 	exports = {
