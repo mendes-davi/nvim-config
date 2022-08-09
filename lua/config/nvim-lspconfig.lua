@@ -287,14 +287,3 @@ lsp.jsonls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 })
-
-Augroup {
-	LspBufWritePre = {
-		["BufWritePre"] = {
-			-- { "*.lua", require("lsp").formatting_sync },
-			{ "*.tex", require("lsp").formatting_sync },
-			-- { "*.c", require("lsp").formatting_sync },
-			-- { "*.py", require("lsp").formatting_sync },
-		},
-	},
-}
