@@ -122,7 +122,7 @@ ls.add_snippets("tex", {
 	s({ trig = "^%s*it", regTrig = true, hidden = true }, fmta([[\item <>]], { i(0) }), { condition = tex.in_item }),
 
 	-- (sub)section
-	s({ trig = "(s*)sec", wordTrig = true, regTrig = true }, {
+	s({ trig = "^%s*(s*)sec", wordTrig = true, regTrig = true }, {
 		f(function(_, snip)
 			return { "\\" .. string.rep("sub", string.len(snip.captures[1])) }
 		end, {}),
