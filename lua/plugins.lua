@@ -386,9 +386,9 @@ return require("packer").startup {
 						return require("ts_context_commentstring.internal").calculate_commentstring()
 					end,
 				}
-				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" }
-				vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').locked.toggle_linewise_op(vim.fn.visualmode())<CR>" }
-				imap { "<A-/>", "<cmd> lua require('Comment.api').toggle_current_linewise()<CR>" }
+				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
+				vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
+				imap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
 			end,
 		}
 
