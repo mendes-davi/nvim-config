@@ -8,10 +8,13 @@ end
 
 M.get_python_path = function()
 	local venv_path = env "VIRTUAL_ENV"
+    local conda_prefix = env "CONDA_PREFIX"
 	local conda_python_exe = env "CONDA_PYTHON_EXE"
 
 	if venv_path ~= "" then
 		return venv_path .. "/bin/python"
+    elseif conda_prefix ~= "" then
+        return conda_prefix .. "/bin/python3"
 	elseif conda_python_exe ~= "" then
 		return conda_python_exe
 	end
