@@ -1,5 +1,20 @@
-Variable.g {
-	Illuminate_ftblacklist = { "alpha", "NvimTree" },
+require("illuminate").configure {
+	providers = {
+		"lsp",
+		"treesitter",
+		"regex",
+	},
+	delay = 100,
+	filetype_overrides = {},
+	filetypes_denylist = {
+		"alpha",
+		"NvimTree",
+		"Trouble",
+	},
+	filetypes_allowlist = {},
+	modes_denylist = {},
+	modes_allowlist = {},
+	under_cursor = true,
 }
 
 local cword = function()
