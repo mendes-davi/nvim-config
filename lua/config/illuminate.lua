@@ -29,7 +29,7 @@ end
 local next_ref_cword = function(opt)
 	local opt = opt or {}
 
-	local next = require("illuminate").next_reference { wrap = true }
+	local next = require("illuminate").next_reference { wrap = true, reverse = opt.reverse }
 	if next == nil then
 		local word = cword()
 		if word == [[\<\>]] then
