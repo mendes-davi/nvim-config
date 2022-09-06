@@ -100,6 +100,7 @@ function M.setup(adapter_python_path, opts)
 			program = "${file}",
 			console = opts.console,
 			pythonPath = opts.pythonPath,
+			cwd = "${workspaceFolder}",
 		})
 		table.insert(dap.configurations.python, {
 			type = "python",
@@ -112,6 +113,7 @@ function M.setup(adapter_python_path, opts)
 			end,
 			console = opts.console,
 			pythonPath = opts.pythonPath,
+			cwd = "${workspaceFolder}",
 		})
 		table.insert(dap.configurations.python, {
 			type = "python",
