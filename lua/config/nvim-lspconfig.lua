@@ -44,7 +44,7 @@ local mix_attach = function(client, bufnr)
 		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", "LSP Format", silent = true, buffer = bufnr }
 	end
 	if supports "textDocument/rangeFormatting" then
-		vnoremap { "<leader>gq", lsp.range_formatting, "LSP Format", silent = true, buffer = bufnr }
+		vnoremap { "<leader>gq", "<cmd>lua vim.lsp.formatexpr()<CR>", "LSP Format", silent = true, buffer = bufnr }
 	end
 
 	if supports "textDocument/declaration" then
