@@ -1,7 +1,7 @@
-nnoremap { "<F5>", ":lua require'dap'.continue()<CR>" }
-nnoremap { "<F6>", ":lua require'dap'.step_over()<CR>" }
-nnoremap { "<F7>", ":lua require'dap'.step_into()<CR>" }
-nnoremap { "<F8>", ":lua require'dap'.step_out()<CR>" }
+nnoremap { "<F5>", ":lua require'dap'.continue()<CR>", "DAP Continue" }
+nnoremap { "<F6>", ":lua require'dap'.step_over()<CR>", "DAP Step Over" }
+nnoremap { "<F7>", ":lua require'dap'.step_into()<CR>", "DAP Step Into" }
+nnoremap { "<F8>", ":lua require'dap'.step_out()<CR>", "DAP Step Out" }
 
 -- nvim-dap setup
 local dap = require "dap"
@@ -15,6 +15,7 @@ vim.fn.sign_define("DapBreakpointCondition", { text = "🟥", texthl = "", lineh
 vim.fn.sign_define("DapLogPoint", { text = "✳️ ", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "⭕", texthl = "", linehl = "", numhl = "" })
 
+dap.defaults.fallback.terminal_win_cmd = 'tabnew'
 -- dap.defaults.fallback.force_external_terminal = true
 dap.defaults.fallback.external_terminal = {
 	command = "alacritty",
@@ -38,16 +39,4 @@ dap.configurations.lua = {
 
 dap.adapters.nlua = function(callback, config)
 	callback { type = "server", host = config.host, port = config.port or 8088 }
-end
-
-local dapui = require "dapui"
-dap.listeners.after.event_initialized["dapui_config"] = function()
-	vim.cmd "tab split" -- TODO: open/close new tab with dapui layout
-	dapui.open()
-end
-dap.listeners.before.event_terminated["dapui_config"] = function()
-	dapui.close()
-end
-dap.listeners.before.event_exited["dapui_config"] = function()
-	dapui.close()
 end
