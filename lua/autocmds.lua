@@ -82,6 +82,7 @@ Augroup {
 				"python",
 				function()
 					vim.opt_local.foldmethod = "indent"
+                    vim.bo.indentexpr = "nvim_treesitter#indent()"
 				end,
 			},
 			{
