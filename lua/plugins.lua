@@ -481,6 +481,7 @@ return require("packer").startup {
 
 		use {
 			"rmagatti/auto-session",
+			requires = "rmagatti/session-lens",
 			config = [[require('config.auto-session')]],
 		}
 
