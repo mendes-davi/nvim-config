@@ -4,6 +4,7 @@ local actions = require "telescope.actions"
 
 telescope.load_extension "dotfiles"
 telescope.load_extension "dap"
+telescope.load_extension "session-lens"
 
 nnoremap {
 	"<leader><leader>", -- Fallback to find_files if git_files can't find a .git directory
