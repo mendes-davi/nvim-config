@@ -493,6 +493,7 @@ return require("packer").startup {
 			end,
 			config = function()
 				Variable.g {
+					rnvimr_ranger_cmd = { require("utils.python").get_ranger_cmd(), "--cmd=set draw_borders both" },
 					rnvimr_enable_ex = 1,
 					rnvimr_enable_picker = 1,
 					-- <C-t> tab
