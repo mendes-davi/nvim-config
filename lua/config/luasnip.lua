@@ -55,8 +55,8 @@ end, { silent = true })
 
 vim.keymap.set("i", "<c-u>", function()
 	if ls.choice_active() then
-        require "luasnip.extras.select_choice"
-    end
+		require "luasnip.extras.select_choice"
+	end
 end)
 
 vim.keymap.set({ "i", "v" }, "<c-f>", "<cmd>lua require('luasnip.extras.otf').on_the_fly('s')<cr>", { desc = "LuaSnips Register Snippet" })

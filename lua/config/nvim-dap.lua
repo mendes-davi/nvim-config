@@ -15,7 +15,7 @@ vim.fn.sign_define("DapBreakpointCondition", { text = "🟥", texthl = "", lineh
 vim.fn.sign_define("DapLogPoint", { text = "✳️ ", texthl = "", linehl = "", numhl = "" })
 vim.fn.sign_define("DapStopped", { text = "⭕", texthl = "", linehl = "", numhl = "" })
 
-dap.defaults.fallback.terminal_win_cmd = 'tabnew'
+dap.defaults.fallback.terminal_win_cmd = "tabnew"
 -- dap.defaults.fallback.force_external_terminal = true
 dap.defaults.fallback.external_terminal = {
 	command = "alacritty",

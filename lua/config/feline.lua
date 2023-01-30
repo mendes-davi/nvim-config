@@ -347,7 +347,7 @@ local my = {
 		enabled = checkwidth,
 		opts = {
 			padding = true,
-        },
+		},
 		hl = {
 			fg = "fg",
 			bg = "bg",
