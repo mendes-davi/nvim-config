@@ -73,7 +73,7 @@ Option.g {
 	-- base configuration
 	title = true,
 	-- titlestring is: relative-short-path [+=-] - NVIM
-	titlestring = [[%{pathshorten(fnamemodify(expand('%'), ':~:.'))} %m - NVIM]],
+	titlestring = [[%{pathshorten(fnamemodify(expand('%'), ':~:.'))}%m - NVIM]],
 	titlelen = 50, -- default is 85
 	timeoutlen = 500, --mapping timeout
 	ttimeoutlen = 100, --keycode timeout
@@ -114,8 +114,8 @@ Option.g {
 
 	splitbelow = true,
 	splitright = true,
-    -- splitkeep (former stabilize.nvim)
-    splitkeep = 'screen',
+	-- splitkeep (former stabilize.nvim)
+	splitkeep = "screen",
 
 	-- disable sounds
 	visualbell = false,
