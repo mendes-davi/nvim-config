@@ -366,8 +366,6 @@ return require("packer").startup {
 			config = [[require('config.formatter')]],
 		}
 
-		use "gpanders/editorconfig.nvim"
-
 		use "tpope/vim-surround"
 		use "tpope/vim-repeat"
 		-- " unimpaired has many useful maps, like
