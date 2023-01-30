@@ -127,6 +127,7 @@ local my = {
 			val.fg = "fg"
 			return val
 		end,
+		right_sep = "slant_right",
 	},
 	-- vi-symbol
 	vi_symbol = {
@@ -147,7 +148,7 @@ local my = {
 		provider = {
 			name = "file_info",
 			opts = {
-				type = "short-path",
+				type = "full-path",
 				file_readonly_icon = "  ",
 				file_modified_icon = "",
 			},
@@ -155,7 +156,7 @@ local my = {
 		short_provider = {
 			name = "file_info",
 			opts = {
-				type = "base-only",
+				type = "short-path",
 			},
 		},
 		hl = {
@@ -344,6 +345,9 @@ local my = {
 	line_info = {
 		provider = "position",
 		enabled = checkwidth,
+		opts = {
+			padding = true,
+        },
 		hl = {
 			fg = "fg",
 			bg = "bg",
