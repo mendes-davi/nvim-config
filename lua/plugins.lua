@@ -454,7 +454,7 @@ return require("packer").startup {
 			end,
 			config = function()
 				require("zen-mode").setup {
-					plugins = { tmux = { enabled = true } },
+					plugins = { tmux = { enabled = true }, alacritty = { enabled = true, font = "13" } },
 				}
 			end,
 		}
