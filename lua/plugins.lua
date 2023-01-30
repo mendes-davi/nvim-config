@@ -538,27 +538,28 @@ return require("packer").startup {
 		-- " colorscheme
 		use {
 			"sainnhe/sonokai",
-			opt = true,
-			config = function()
-				local opt = { "andromeda", "default", "andromeda", "shusia", "maia", "atlantis" }
-				local v = opt[math.random(1, #opt)]
+			setup = function()
 				Variable.g {
 					sonokai_better_performance = 1,
 					sonokai_disable_terminal_colors = 1,
-					sonokai_style = v,
+					sonokai_style = "shusia",
 					sonokai_enable_italic = 1,
 					sonokai_diagnostic_virtual_text = "colored",
 					sonokai_disable_italic_comment = 0,
 					sonokai_transparent_background = 1,
 					-- sonokai_current_word = "underline",
 				}
+			end,
+			config = function()
 				vim.go.background = "dark"
-				-- vim.cmd [[ silent! colorscheme sonokai ]]
+				vim.cmd [[ silent! colorscheme sonokai ]]
+				vim.cmd [[ hi PmenuSel blend=0 ]]
 			end,
 		}
 
 		use {
 			"sainnhe/everforest",
+			opt = true,
 			setup = function()
 				Variable.g {
 					everforest_better_performance = 1,
@@ -572,10 +573,9 @@ return require("packer").startup {
 				}
 			end,
 			config = function()
-				vim.go.background = "dark"
-				vim.cmd [[ silent! colorscheme everforest ]]
-				vim.cmd [[ set pumblend=15 ]]
-				vim.cmd [[ hi PmenuSel blend=0]]
+				-- vim.go.background = "dark"
+				-- vim.cmd [[ silent! colorscheme everforest ]]
+				-- vim.cmd [[ hi PmenuSel blend=0]]
 			end,
 		}
 

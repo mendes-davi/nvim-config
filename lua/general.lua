@@ -143,6 +143,8 @@ Option.g {
 	formatoptions = "jql",
 
 	clipboard = "unnamedplus",
+
+	pumblend = 15,
 }
 
 -- fixup SHELL env in docker (for example: FTerm.nvim)
