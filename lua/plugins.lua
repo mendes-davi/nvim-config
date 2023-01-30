@@ -535,6 +535,21 @@ return require("packer").startup {
 			end,
 		}
 
+		use {
+			"phaazon/mind.nvim",
+			cmd = {
+				"MindOpenSmartProject",
+				"MindOpenProject",
+				"MindOpenMain",
+				"MindReloadState",
+				"MindClose",
+			},
+			setup = function()
+				nmap { "<F10>", "<cmd>MindOpenSmartProject<CR>", "Mind Main View" }
+			end,
+			config = [[require('config.mind')]],
+		}
+
 		-- " colorscheme
 		use {
 			"sainnhe/sonokai",
