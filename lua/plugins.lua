@@ -327,6 +327,14 @@ return require("packer").startup {
 			end,
 		}
 
+		-- statuscol
+		use {
+			"luukvbaal/statuscol.nvim",
+			config = function()
+				require("statuscol").setup { setopt = true, foldfunc = "builtin" }
+			end,
+		}
+
 		-- quickfix
 		-- " https://github.com/kevinhwang91/nvim-bqf
 		use { "kevinhwang91/nvim-bqf", ft = "qf" }

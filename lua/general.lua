@@ -57,14 +57,16 @@ Option.g {
 	-- stylua: ignore
 	listchars = "nbsp:⦸,extends:»,precedes:«,tab:▷⋯,trail:•,space:·,eol:↲,conceal:┊",
 
-	fillchars = "diff:╱,fold:·,vert:┃",
+	fillchars = "diff:╱,fold:·,vert:┃,foldopen:,foldclose:",
 
 	-- " The delay is governed by vim's updatetime option,
 	-- " default updatetime 4000ms is not good for async update
 	updatetime = 300,
 
 	-- set signcolumn to 2 to avoid git gutter sign conflict with linter sign
-	signcolumn = "yes:2",
+	signcolumn = "auto",
+	-- set fold column
+	foldcolumn = "auto",
 
 	background = "dark",
 
@@ -112,6 +114,8 @@ Option.g {
 
 	splitbelow = true,
 	splitright = true,
+    -- splitkeep (former stabilize.nvim)
+    splitkeep = 'screen',
 
 	-- disable sounds
 	visualbell = false,
