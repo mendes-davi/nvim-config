@@ -2,7 +2,7 @@ local lib = require "nvim-tree.lib"
 local view = require "nvim-tree.view"
 
 local function collapse_all()
-	require("nvim-tree.actions.collapse-all").fn()
+	require("nvim-tree.actions.tree-modifiers.collapse-all").fn()
 end
 
 local function edit_or_open()
@@ -12,12 +12,12 @@ local function edit_or_open()
 
 	-- Just copy what's done normally with vsplit
 	if node.link_to and not node.nodes then
-		require("nvim-tree.actions.open-file").fn(action, node.link_to)
+		require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
 		view.close() -- Close the tree if file was opened
 	elseif node.nodes ~= nil then
 		lib.expand_or_collapse(node)
 	else
-		require("nvim-tree.actions.open-file").fn(action, node.absolute_path)
+		require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
 		view.close() -- Close the tree if file was opened
 	end
 end
@@ -29,11 +29,11 @@ local function vsplit_preview()
 
 	-- Just copy what's done normally with vsplit
 	if node.link_to and not node.nodes then
-		require("nvim-tree.actions.open-file").fn(action, node.link_to)
+		require("nvim-tree.actions.node.open-file").fn(action, node.link_to)
 	elseif node.nodes ~= nil then
 		lib.expand_or_collapse(node)
 	else
-		require("nvim-tree.actions.open-file").fn(action, node.absolute_path)
+		require("nvim-tree.actions.node.open-file").fn(action, node.absolute_path)
 	end
 end
 
@@ -44,6 +44,7 @@ require("nvim-tree").setup {
 		enable = false,
 		auto_open = false,
 	},
+	sync_root_with_cwd = true,
 	view = {
 		mappings = {
 			custom_only = false,
@@ -74,6 +75,14 @@ require("nvim-tree").setup {
 	},
 	renderer = {
 		special_files = { "go.mod", "Cargo.toml", "README.md", "Makefile", "MAKEFILE" },
+		indent_markers = {
+			enable = true,
+		},
+	},
+	diagnostics = {
+		enable = true,
+		show_on_dirs = false,
+		show_on_open_dirs = true,
 	},
 }
 
