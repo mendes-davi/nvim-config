@@ -85,6 +85,7 @@ gs.setup {
 		end, { expr = true, desc = "Previous Hunk" })
 
 		-- Actions
+		map("n", "<leader>gX", ":Gitsigns setqflist<CR>", { desc = "Git Preview in QF" })
 		map({ "n", "v" }, "<leader>gs", ":Gitsigns stage_hunk<CR>", { desc = "Stage Hunk" })
 		map({ "n", "v" }, "<leader>gr", ":Gitsigns reset_hunk<CR>", { desc = "Reset Hunk" })
 		map("n", "<leader>gS", gs.stage_buffer, { desc = "Stage Buffer" })
