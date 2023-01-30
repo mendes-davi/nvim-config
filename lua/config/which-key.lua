@@ -156,6 +156,7 @@ local mappings = {
 		C = { "<cmd>Telescope commands<cr>", "Commands" },
 		F = { "<cmd>NvimTreeFindFile<CR>", "Find in NvimTree" },
 		T = { "<cmd>TodoTrouble<CR>", "Find TODOs" },
+		S = { "<cmd>SearchSession<CR>", "Search Sessions", silent = true },
 	},
 
 	g = {

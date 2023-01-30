@@ -22,5 +22,12 @@ local opts = {
 require("auto-session").setup(opts)
 
 require("session-lens").setup {
-	path_display = { "shorten" },
+	prompt_title = "Sessions (C-d to delete)",
+	theme = "ivy",
+	theme_conf = {
+		winblend = nil,
+		layout_config = {
+			height = 0.3,
+		},
+	},
 }
