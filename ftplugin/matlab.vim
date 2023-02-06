@@ -69,7 +69,7 @@ let &cpo = s:save_cpo
 
 setlocal keywordprg=:!matlab\ -nodesktop\ -nosplash\ -nodisplay\ -nojvm\ -batch\ 'help\ <cword>'
 
-if has("unix") && isdirectory('/opt/Matlab/R2020b/')
+if has("unix") && isdirectory('/opt/Matlab/R2022b/')
   setlocal path+=$HOME/Documents/MATLAB
   setlocal path+=$HOME/Documents/MATLAB/Add-Ons
   setlocal path+=$HOME/Documents/MATLAB/mcode
