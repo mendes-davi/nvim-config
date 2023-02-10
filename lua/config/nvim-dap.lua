@@ -40,3 +40,43 @@ dap.configurations.lua = {
 dap.adapters.nlua = function(callback, config)
 	callback { type = "server", host = config.host, port = config.port or 8088 }
 end
+
+dap.adapters.cppdbg = {
+	id = "cppdbg",
+	type = "executable",
+	command = vim.fn.stdpath "data" .. "/cpptools/extension/debugAdapters/bin/OpenDebugAD7",
+	options = {
+		detached = false,
+	},
+}
+
+dap.configurations.cpp = {
+	{
+		name = "Launch file",
+		type = "cppdbg",
+		request = "launch",
+		program = function()
+			return coroutine.create(function(dap_run_co)
+				local exe_files = {}
+				local p = io.popen("find " .. vim.fn.getcwd() .. " -type f -executable -print")
+				for file in p:lines() do
+					table.insert(exe_files, file)
+				end
+
+				vim.ui.select(exe_files, { prompt = "Pick executable>" }, function(choice)
+					coroutine.resume(dap_run_co, choice)
+				end)
+			end)
+		end,
+		cwd = "${workspaceFolder}",
+		stopAtEntry = true,
+		setupCommands = {
+			{
+				text = "-enable-pretty-printing",
+				description = "enable pretty printing",
+				ignoreFailures = false,
+			},
+		},
+	},
+}
+dap.configurations.c = dap.configurations.cpp

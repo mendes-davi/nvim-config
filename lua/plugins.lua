@@ -269,6 +269,7 @@ return require("packer").startup {
 
 		use {
 			"rcarriga/nvim-dap-ui",
+            module = 'dapui',
 			requires = { "mfussenegger/nvim-dap" },
 			config = function()
 				require("dapui").setup {
