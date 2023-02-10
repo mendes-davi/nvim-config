@@ -1,5 +1,5 @@
 require("nvim-treesitter.configs").setup {
-	ensure_installed = { "query", "c", "go", "rust", "php", "python", "lua", "json", "toml", "vue", "css", "html", "bash", "hcl", "latex" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	ensure_installed = { "query", "c", "cpp", "go", "rust", "php", "python", "lua", "json", "toml", "vue", "css", "html", "bash", "hcl", "latex" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		disable = { "markdown", "latex" }, -- list of language that will be disabled
@@ -85,7 +85,7 @@ require("nvim-treesitter.configs").setup {
 local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
 parser_config.matlab = {
 	install_info = {
-		url = "https://github.com/mendes-davi/tree-sitter-matlab.git",
+		url = "https://github.com/mstanciu552/tree-sitter-matlab.git",
 		files = { "src/parser.c" },
 		branch = "main",
 	},
