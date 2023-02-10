@@ -44,14 +44,6 @@ return require("packer").startup {
 		}
 
 		use {
-			"lewis6991/spellsitter.nvim",
-			event = "BufReadPost",
-			config = function()
-				require("spellsitter").setup()
-			end,
-		}
-
-		use {
 			"lervag/vimtex",
 			ft = { "tex", "latex", "bib" },
 			config = function()
