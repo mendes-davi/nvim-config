@@ -242,7 +242,7 @@ lsp.pyright.setup(coq.lsp_ensure_capabilities {
 	capabilities = capabilities,
 })
 
-lsp.sumneko_lua.setup(coq.lsp_ensure_capabilities {
+lsp.lua_ls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 	log_level = vim.lsp.protocol.MessageType.Log,
