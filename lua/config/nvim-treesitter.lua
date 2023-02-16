@@ -1,8 +1,19 @@
 require("nvim-treesitter.configs").setup {
-	ensure_installed = { "query", "c", "cpp", "go", "rust", "php", "python", "lua", "json", "toml", "vue", "css", "html", "bash", "hcl", "latex" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	ensure_installed = { "query", "c", "cpp", "go", "rust", "php", "python", "lua", "vim", "help", "json", "toml", "vue", "css", "html", "bash", "hcl", "latex" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
 	highlight = {
 		enable = true, -- false will disable the whole extension
-		disable = { "markdown", "latex" }, -- list of language that will be disabled
+		disable = function(lang, buf)
+			local disabled_langs = { "markdown", "latex" }
+			if vim.tbl_contains(disabled_langs, lang) then
+				return true
+			end
+
+			local max_filesize = 250 * 1024 -- 250 KB
+			local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+			if ok and stats and stats.size > max_filesize then
+				return true
+			end
+		end,
 	},
 	playground = {
 		enable = true,
@@ -50,33 +61,42 @@ require("nvim-treesitter.configs").setup {
 				["<leader>A"] = "@parameter.inner",
 			},
 		},
-	},
-	move = {
-		enable = true,
-		set_jumps = true, -- whether to set jumps in the jumplist
-		goto_next_start = {
-			["]m"] = "@function.outer",
-			["]]"] = "@class.outer",
+		move = {
+			enable = true,
+			set_jumps = true, -- whether to set jumps in the jumplist
+			goto_next_start = {
+				["]m"] = "@function.outer",
+				["]]"] = "@class.outer",
+				["]o"] = "@loop.*",
+				["]l"] = { query = "@scope", query_group = "locals" },
+				["]z"] = { query = "@fold", query_group = "folds" },
+			},
+			goto_next_end = {
+				["]M"] = "@function.outer",
+				["]["] = "@class.outer",
+			},
+			goto_previous_start = {
+				["[m"] = "@function.outer",
+				["[["] = "@class.outer",
+			},
+			goto_previous_end = {
+				["[M"] = "@function.outer",
+				["[]"] = "@class.outer",
+			},
+			goto_next = {
+				["]i"] = "@conditional.outer",
+			},
+			goto_previous = {
+				["[i"] = "@conditional.outer",
+			},
 		},
-		goto_next_end = {
-			["]M"] = "@function.outer",
-			["]["] = "@class.outer",
-		},
-		goto_previous_start = {
-			["[m"] = "@function.outer",
-			["[["] = "@class.outer",
-		},
-		goto_previous_end = {
-			["[M"] = "@function.outer",
-			["[]"] = "@class.outer",
-		},
-	},
-	lsp_interop = {
-		enable = true,
-		border = "none",
-		peek_definition_code = {
-			["df"] = "@function.outer",
-			["dF"] = "@class.outer",
+		lsp_interop = {
+			enable = true,
+			border = "none",
+			peek_definition_code = {
+				["df"] = "@function.outer",
+				["dF"] = "@class.outer",
+			},
 		},
 	},
 }
