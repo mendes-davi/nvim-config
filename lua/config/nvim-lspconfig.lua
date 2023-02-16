@@ -209,6 +209,16 @@ require("clangd_extensions").setup {
 		on_attach = mix_attach,
 		capabilities = coq.lsp_ensure_capabilities(capabilities),
 	},
+	extensions = {
+		autoSetHints = true,
+		inlay_hints = {
+			show_parameter_hints = true,
+			parameter_hints_prefix = " ",
+			other_hints_prefix = " ",
+			highlight = "Comment",
+			priority = 100,
+		},
+	},
 }
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#ccls
