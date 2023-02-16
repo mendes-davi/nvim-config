@@ -11,7 +11,7 @@ local dotfiles_list = function(opts)
 
 	local p = io.popen "git --git-dir=$HOME/.dots ls-files"
 	for file in p:lines() do
-		table.insert(list, home .. '/' .. file)
+		table.insert(list, home .. "/" .. file)
 	end
 
 	local nvim_conf = io.popen("rg --files " .. home .. "/.config/nvim")
