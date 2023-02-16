@@ -29,7 +29,13 @@ local custom_providers = {
 }
 
 local checkwidth = function()
-	local squeeze_width = vim.fn.winwidth(0) / 2
+	local squeeze_width
+	if vim.o.laststatus == 3 then
+		squeeze_width = vim.o.columns / 2
+	else
+		squeeze_width = vim.api.nvim_win_get_width(0) / 2
+	end
+
 	if squeeze_width > 50 then
 		return true
 	end
