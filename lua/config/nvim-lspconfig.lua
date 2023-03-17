@@ -132,29 +132,11 @@ local mix_attach = function(client, bufnr)
 	end
 end
 
--- if not lsp.hdl_checker then
--- 	configs.hdl_checker = {
--- 		default_config = {
--- 			cmd = { "hdl_checker", "--lsp" },
--- 			filetypes = { "vhdl", "verilog", "systemverilog" },
--- 			root_dir = function(fname)
--- 				-- will look for a parent directory with a .git directory. If none, just
--- 				-- use the current directory
--- 				-- return lsp.util.find_git_ancestor(fname) or lsp.util.path.dirname(fname)
--- 				-- or (not both)
--- 				-- Will look for the .hdl_checker.config file in a parent directory. If
--- 				-- none, will use the current directory
--- 				return lsp.util.root_pattern ".hdl_checker.config"(fname) or lsp.util.path.dirname(fname)
--- 			end,
--- 			settings = {},
--- 		},
--- 	}
--- end
-
--- lsp.hdl_checker.setup(coq.lsp_ensure_capabilities {
--- 	on_attach = mix_attach,
--- 	capabilities = capabilities,
--- })
+lsp.vhdl_ls.setup(coq.lsp_ensure_capabilities {
+	on_attach = mix_attach,
+	capabilities = capabilities,
+	cmd = { vim.fn.stdpath "data" .. "/vhdl_ls/bin/vhdl_ls" },
+})
 
 lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
