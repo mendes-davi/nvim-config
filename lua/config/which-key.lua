@@ -76,6 +76,17 @@ local opts = {
 	nowait = false, -- use `nowait` when creating keymaps
 }
 
+local mappings_fcns = {
+	dap_repl_toggle = function()
+		require("dap").repl.toggle()
+		vim.cmd "wincmd p"
+		local filetype = vim.api.nvim_buf_get_option(0, "filetype")
+		if filetype == "dap-repl" then
+			vim.cmd "startinsert"
+		end
+	end,
+}
+
 local mappings = {
 	["<leader>"] = {
 		name = "Utils",
@@ -101,7 +112,7 @@ local mappings = {
 		i = { "<cmd>lua require'dap'.step_into()<cr>", "Step Into" },
 		o = { "<cmd>lua require'dap'.step_over()<cr>", "Step Over" },
 		O = { "<cmd>lua require'dap'.step_out()<cr>", "Step Out" },
-		r = { "<cmd>lua require'dap'.repl.toggle()<cr>", "REPL" },
+		r = { mappings_fcns.dap_repl_toggle, "REPL" },
 		R = { "<cmd>lua require'dap'.run_last()<cr>", "Last" },
 		u = { "<cmd>lua require'dapui'.toggle()<cr>", "UI" },
 		x = { "<cmd>lua require'dap'.terminate()<cr>", "Exit" },
