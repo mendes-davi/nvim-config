@@ -111,3 +111,13 @@ parser_config.matlab = {
 	},
 	filetype = "matlab", -- if filetype does not agrees with parser name
 }
+
+-- VHDL
+parser_config.vhdl = {
+	install_info = {
+		url = "https://github.com/alemuller/tree-sitter-vhdl.git",
+		files = { "src/parser.c" },
+		branch = "main",
+	},
+	filetype = { "vhdl", "vhd" },
+}
