@@ -102,7 +102,7 @@ Option.g {
 	showbreak = "↳ ",
 
 	scrolloff = 5, --always show content after scroll
-    sidescrolloff = 12,
+	sidescrolloff = 12,
 	scrolljump = 0, --minimum number of lines to scroll
 	display = "lastline,msgsep",
 	wildmenu = true, --show list for autocomplete

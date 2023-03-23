@@ -75,7 +75,6 @@ return require("packer").startup {
 			requires = { "kyazdani42/nvim-web-devicons" },
 		}
 
-		-- Use specific branch, dependency and run lua file after load
 		use {
 			"kyazdani42/nvim-tree.lua",
 			requires = { "kyazdani42/nvim-web-devicons" },
@@ -355,17 +354,12 @@ return require("packer").startup {
 			config = function()
 				Variable.g {
 					rainbow_active = 1,
-					-- " oblitum mod version has bug, will mess up php syntax highlighting
-					-- " Plug 'oblitum/rainbow'
-					-- " Plug 'kien/rainbow_parentheses.vim'
-					-- " https://github.com/p00f/nvim-ts-rainbow
-					-- " Plug 'p00f/nvim-ts-rainbow'
 				}
 			end,
 		}
 
 		use {
-			"feline-nvim/feline.nvim",
+			"freddiehaddad/feline.nvim",
 			config = [[require('config.feline')]],
 		}
 
@@ -376,8 +370,6 @@ return require("packer").startup {
 
 		use "tpope/vim-surround"
 		use "tpope/vim-repeat"
-		-- " unimpaired has many useful maps, like
-		-- " ]p pastes on the line below, [p pastes on the line above
 		-- use "tpope/vim-unimpaired"
 
 		use {
@@ -410,14 +402,11 @@ return require("packer").startup {
 			"mfussenegger/nvim-lint",
 			event = "BufRead",
 			config = [[require('config.nvim-lint')]],
-			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>", "Lint" },
+			setup = function()
+				nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>", "Lint" }
+			end,
 		}
 
-		-- " signify show git diff sigs
-		-- " Plug 'mhinz/vim-signify'
-		-- " https://github.com/lewis6991/gitsigns.nvim
-		-- Plug 'nvim-lua/plenary.nvim'
-		-- Use dependency and run lua function after load
 		use {
 			"lewis6991/gitsigns.nvim",
 			event = "BufRead",
@@ -445,8 +434,6 @@ return require("packer").startup {
 			end,
 		}
 
-		-- " illuminate.vim - Vim plugin for automatically highlighting other uses of the word under the cursor.
-		-- " Integrates with Neovim's LSP client for intelligent highlighting.
 		use {
 			"rrethy/vim-illuminate",
 			config = [[require('config.illuminate')]],
