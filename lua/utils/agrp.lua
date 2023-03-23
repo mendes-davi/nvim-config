@@ -6,7 +6,7 @@ local function is_vim_func_string(s)
 end
 
 local function create_autocmd(params)
-	local event = params.event
+	local events = params.event
 	local opt = {
 		pattern = params.pattern,
 		once = params.once and true or false,
@@ -16,6 +16,11 @@ local function create_autocmd(params)
 		opt.callback = params.cb_or_cmd
 	else
 		opt.command = params.cb_or_cmd
+	end
+
+	local event = {}
+	for ev in events.gmatch(events, "[^,%s]+") do
+		table.insert(event, ev)
 	end
 	vim.api.nvim_create_autocmd(event, opt)
 end

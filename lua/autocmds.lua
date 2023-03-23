@@ -67,7 +67,7 @@ Augroup {
 			{
 				"qf",
 				function()
-					vim.api.nvim_command "set nobuflisted"
+					vim.bo.buflisted = false
 				end,
 			},
 			{
@@ -140,19 +140,25 @@ Augroup {
 			{
 				".gitconfig",
 				function()
-					vim.api.nvim_command "setlocal filetype=dosini"
+					vim.bo.filetype = "dosini"
 				end,
 			},
 			{
 				"*.{automount,service,socket,target,timer}",
 				function()
-					vim.api.nvim_command "setlocal filetype=systemd"
+					vim.bo.filetype = "systemd"
 				end,
 			},
 			{
 				"*.m",
 				function()
-					vim.api.nvim_command "setlocal filetype=matlab"
+					vim.bo.filetype = "matlab"
+				end,
+			},
+			{
+				"*.protoinst",
+				function()
+					vim.bo.filetype = "json"
 				end,
 			},
 		},
