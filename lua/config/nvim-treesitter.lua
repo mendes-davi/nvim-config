@@ -1,9 +1,31 @@
 require("nvim-treesitter.configs").setup {
-	ensure_installed = { "query", "c", "cpp", "go", "rust", "php", "python", "lua", "vim", "help", "json", "toml", "vue", "css", "html", "bash", "hcl", "latex" }, -- one of "all", "maintained" (parsers with maintainers), or a list of languages
+	ensure_installed = {
+		"bash",
+		"c",
+		"cpp",
+		"css",
+		"go",
+		"hcl",
+		"help",
+		"html",
+		"json",
+		"latex",
+		"lua",
+		"markdown",
+		"markdown_inline",
+		"php",
+		"python",
+		"query",
+		"rust",
+		"toml",
+		"verilog",
+		"vim",
+		"vue",
+	},
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		disable = function(lang, buf)
-			local disabled_langs = { "markdown", "latex" }
+			local disabled_langs = { "latex", "matlab" }
 			if vim.tbl_contains(disabled_langs, lang) then
 				return true
 			end

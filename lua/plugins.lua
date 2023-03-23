@@ -20,17 +20,12 @@ return require("packer").startup {
 		-- LSP = whole-project semantic analysis
 		-- https://github.com/nvim-treesitter/nvim-treesitter
 		use {
+			requires = { "nvim-treesitter/nvim-treesitter-textobjects" },
 			"nvim-treesitter/nvim-treesitter",
 			run = ":TSUpdate",
 			config = [[require('config.nvim-treesitter')]],
 		}
 
-		use {
-			"nvim-treesitter/nvim-treesitter-textobjects",
-			requires = { "nvim-treesitter/nvim-treesitter" },
-		}
-
-		-- https://github.com/nvim-treesitter/playground
 		use {
 			"nvim-treesitter/playground",
 			requires = { "nvim-treesitter/nvim-treesitter" },
