@@ -317,9 +317,7 @@ return require("packer").startup {
 		-- statuscol
 		use {
 			"luukvbaal/statuscol.nvim",
-			config = function()
-				require("statuscol").setup { setopt = true, foldfunc = "builtin" }
-			end,
+			config = [[require('config.statuscol')]],
 		}
 
 		-- quickfix
