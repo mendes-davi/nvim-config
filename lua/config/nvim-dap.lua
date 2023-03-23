@@ -80,3 +80,31 @@ dap.configurations.cpp = {
 	},
 }
 dap.configurations.c = dap.configurations.cpp
+
+dap.adapters.made = {
+	id = "made",
+	type = "executable",
+	command = "node",
+	args = { vim.fn.stdpath "data" .. "/MaDe-for-VS-Code/out/debugAdapter.js" },
+	options = {
+		detached = false,
+		initialize_timeout_sec = 20,
+		disconnect_timeout_sec = 20,
+	},
+	enrich_config = function(config, on_config)
+		dap.clear_breakpoints()
+		on_config(vim.deepcopy(config))
+	end,
+}
+
+dap.configurations.matlab = {
+	{
+		name = "Launch file",
+		type = "made",
+		request = "launch",
+		program = "${file}",
+		cwd = "${workspaceFolder}",
+		stopAtEntry = true,
+		noDebug = false,
+	},
+}
