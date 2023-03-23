@@ -334,7 +334,14 @@ return require("packer").startup {
 
 		use {
 			"nvim-telescope/telescope.nvim",
-			requires = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzy-native.nvim", run = "make" } },
+			requires = {
+				"nvim-lua/plenary.nvim",
+				"nvim-telescope/telescope-ui-select.nvim",
+				{
+					"nvim-telescope/telescope-fzf-native.nvim",
+					run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+				},
+			},
 			config = [[require('config.telescope')]],
 		}
 

@@ -2,10 +2,6 @@
 local telescope = require "telescope"
 local actions = require "telescope.actions"
 
-telescope.load_extension "dotfiles"
-telescope.load_extension "dap"
-telescope.load_extension "session-lens"
-
 nnoremap {
 	"<leader><leader>", -- Fallback to find_files if git_files can't find a .git directory
 	function()
@@ -21,6 +17,7 @@ nnoremap {
 ------------------------------
 require("telescope").setup {
 	defaults = {
+		prompt_prefix = "󱞩 ",
 		mappings = {
 			i = {
 				-- To disable a keymap, put [map] = false
@@ -68,12 +65,25 @@ require("telescope").setup {
 		},
 	},
 	extensions = {
-		fzy_native = {
+		fzf = {
+			fuzzy = true,
 			override_generic_sorter = true,
 			override_file_sorter = true,
+			case_mode = "smart_case",
+		},
+		["ui-select"] = {
+			require("telescope.themes").get_dropdown {},
 		},
 	},
 }
 
--- This will load fzy_native and have it override the default file sorter
-telescope.load_extension "fzy_native"
+-- Local
+telescope.load_extension "dotfiles"
+telescope.load_extension "dap"
+
+-- First Party
+telescope.load_extension "fzf"
+telescope.load_extension "ui-select"
+
+-- Third Party
+telescope.load_extension "session-lens"
