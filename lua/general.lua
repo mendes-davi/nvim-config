@@ -59,12 +59,10 @@ Option.g {
 
 	fillchars = "diff:╱,fold:·,vert:┃,foldopen:,foldclose:",
 
-	-- " The delay is governed by vim's updatetime option,
-	-- " default updatetime 4000ms is not good for async update
-	updatetime = 300,
+	updatetime = 10,
 
-	-- set signcolumn to 2 to avoid git gutter sign conflict with linter sign
-	signcolumn = "auto",
+	-- set signcolumn to 2
+	signcolumn = "auto:2",
 	-- set fold column
 	foldcolumn = "auto",
 
@@ -80,7 +78,6 @@ Option.g {
 
 	mouse = "a", --"enable mouse
 	history = 1000, --number of command lines to remember
-	ttyfast = true, -- assume fast terminal connection
 	viewoptions = "folds,options,cursor,unix,slash", -- unix/windows compatibility
 	hidden = true, -- allow buffer switching without saving
 	autoread = true, -- auto reload if file saved externally
@@ -105,6 +102,7 @@ Option.g {
 	showbreak = "↳ ",
 
 	scrolloff = 5, --always show content after scroll
+    sidescrolloff = 12,
 	scrolljump = 0, --minimum number of lines to scroll
 	display = "lastline,msgsep",
 	wildmenu = true, --show list for autocomplete
@@ -186,7 +184,7 @@ nnoremap { "<S-Tab>", "za" }
 -- Note dependency on `'wildcharm'` being set to `<C-z>` in order for this to
 -- work.
 local t = function(key)
-	return vim.api.nvim_replace_termcodes(key, true, true, true)
+	return vim.api.nvim_replace_termcodes(key, true, true, false)
 end
 local is_search = function()
 	local cmdtype = vim.fn.getcmdtype()
