@@ -127,7 +127,7 @@ local mappings = {
 	t = {
 		name = "Tab/Terminal",
 		c = { "<cmd>tabc<CR>", "Close Tab" },
-		n = { "<cmd>tabn<CR>", "New Tab" },
+		n = { "<cmd>tabe<CR>", "New Tab" },
 	},
 
 	S = {
