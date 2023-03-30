@@ -36,13 +36,24 @@ local colors = {
 
 local my_highlights = {
 	root = { "StatusComponentRootDir", "", colors.grey, colors.bg },
-	base = { "StatusComponentBaseDir", "gui=bold,underline", colors.white, colors.bg },
+	base = { "StatusComponentBaseDir", "gui=bold,underline", colors.fg, colors.bg },
 	trunk = { "StatusComponentTrunkDir", "", colors.fg, colors.bg },
 }
-for _, val in pairs(my_highlights) do
-	vim.cmd(string.format("highlight clear %s", val[1]))
-	vim.cmd(string.format("highlight %s %s guifg=%s guibg=%s", val[1], val[2], val[3], val[4]))
-end
+
+Augroup {
+	MyFelineHighlights = {
+		{
+			"ColorScheme",
+			"*",
+			function()
+				for _, val in pairs(my_highlights) do
+					vim.cmd(string.format("highlight clear %s", val[1]))
+					vim.cmd(string.format("highlight %s %s guifg=%s guibg=%s", val[1], val[2], val[3], val[4]))
+				end
+			end,
+		},
+	},
+}
 
 local function diagnostics(sev)
 	local count = lsp.get_diagnostics_count(sev)
@@ -74,7 +85,7 @@ local custom_providers = {
 
 		local root, trunk, icon
 		if home == nil then
-            return require("feline.providers.file").file_info(component, opts)
+			return require("feline.providers.file").file_info(component, opts)
 		else
 			home = vim.fn.fnamemodify(vim.fs.dirname(home), ":~:.")
 			local file = vim.fn.fnamemodify(vim.fn.expand "%r", ":~:."):gsub(home .. "/", "")
@@ -100,10 +111,10 @@ local custom_providers = {
 			icon.hl = { fg = icon_color }
 		end
 
-        local readonly_str, modified_str
+		local readonly_str, modified_str
 		if vim.bo.readonly then
 			readonly_str = opts.file_readonly_icon or "🔒"
-            icon.str = icon.str .. readonly_str
+			icon.str = icon.str .. readonly_str
 		end
 
 		if vim.bo.modified then
@@ -480,7 +491,9 @@ local my = {
 	-- scrollBar
 	scroll_bar = {
 		provider = "scroll_bar",
-		enabled = checkwidth,
+		enabled = function()
+			return checkwidth() and (vim.api.nvim_buf_line_count(0) > 0)
+		end,
 		hl = {
 			fg = "grey",
 			bg = "bg",
@@ -554,7 +567,7 @@ local components = {
 	},
 }
 
-R("feline").setup {
+require("feline").setup {
 	theme = colors,
 	vi_mode_colors = vi_mode_colors,
 	components = components,
