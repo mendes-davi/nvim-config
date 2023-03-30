@@ -65,7 +65,7 @@ local custom_providers = {
 		return diagnostics(severity.HINT)
 	end,
 
-	my_file_info = function(_, opts)
+	my_file_info = function(component, opts)
 		local cur_path = vim.fn.expand "%:p"
 		local home = vim.fs.find(opts.names, {
 			path = cur_path,
@@ -74,12 +74,10 @@ local custom_providers = {
 
 		local root, trunk, icon
 		if home == nil then
-			local cwd = vim.fn.expand "%:p:~:h"
-			local file = vim.fn.expand("%:p:~"):gsub(cwd .. "/", "")
-			root = table.concat { "%#StatusComponentRootDir#", cwd, "/", "%*" }
-			trunk = table.concat { "%#StatusComponentTrunkDir#", file }
+            return require("feline.providers.file").file_info(component, opts)
 		else
 			home = vim.fn.fnamemodify(vim.fs.dirname(home), ":~:.")
+			local file = vim.fn.fnamemodify(vim.fn.expand "%r", ":~:."):gsub(home .. "/", "")
 			root = table.concat { "%#StatusComponentRootDir#", vim.fs.dirname(home), "/", "%*" }
 			trunk = table.concat {
 				"%#StatusComponentBaseDir#",
@@ -87,7 +85,7 @@ local custom_providers = {
 				"/",
 				"%*",
 				"%#StatusComponentTrunkDir#",
-				vim.fn.expand "%r",
+				file,
 			}
 		end
 
@@ -102,7 +100,23 @@ local custom_providers = {
 			icon.hl = { fg = icon_color }
 		end
 
-		return root .. trunk, icon
+        local readonly_str, modified_str
+		if vim.bo.readonly then
+			readonly_str = opts.file_readonly_icon or "🔒"
+            icon.str = icon.str .. readonly_str
+		end
+
+		if vim.bo.modified then
+			modified_str = opts.file_modified_icon or "●"
+
+			if modified_str ~= "" then
+				modified_str = " " .. modified_str
+			end
+		else
+			modified_str = ""
+		end
+
+		return root .. trunk .. modified_str, icon
 	end,
 }
 
