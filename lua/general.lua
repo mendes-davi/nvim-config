@@ -214,6 +214,8 @@ cnoremap {
 	expr = true,
 }
 
+cnoremap { "%%", "getcmdtype() == ':' ? expand('%:p:h') : '%%'", expr = true }
+
 inoremap { "jk", "<Esc>" }
 
 -- " in visual mode you can select text, type tb and it'll be replaced by the command output

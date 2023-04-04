@@ -21,7 +21,7 @@ map("n", "<A-0>", "<cmd>BufferLast<CR>", opts)
 -- Close buffer
 map("n", "<A-e>", "<cmd>BufferClose<CR>", opts)
 -- Wipeout buffer
-map("n", "<A-E>", "<cmd>BufferWipeout!<CR>", opts)
+map("n", "<A-E>", "<cmd>bw!<CR>", opts)
 
 -- Close commands
 --                 <cmd>BufferCloseAllButCurrent<CR>
