@@ -39,7 +39,7 @@ map("n", "<A-u>", "<cmd>BufferPick<CR>", opts)
 -- :BarbarDisable - very bad command, should never be used
 
 -- Set barbar's options
-require("bufferline").setup {
+require("barbar").setup {
 	-- Enable/disable animations
 	animation = true,
 
@@ -48,9 +48,6 @@ require("bufferline").setup {
 
 	-- Enable/disable current/total tabpages indicator (top right corner)
 	tabpages = true,
-
-	-- Enable/disable close button
-	closable = true,
 
 	-- Enables/disable clickable tabs
 	--  - left-click: go to buffer
@@ -74,7 +71,7 @@ require("bufferline").setup {
 		-- Configure the base icons on the bufferline.
 		buffer_index = true,
 		buffer_number = false,
-		button = "",
+		button = "",
 		-- Enables / disables diagnostic symbols
 		diagnostics = {
 			[vim.diagnostic.severity.ERROR] = { enabled = false },
@@ -101,9 +98,11 @@ require("bufferline").setup {
 		-- Supports all the base icon options, plus `modified` and `pinned`.
 		alternate = { filetype = { enabled = false } },
 		current = { buffer_index = true },
-		inactive = { button = "×" },
+		inactive = { button = "" },
 		visible = { modified = { buffer_number = false } },
 	},
+
+	sidebar_filetypes = { NvimTree = true },
 
 	-- If true, new buffers will be inserted at the end of the list.
 	-- Default is to insert after current buffer.
@@ -112,6 +111,7 @@ require("bufferline").setup {
 
 	-- Sets the maximum padding width with which to surround each tab
 	maximum_padding = 100,
+	minimum_padding = 2,
 
 	-- Sets the maximum buffer name length.
 	maximum_length = 30,
