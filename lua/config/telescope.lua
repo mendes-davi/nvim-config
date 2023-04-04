@@ -1,6 +1,7 @@
 #!/usr/bin/env lua
 local telescope = require "telescope"
 local actions = require "telescope.actions"
+local utils = require "utils.telescope"
 
 nnoremap {
 	"<leader><leader>", -- Fallback to find_files if git_files can't find a .git directory
@@ -49,19 +50,62 @@ require("telescope").setup {
 			"--smart-case",
 			"--trim", -- avoid indentation for grep results
 		},
+		dynamic_preview_title = true,
+		results_title = false,
+		sorting_strategy = "descending",
+		layout_strategy = "flex",
+		layout_config = {
+			width = 0.75,
+			height = 0.75,
+			flex = {
+				flip_columns = 140,
+				flip_lines = 50,
+				vertical = {
+					mirror = true,
+				},
+				horizontal = {
+					mirror = false,
+				},
+			},
+		},
 	},
 	pickers = {
 		buffers = {
 			ignore_current_buffer = true,
 			sort_mru = true,
 			layout_strategy = "vertical",
-			layout_config = { width = 80 },
+			layout_config = { width = 0.85 },
+			entry_maker = utils.buffers_entry_maker,
 		},
 		git_files = {
 			show_untracked = false,
 		},
 		find_files = {
 			find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+			entry_maker = utils.files_entry_maker,
+		},
+		lsp_references = {
+			entry_maker = utils.lsp_entry_maker,
+		},
+		lsp_definitions = {
+			entry_maker = utils.lsp_entry_maker,
+		},
+		lsp_type_definitions = {
+			entry_maker = utils.lsp_entry_maker,
+		},
+		lsp_implementations = {
+			entry_maker = utils.lsp_entry_maker,
+		},
+		diagnostics = {
+			entry_maker = utils.diagnostics_entry_maker,
+			wrap_results = true,
+		},
+		live_grep = {
+			entry_maker = utils.grep_entry_maker,
+			additional_args = { "--trim" },
+		},
+		oldfiles = {
+			entry_maker = utils.files_entry_maker,
 		},
 	},
 	extensions = {
