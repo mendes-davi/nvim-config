@@ -39,6 +39,13 @@ return require("packer").startup {
 		}
 
 		use {
+			"tiagovla/scope.nvim",
+			config = function()
+				require("scope").setup()
+			end,
+		}
+
+		use {
 			"lervag/vimtex",
 			ft = { "tex", "latex", "bib" },
 			config = function()
@@ -58,6 +65,22 @@ return require("packer").startup {
 							"-file-line-error",
 							"-synctex=1",
 							"-interaction=nonstopmode",
+						},
+					},
+				}
+			end,
+		}
+
+		use {
+			"kyazdani42/nvim-web-devicons",
+			config = function()
+				require("nvim-web-devicons").setup {
+					override = {
+						tcl = {
+							icon = "",
+							color = "#1e5cb3",
+							cterm_color = "25",
+							name = "Tcl",
 						},
 					},
 				}
@@ -456,7 +479,7 @@ return require("packer").startup {
 				nnoremap { "<A-k>", "<cmd> lua require('Navigator').up()<CR>" }
 				nnoremap { "<A-l>", "<cmd> lua require('Navigator').right()<CR>" }
 				nnoremap { "<A-j>", "<cmd> lua require('Navigator').down()<CR>" }
-				-- nnoremap { "<A-p>", "<cmd> lua require('Navigator').previous()<CR>", }
+				nnoremap { "<A-\\>", "<cmd> lua require('Navigator').previous()<CR>" }
 			end,
 		}
 
@@ -525,13 +548,6 @@ return require("packer").startup {
 
 		use {
 			"phaazon/mind.nvim",
-			cmd = {
-				"MindOpenSmartProject",
-				"MindOpenProject",
-				"MindOpenMain",
-				"MindReloadState",
-				"MindClose",
-			},
 			setup = function()
 				nmap { "<F10>", "<cmd>MindOpenSmartProject<CR>", "Mind Main View" }
 			end,
@@ -558,7 +574,7 @@ return require("packer").startup {
 				Variable.g {
 					sonokai_better_performance = 1,
 					sonokai_disable_terminal_colors = 1,
-					sonokai_style = "shusia",
+					sonokai_style = "espresso",
 					sonokai_enable_italic = 1,
 					sonokai_diagnostic_virtual_text = "colored",
 					sonokai_disable_italic_comment = 0,
