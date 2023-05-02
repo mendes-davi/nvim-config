@@ -25,9 +25,7 @@ lsp.handlers["window/showMessage"] = function(_, result, ctx)
 	notify({ result.message }, lvl, {
 		title = "LSP | " .. client.name,
 		timeout = 10000,
-		keep = function()
-			return lvl == "ERROR" or lvl == "WARN"
-		end,
+		keep = false,
 	})
 end
 

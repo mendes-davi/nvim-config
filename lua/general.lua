@@ -53,6 +53,7 @@ Option.g {
 	-- highlight whitespace
 	list = false,
 	whichwrap = "<,>,[,],h,l",
+	wrap = false,
 
 	-- stylua: ignore
 	listchars = "nbsp:⦸,extends:»,precedes:«,tab:▷⋯,trail:•,space:·,eol:↲,conceal:┊",
