@@ -401,7 +401,7 @@ return require("packer").startup {
 					end,
 				}
 				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
-				vmap { "<A-/>", "<esc><cmd> lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
+				vmap { "<A-/>", "<esc><cmd> lockmarks lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
 				imap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
 			end,
 		}
