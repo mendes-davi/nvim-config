@@ -161,6 +161,18 @@ Augroup {
 					vim.bo.filetype = "json"
 				end,
 			},
+			{
+				"*.rpt",
+				function()
+					vim.bo.filetype = "markdown"
+				end,
+			},
+			{
+				"*.tcl",
+				function()
+					vim.bo.filetype = "xtcl"
+				end,
+			},
 		},
 	},
 	Misc = {
