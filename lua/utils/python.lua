@@ -33,7 +33,7 @@ M.get_stubs_path = function()
 end
 
 M.get_ranger_cmd = function()
-	if vim.loop.os_uname().sysname:find("Darwin", 1, true) and true then
+	if vim.uv.os_uname().sysname:find("Darwin", 1, true) and true then
 		local Path = require "plenary.path"
 		local ranger_cmd = Path:new(vim.api.nvim_eval "$CONDA_EXE")
 		ranger_cmd = ranger_cmd:parent() / "ranger"

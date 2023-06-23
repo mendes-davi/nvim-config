@@ -42,9 +42,9 @@ vim.api.nvim_create_autocmd("BufWritePost", {
 if os.getenv("TERM"):match "alacritty" ~= nil then
 	vim.api.nvim_create_autocmd({ "VimEnter" }, {
 		callback = function()
-			local pid, WINCH = vim.fn.getpid(), vim.loop.constants.SIGWINCH
+			local pid, WINCH = vim.fn.getpid(), vim.uv.constants.SIGWINCH
 			vim.defer_fn(function()
-				vim.loop.kill(pid, WINCH)
+				vim.uv.kill(pid, WINCH)
 			end, 100)
 		end,
 	})

@@ -20,7 +20,7 @@ end
 
 M.refine_filename = function(filename, cwd)
 	if cwd ~= nil then
-		cwd = vim.loop.cwd()
+		cwd = vim.uv.cwd()
 	end
 	local relative_filename = require("plenary.path"):new(filename):make_relative(cwd)
 	local name = relative_filename:match "[^/]*$"
