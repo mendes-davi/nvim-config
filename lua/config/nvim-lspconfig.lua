@@ -33,6 +33,11 @@ local mix_attach = function(client, bufnr)
 		buffer = bufnr,
 	}
 
+	-- inlayHint
+	if supports "textDocument/inlayHint" then
+		lsp.buf.inlay_hint(bufnr, true)
+	end
+
 	-- omnifunc
 	if supports "textDocument/completion" then
 		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
@@ -257,6 +262,9 @@ lsp.lua_ls.setup(coq.lsp_ensure_capabilities {
 			diagnostics = {
 				enable = true,
 				globals = { "vim", "describe", "it", "before_each", "after_each" },
+			},
+			hint = {
+				enable = true,
 			},
 			workspace = {
 				library = {
