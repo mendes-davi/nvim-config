@@ -317,24 +317,9 @@ return require("packer").startup {
 		use { "jbyuki/one-small-step-for-vimkind" }
 
 		use {
-			"dstein64/nvim-scrollview",
+			"echasnovski/mini.nvim",
 			branch = "main",
-			config = function()
-				Variable.g {
-					scrollview_hide_on_intersect = true,
-					scrollview_on_startup = true,
-					scrollview_excluded_filetypes = {
-						"NvimTree",
-						"packer",
-						"startify",
-						"fugitive",
-						"fugitiveblame",
-						"vista_kind",
-						"qf",
-						"help",
-					},
-				}
-			end,
+			config = [[require('config.mini')]],
 		}
 
 		-- statuscol
