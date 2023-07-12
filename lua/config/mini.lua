@@ -10,11 +10,12 @@ map.setup {
 		},
 	},
 	symbols = {
-		encode = map.gen_encode_symbols.dot "3x2",
+		encode = map.gen_encode_symbols.dot "4x2",
 	},
 	window = {
 		show_integration_count = false,
-		winblend = 00,
+		winblend = 0,
+		width = 7,
 	},
 }
 
@@ -24,7 +25,9 @@ Augroup {
 			"Colorscheme",
 			"*",
 			function()
-				vim.api.nvim_set_hl(0, "MiniMapNormal", { bg = "NONE" })
+				local curr_hi = vim.api.nvim_get_hl_by_name("MiniMapNormal", true)
+				local new_hi = vim.tbl_extend("force", {}, curr_hi, { bg = "None" })
+				vim.api.nvim_set_hl(0, "MiniMapNormal", new_hi)
 			end,
 		},
 	},
