@@ -330,7 +330,18 @@ return require("packer").startup {
 
 		-- quickfix
 		-- " https://github.com/kevinhwang91/nvim-bqf
-		use { "kevinhwang91/nvim-bqf", ft = "qf" }
+		use {
+			"kevinhwang91/nvim-bqf",
+			ft = "qf",
+			config = function()
+				require("bqf").setup {
+					preview = {
+						border = { "┏", "━", "┓", "┃", "┛", "━", "┗", "┃" },
+						winblend = 0,
+					},
+				}
+			end,
+		}
 
 		use {
 			"nvim-telescope/telescope.nvim",
