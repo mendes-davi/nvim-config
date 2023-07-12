@@ -143,6 +143,24 @@ lsp.vhdl_ls.setup(coq.lsp_ensure_capabilities {
 	cmd = { vim.fn.stdpath "data" .. "/vhdl_ls/bin/vhdl_ls" },
 })
 
+-- https://github.com/mathworks/MATLAB-language-server
+lsp.matlab_ls.setup(coq.lsp_ensure_capabilities {
+	on_attach = mix_attach,
+	capabilities = capabilities,
+	cmd = { "node", vim.fn.stdpath "data" .. "/MATLAB-language-server/out/index.js", "--stdio" },
+	root_dir = function(fname)
+		return util.root_pattern ".matlab_ls"(fname) or util.find_git_ancestor(fname)
+	end,
+	settings = {
+		matlab = {
+			indexWorkspace = true,
+			installPath = "",
+			matlabConnectionTiming = "onStart",
+			telemetry = false,
+		},
+	},
+})
+
 lsp.texlab.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
