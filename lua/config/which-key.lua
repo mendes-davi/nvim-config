@@ -143,6 +143,7 @@ local mappings = {
 
 	o = {
 		name = "Options",
+		m = { "<cmd>lua MiniMap.toggle()<CR>", "MiniMap" },
 		l = { require("utils.functions").toggle_opt("wo", "list"), "List" },
 		s = { require("utils.functions").toggle_opt("wo", "spell"), "Spell" },
 		w = { require("utils.functions").toggle_opt("o", "wrap"), "Wrap" },

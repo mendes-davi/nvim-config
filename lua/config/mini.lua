@@ -2,7 +2,7 @@ local map = require "mini.map"
 
 map.setup {
 	integrations = {
-        map.gen_integration.diagnostic(),
+		map.gen_integration.diagnostic(),
 		map.gen_integration.gitsigns {
 			add = "GitSignsAdd",
 			change = "GitSignsChange",
