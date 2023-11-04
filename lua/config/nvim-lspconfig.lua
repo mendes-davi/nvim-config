@@ -201,24 +201,15 @@ lsp.bashls.setup(coq.lsp_ensure_capabilities {
 })
 
 -- https://clangd.llvm.org/features.html
-require("clangd_extensions").setup {
-	server = {
-		settings = {
-			clangd = {
-				Index = { Background = "Build" },
-			},
+lsp.clangd.setup(coq.lsp_ensure_capabilities {
+	settings = {
+		clangd = {
+			Index = { Background = "Build" },
 		},
-		init_options = {
-			clangdFileStatus = true,
-		},
-		on_attach = mix_attach,
-		capabilities = coq.lsp_ensure_capabilities(capabilities),
 	},
-	extensions = {
-		autoSetHints = false,
-		inlay_hints = false,
-	},
-}
+	on_attach = mix_attach,
+	capabilities = capabilities,
+})
 
 -- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#ccls
 -- https://github.com/MaskRay/ccls/wiki
