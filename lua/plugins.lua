@@ -199,6 +199,8 @@ return require("packer").startup {
 			config = function()
 				local notify = require "notify"
 				notify.setup {
+					animate = false,
+					stages = "static",
 					-- For stages that change opacity this is treated as the highlight behind the window
 					-- Set this to either a highlight group or an RGB hex value e.g. "#000000"
 					background_colour = function()
