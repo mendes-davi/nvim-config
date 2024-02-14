@@ -570,9 +570,6 @@ return require("packer").startup {
 				hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
 			end,
 		}
-				}
-			end,
-		}
 
 		-- " colorscheme
 		use {
