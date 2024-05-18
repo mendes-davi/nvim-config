@@ -32,6 +32,10 @@ return require("packer").startup {
 			"JoosepAlviste/nvim-ts-context-commentstring",
 			event = "BufReadPost",
 			requires = { "nvim-treesitter/nvim-treesitter" },
+			config = function()
+				require("ts_context_commentstring").setup {}
+				vim.g.skip_ts_context_commentstring_module = true
+			end,
 		}
 
 		use {
@@ -116,6 +120,7 @@ return require("packer").startup {
 				Variable.g {
 					vista_default_executive = "nvim_lsp",
 					vista_disable_statusline = 1,
+					vista = { skip_once_flag = 1 },
 				}
 			end,
 			setup = function()
@@ -365,6 +370,18 @@ return require("packer").startup {
 				Variable.g {
 					rainbow_active = 1,
 				}
+			end,
+		}
+
+		use {
+			"johnfrankmorgan/whitespace.nvim",
+			config = function()
+				require("whitespace-nvim").setup {
+					highlight = "DiffDelete",
+					ignored_filetypes = { "TelescopePrompt", "Trouble", "help" },
+					ignore_terminal = true,
+				}
+				nmap { "<Leader><Leader>t", require("whitespace-nvim").trim, "Trim Whitespace" }
 			end,
 		}
 
