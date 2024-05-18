@@ -26,7 +26,6 @@ Augroup {
 			"*",
 			function()
 				local curr_hi = vim.api.nvim_get_hl(0, { name = "MiniMapNormal", link = false })
-				print(vim.inspect(curr_hi))
 				local new_hi = vim.tbl_extend("force", {}, curr_hi, { bg = "None" })
 				vim.api.nvim_set_hl(0, "MiniMapNormal", new_hi)
 			end,
