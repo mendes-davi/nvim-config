@@ -37,42 +37,6 @@ M.setup_diagnostic_sign = function()
 	end
 end
 
--- code from https://github.com/elianiva/dotfiles/blob/997703ea7cf3ebaf0bc1252b47b8c329929bca5e/nvim/lua/modules/statusline.lua#L134-L145
-M.lsp_progress = function()
-	local lsp = vim.lsp.util.get_progress_messages()[1]
-	if lsp then
-		local name = lsp.name or ""
-		local msg = lsp.message or ""
-		local percentage = lsp.percentage or 0
-		local title = lsp.title or ""
-		return string.format(" %%<%s: %s %s (%s%%%%) ", name, title, msg, percentage)
-	end
-
-	return ""
-end
-
-M.fix_imports = function()
-	local params = lsp.util.make_range_params()
-	params.context = {
-		diagnostics = {},
-		only = { "source.organizeImports" },
-	}
-
-	local responses = lsp.buf_request_sync(vim.fn.bufnr(), "textDocument/codeAction", params)
-
-	if not responses or vim.tbl_isempty(responses) then
-		return
-	end
-
-	for _, response in pairs(responses) do
-		for _, result in pairs(response.result or {}) do
-			if result.edit then
-				lsp.util.apply_workspace_edit(result.edit)
-			end
-		end
-	end
-end
-
 -- replace https://github.com/onsails/lspkind-nvim/blob/master/lua/lspkind/init.lua
 -- code from wiki https://github.com/neovim/nvim-lspconfig/wiki/UI-customization#completion-kinds
 M.icons = {

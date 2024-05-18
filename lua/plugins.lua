@@ -2,11 +2,7 @@
 
 require "utils"
 
--- lewis6991/impatient.nvim
-local ok, _ = pcall(require, "impatient")
-if not ok then
-	print(tostring(ok) .. " impatient")
-end
+vim.loader.enable()
 
 -- make the linter happy
 local use = require("packer").use
@@ -227,7 +223,7 @@ return require("packer").startup {
 		}
 
 		-- LuaSnip source for coq_nvim
-		use { "~/repo/coq_luasnip" }
+		-- use { "~/repo/coq_luasnip" }
 
 		-- complete plugin
 		use {
@@ -378,6 +374,17 @@ return require("packer").startup {
 		}
 
 		use {
+			"j-hui/fidget.nvim",
+			config = function()
+				require("fidget").setup {
+					notification = {
+						window = { winblend = 0 },
+					},
+				}
+			end,
+		}
+
+		use {
 			"mhartington/formatter.nvim",
 			config = [[require('config.formatter')]],
 		}
@@ -395,7 +402,7 @@ return require("packer").startup {
 					ignore = "^$",
 
 					pre_hook = function(ctx)
-						return require("ts_context_commentstring.internal").calculate_commentstring()
+						return vim.bo.commentstring
 					end,
 				}
 				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
@@ -571,6 +578,19 @@ return require("packer").startup {
 			end,
 		}
 
+		-- use {
+		-- 	"jose-elias-alvarez/null-ls.nvim",
+		-- 	ft = { "vhdl" },
+		-- 	config = function()
+		-- 		local null_ls = require "null-ls"
+		-- 		null_ls.setup {
+		-- 			sources = {
+		-- 				null_ls.builtins.formatting.emacs_vhdl_mode,
+		-- 			},
+		-- 		}
+		-- 	end,
+		-- }
+
 		-- " colorscheme
 		use {
 			"sainnhe/sonokai",
@@ -616,7 +636,6 @@ return require("packer").startup {
 		}
 
 		use { "tweekmonster/startuptime.vim", cmd = "StartupTime" }
-		use "lewis6991/impatient.nvim"
 	end,
 
 	config = {

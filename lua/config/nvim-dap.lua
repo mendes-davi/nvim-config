@@ -108,3 +108,5 @@ dap.configurations.matlab = {
 		noDebug = false,
 	},
 }
+
+-- dap.set_log_level "DEBUG"

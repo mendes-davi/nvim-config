@@ -122,6 +122,7 @@ Option.g {
 	-- searching
 	hlsearch = true, --"highlight searches
 	incsearch = true, --"incremental searching
+	inccommand = "split",
 	ignorecase = true, --"ignore case for searching
 	smartcase = true, --"do case-sensitive if there's a capital letter
 
@@ -180,6 +181,9 @@ Option.b {}
 -------------------------------------------------------------------
 nnoremap { "c", '"_c' }
 nnoremap { "<S-Tab>", "za" }
+
+-- Easily press ESC in terminal
+tnoremap { "<esc><esc>", "<c-\\><c-n>" }
 
 -- `<Tab>`/`<S-Tab>` to move between matches without leaving incremental search.
 -- Note dependency on `'wildcharm'` being set to `<C-z>` in order for this to
@@ -281,11 +285,8 @@ nnoremap { "gp", "`[v`]" }
 nnoremap { "<C-c>", "<C-c><cmd> echo<cr>" }
 
 --   " general
---   " nnoremap <BS> :set hlsearch! hlsearch?<cr>
---   " better nohl via https://vi.stackexchange.com/a/252
-nnoremap { "<BS>", '<cmd> let @/=""<cr>' }
---   " Press Space to turn off highlighting and clear any message already displayed.
---   " nnoremap <silent> <Space> :nohlsearch<Bar>:echo<CR>
+-- nnoremap { "<BS>", '<cmd> let @/=""<cr>' }
+nnoremap { "<BS>", vim.cmd.nohl }
 
 --   " leave without save
 map { "<A-s>", "<cmd> write<CR>", nowait = true }

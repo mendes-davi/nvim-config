@@ -17,6 +17,9 @@ local opts = {
 	auto_save_enabled = nil,
 	auto_restore_enabled = nil,
 	auto_session_suppress_dirs = nil,
+	pre_save_cmds = { "NvimTreeClose" },
+	save_extra_cmds = { "ScopeSaveState" },
+	post_restore_cmds = { "ScopeLoadState" },
 }
 
 require("auto-session").setup(opts)

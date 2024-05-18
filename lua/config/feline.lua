@@ -43,7 +43,7 @@ local my_highlights = {
 Augroup {
 	MyFelineHighlights = {
 		{
-			"ColorScheme",
+			"UIEnter",
 			"*",
 			function()
 				for _, val in pairs(my_highlights) do

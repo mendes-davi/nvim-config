@@ -51,9 +51,6 @@ require("nvim-treesitter.configs").setup {
 	rainbow = {
 		enable = false,
 	},
-	context_commentstring = {
-		enable = true,
-	},
 	incremental_selection = {
 		enable = true,
 		keymaps = {

@@ -64,7 +64,7 @@ require("barbar").setup {
 		"vista_kind",
 		"dap-repl",
 	},
-	exclude_name = { "package.json" },
+	exclude_name = { "package.json", "NvimTree_1" },
 
 	-- Enable/disable icons
 	icons = {
