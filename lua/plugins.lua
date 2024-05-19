@@ -112,6 +112,60 @@ return require("packer").startup {
 			config = [[require('config.nvim-tree')]],
 		}
 
+		use {
+			"ThePrimeagen/harpoon",
+			requires = "nvim-lua/plenary.nvim",
+			branch = "harpoon2",
+			config = function()
+				local harpoon = require "harpoon"
+				local extensions = require "harpoon.extensions"
+				harpoon:setup()
+				harpoon:extend(extensions.builtins.navigate_with_number())
+
+				nnoremap {
+					"<A-->",
+					function()
+						harpoon.ui:toggle_quick_menu(harpoon:list())
+					end,
+				}
+
+				nnoremap {
+					"<A-=>",
+					function()
+						harpoon:list():append()
+					end,
+				}
+				nnoremap {
+					"<A-+>",
+					function()
+						harpoon:list():remove()
+					end,
+				}
+
+				nnoremap {
+					"<A-S-p>",
+					function()
+						harpoon:list():prev()
+					end,
+				}
+				nnoremap {
+					"<A-S-n>",
+					function()
+						harpoon:list():next()
+					end,
+				}
+
+				for _, idx in ipairs { 1, 2, 3, 4, 5 } do
+					nnoremap {
+						string.format("<space>%d", idx),
+						function()
+							harpoon:list():select(idx)
+						end,
+					}
+				end
+			end,
+		}
+
 		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
 		use {
 			"liuchengxu/vista.vim",
