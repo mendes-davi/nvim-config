@@ -344,7 +344,7 @@ return require("packer").startup {
 		use {
 			"rcarriga/nvim-dap-ui",
 			module = "dapui",
-			requires = { "mfussenegger/nvim-dap" },
+			requires = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 			config = function()
 				require("dapui").setup {
 					layouts = {
