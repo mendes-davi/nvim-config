@@ -7,7 +7,7 @@
 -- :DeleteSession ~/my/custom/path " deleetes a session based on the provided path.
 -- :Autosession search
 -- :Autosession delete
-vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal"
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
 
 local opts = {
 	log_level = "info",

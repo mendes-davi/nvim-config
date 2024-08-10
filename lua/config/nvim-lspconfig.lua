@@ -35,7 +35,7 @@ local mix_attach = function(client, bufnr)
 
 	-- inlayHint
 	if supports "textDocument/inlayHint" then
-		vim.lsp.inlay_hint.enable(bufnr, true)
+		vim.lsp.inlay_hint.enable(true)
 	end
 
 	-- omnifunc

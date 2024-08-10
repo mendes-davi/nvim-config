@@ -17,6 +17,7 @@ require("nvim-treesitter.configs").setup {
 		"python",
 		"query",
 		"rust",
+		"ruby",
 		"toml",
 		"verilog",
 		"vim",
@@ -134,9 +135,11 @@ parser_config.matlab = {
 -- VHDL
 parser_config.vhdl = {
 	install_info = {
-		url = "https://github.com/alemuller/tree-sitter-vhdl.git",
-		files = { "src/parser.c" },
-		branch = "main",
+		url = "https://github.com/jpt13653903/tree-sitter-vhdl.git",
+		files = { "src/parser.c", "src/scanner.c" },
+		branch = "develop",
+		generate_requires_npm = false,
+		requires_generate_from_grammar = false,
 	},
-	filetype = { "vhdl", "vhd" },
+	filetype = "vhdl",
 }
