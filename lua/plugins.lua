@@ -166,6 +166,48 @@ return require("packer").startup {
 		-- 	end,
 		-- }
 
+		use {
+			"nvim-neotest/neotest",
+			requires = {
+				"olimorris/neotest-rspec",
+				"nvim-neotest/nvim-nio",
+				"nvim-lua/plenary.nvim",
+				"antoinemadec/FixCursorHold.nvim",
+				"nvim-treesitter/nvim-treesitter",
+			},
+			config = function()
+				require("neotest").setup {
+					adapters = {
+						require "neotest-rspec" {
+							rspec_cmd = function()
+								return vim.tbl_flatten {
+									"bundle",
+									"exec",
+									"rspec",
+								}
+							end,
+						},
+					},
+				}
+
+				Augroup {
+					NeotestConfig = {
+						{
+							"FileType",
+							"neotest-output*",
+							function(opts)
+								vim.keymap.set("n", "q", function()
+									pcall(vim.api.nvim_win_close, 0, true)
+								end, {
+									buffer = opts.buf,
+								})
+							end,
+						},
+					},
+				}
+			end,
+		}
+
 		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
 		use {
 			"liuchengxu/vista.vim",

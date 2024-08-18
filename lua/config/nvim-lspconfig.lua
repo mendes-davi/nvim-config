@@ -290,3 +290,8 @@ lsp.jsonls.setup(coq.lsp_ensure_capabilities {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 })
+
+lsp.solargraph.setup(coq.lsp_ensure_capabilities {
+	on_attach = mix_attach,
+	capabilities = capabilities,
+})
