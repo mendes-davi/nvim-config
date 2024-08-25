@@ -106,16 +106,6 @@ return require("packer").startup {
 		use {
 			"kyazdani42/nvim-tree.lua",
 			requires = { "kyazdani42/nvim-web-devicons" },
-			cmd = {
-				"NvimTreeToggle",
-				"NvimTreeOpen",
-				"NvimTreeClose",
-				"NvimTreeFocus",
-				"NvimTreeFindFileToggle",
-				"NvimTreeResize",
-				"NvimTreeCollapse",
-				"NvimTreeCollapseKeepBuffers",
-			},
 			setup = function()
 				map { "<F4>", "<cmd> NvimTreeToggle<CR>", "NvimTree" }
 			end,
