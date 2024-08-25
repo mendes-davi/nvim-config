@@ -41,7 +41,17 @@ return require("packer").startup {
 		use {
 			"tiagovla/scope.nvim",
 			config = function()
-				require("scope").setup()
+				require("scope").setup {
+					hooks = {
+						pre_tab_leave = function()
+							vim.api.nvim_exec_autocmds("User", { pattern = "ScopeTabLeavePre" })
+						end,
+
+						post_tab_enter = function()
+							vim.api.nvim_exec_autocmds("User", { pattern = "ScopeTabEnterPost" })
+						end,
+					},
+				}
 			end,
 		}
 
@@ -607,9 +617,8 @@ return require("packer").startup {
 		}
 
 		use {
-			"rmagatti/auto-session",
-			requires = "rmagatti/session-lens",
-			config = [[require('config.auto-session')]],
+			"olimorris/persisted.nvim",
+			config = [[require('config.persisted')]],
 		}
 
 		use {

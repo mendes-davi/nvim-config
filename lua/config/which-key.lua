@@ -161,7 +161,7 @@ local mappings = {
 		C = { "<cmd>Telescope commands<cr>", "Commands" },
 		F = { "<cmd>NvimTreeFindFile<CR>", "Find in NvimTree" },
 		T = { "<cmd>TodoTrouble<CR>", "Find TODOs" },
-		S = { "<cmd>SearchSession<CR>", "Search Sessions", silent = true },
+		S = { "<cmd>SessionSelect<CR>", "Search Sessions", silent = true },
 		["?"] = { "<cmd>Telescope current_buffer_fuzzy_find<cr>", "Fuzzy Find in Buffer" },
 		[":"] = { "<cmd>Telescope command_history<cr>", "Command History" },
 	},
