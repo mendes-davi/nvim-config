@@ -3,6 +3,22 @@ nnoremap { "<F6>", ":lua require'dap'.step_over()<CR>", "DAP Step Over" }
 nnoremap { "<F7>", ":lua require'dap'.step_into()<CR>", "DAP Step Into" }
 nnoremap { "<F8>", ":lua require'dap'.step_out()<CR>", "DAP Step Out" }
 
+Augroup {
+	DAP = {
+		{
+			"FileType",
+			"dap-repl",
+			function(opts)
+				vim.keymap.set("n", "q", function()
+					pcall(vim.api.nvim_win_close, 0, true)
+				end, {
+					buffer = opts.buf,
+				})
+			end,
+		},
+	},
+}
+
 -- nvim-dap setup
 local dap = require "dap"
 -- nvim-dap uses three signs:
