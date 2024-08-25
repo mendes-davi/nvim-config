@@ -208,21 +208,7 @@ return require("packer").startup {
 			end,
 		}
 
-		-- vista.vim: A tagbar alternative that supports LSP symbols and async processing
-		use {
-			"liuchengxu/vista.vim",
-			cmd = "Vista",
-			config = function()
-				Variable.g {
-					vista_default_executive = "nvim_lsp",
-					vista_disable_statusline = 1,
-					vista = { skip_once_flag = 1 },
-				}
-			end,
-			setup = function()
-				nnoremap { "<F3>", "<cmd> Vista!!<CR>", "Vista Outline" }
-			end,
-		}
+		-- nnoremap { "<F3>", "<cmd> Vista!!<CR>", "Vista Outline" }
 
 		-- support split window resizing and moving
 		-- resize windows continuously by using typical keymaps of Vim. (h, j, k, l)

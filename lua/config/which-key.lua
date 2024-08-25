@@ -193,7 +193,7 @@ local mappings = {
 		i = { "<cmd>LspInfo<cr>", "Info" },
 		l = { require("utils.functions").toggle_diagnostics_loclist, "Loclist Diagnostics" },
 		o = { "<cmd>Vista!!<cr>", "Vista Outline" },
-		r = { "<cmd>TroubleToggle lsp_references<cr>", "References" },
+		r = { "<cmd>Trouble lsp_references toggle<cr>", "References" },
 		R = { "<cmd>lua vim.lsp.buf.rename()<cr>", "Rename" },
 		s = { "<cmd>Telescope lsp_document_symbols<cr>", "Document Symbols" },
 		S = { "<cmd>Telescope lsp_dynamic_workspace_symbols<cr>", "Workspace Symbols" },
@@ -205,7 +205,7 @@ local mappings = {
 	-- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
 	s = { "<cmd>normal! mz[s1z=`z<CR>", "Fix Last Misspelled Word" },
 	b = { "<cmd>lua require('telescope.builtin').buffers()<cr>", "Buffers" },
-	x = { "<cmd>TroubleToggle<CR>", "Toggle Trouble" },
+	x = { "<cmd>Trouble diagnostics toggle<CR>", "Toggle Trouble" },
 
 	E = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Diagnostics" },
 	U = { "<cmd>MundoToggle<cr>", "Toggle Mundo" },
