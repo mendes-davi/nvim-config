@@ -26,10 +26,10 @@ local dap = require "dap"
 -- `DapLogPoint` which defaults to `L` and is for log-points
 -- `DapStopped` which defaults to `→` and is used to indicate the position where the debugee is stopped.
 
-vim.fn.sign_define("DapBreakpoint", { text = "🛑", texthl = "", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointCondition", { text = "🟥", texthl = "", linehl = "", numhl = "" })
-vim.fn.sign_define("DapLogPoint", { text = "✳️ ", texthl = "", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "⭕", texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpoint", { text = [[🛑]], texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapBreakpointCondition", { text = [[🟥]], texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapLogPoint", { text = [[✳️]], texthl = "", linehl = "", numhl = "" })
+vim.fn.sign_define("DapStopped", { text = [[⭕]], texthl = "", linehl = "", numhl = "" })
 
 dap.defaults.fallback.terminal_win_cmd = "tabnew"
 -- dap.defaults.fallback.force_external_terminal = true

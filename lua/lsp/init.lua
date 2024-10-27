@@ -16,19 +16,19 @@ M.setup_diagnostic_sign = function()
 	local group = {
 		err_group = {
 			highlight = "DiagnosticSignError",
-			sign = "❌",
+			sign = [[❌]],
 		},
 		warn_group = {
 			highlight = "DiagnosticSignWarn",
-			sign = "⚠️ ",
+			sign = [[⚠️]],
 		},
 		hint_group = {
 			highlight = "DiagnosticSignHint",
-			sign = "💡",
+			sign = [[💡]],
 		},
 		infor_group = {
 			highlight = "DiagnosticSignInfo",
-			sign = "ℹ️",
+			sign = [[ℹ️]],
 		},
 	}
 
