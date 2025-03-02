@@ -110,8 +110,8 @@ local mappings = {
 
 	T = {
 		name = "Treesitter",
-		h = { "<cmd>TSCaptureUnderCursor<CR>", "TS Highlight" },
-		p = { "<cmd>TSPlaygroundToggle<CR>", "TS Playground" },
+		h = { "<cmd>Inspect<CR>", "TS Highlight" },
+		p = { "<cmd>InspectTree<CR>", "TS Playground" },
 	},
 
 	t = {

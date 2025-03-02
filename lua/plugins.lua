@@ -23,18 +23,12 @@ return require("packer").startup {
 		}
 
 		use {
-			"nvim-treesitter/playground",
-			requires = { "nvim-treesitter/nvim-treesitter" },
-			cmd = { "TSPlaygroundToggle", "TSNodeUnderCursor", "TSCaptureUnderCursor" },
-		}
-
-		use {
 			"JoosepAlviste/nvim-ts-context-commentstring",
-			event = "BufReadPost",
 			requires = { "nvim-treesitter/nvim-treesitter" },
 			config = function()
-				require("ts_context_commentstring").setup {}
-				vim.g.skip_ts_context_commentstring_module = true
+				require("ts_context_commentstring").setup {
+					enable_autocmd = false,
+				}
 			end,
 		}
 
@@ -111,60 +105,6 @@ return require("packer").startup {
 			end,
 			config = [[require('config.nvim-tree')]],
 		}
-
-		-- use {
-		-- 	"ThePrimeagen/harpoon",
-		-- 	requires = "nvim-lua/plenary.nvim",
-		-- 	branch = "harpoon2",
-		-- 	config = function()
-		-- 		local harpoon = require "harpoon"
-		-- 		local extensions = require "harpoon.extensions"
-		-- 		harpoon:setup()
-		-- 		harpoon:extend(extensions.builtins.navigate_with_number())
-
-		-- 		nnoremap {
-		-- 			"<A-->",
-		-- 			function()
-		-- 				harpoon.ui:toggle_quick_menu(harpoon:list())
-		-- 			end,
-		-- 		}
-
-		-- 		nnoremap {
-		-- 			"<A-=>",
-		-- 			function()
-		-- 				harpoon:list():append()
-		-- 			end,
-		-- 		}
-		-- 		nnoremap {
-		-- 			"<A-+>",
-		-- 			function()
-		-- 				harpoon:list():remove()
-		-- 			end,
-		-- 		}
-
-		-- 		nnoremap {
-		-- 			"<A-S-p>",
-		-- 			function()
-		-- 				harpoon:list():prev()
-		-- 			end,
-		-- 		}
-		-- 		nnoremap {
-		-- 			"<A-S-n>",
-		-- 			function()
-		-- 				harpoon:list():next()
-		-- 			end,
-		-- 		}
-
-		-- 		for _, idx in ipairs { 1, 2, 3, 4, 5 } do
-		-- 			nnoremap {
-		-- 				string.format("<space>%d", idx),
-		-- 				function()
-		-- 					harpoon:list():select(idx)
-		-- 				end,
-		-- 			}
-		-- 		end
-		-- 	end,
-		-- }
 
 		use {
 			"nvim-neotest/neotest",
@@ -399,8 +339,6 @@ return require("packer").startup {
 			end,
 		}
 
-		use { "jbyuki/one-small-step-for-vimkind" }
-
 		use {
 			"echasnovski/mini.nvim",
 			branch = "main",
@@ -500,9 +438,7 @@ return require("packer").startup {
 					-- ignore empty lines for comments
 					ignore = "^$",
 
-					pre_hook = function(ctx)
-						return vim.bo.commentstring
-					end,
+					pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 				}
 				nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
 				vmap { "<A-/>", "<esc><cmd> lockmarks lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
@@ -650,14 +586,6 @@ return require("packer").startup {
 		}
 
 		use {
-			"phaazon/mind.nvim",
-			setup = function()
-				nmap { "<F10>", "<cmd>MindOpenSmartProject<CR>", "Mind Main View" }
-			end,
-			config = [[require('config.mind')]],
-		}
-
-		use {
 			"lukas-reineke/indent-blankline.nvim",
 			config = function()
 				require("ibl").setup {
@@ -675,19 +603,6 @@ return require("packer").startup {
 				hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
 			end,
 		}
-
-		-- use {
-		-- 	"jose-elias-alvarez/null-ls.nvim",
-		-- 	ft = { "vhdl" },
-		-- 	config = function()
-		-- 		local null_ls = require "null-ls"
-		-- 		null_ls.setup {
-		-- 			sources = {
-		-- 				null_ls.builtins.formatting.emacs_vhdl_mode,
-		-- 			},
-		-- 		}
-		-- 	end,
-		-- }
 
 		-- " colorscheme
 		use {
