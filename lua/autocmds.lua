@@ -1,3 +1,46 @@
+-- Augroup {
+-- 	SetupEditor = {
+-- 		["FileType"] = {
+-- 			{
+-- 				"vhdl",
+-- 				function()
+-- 					vim.opt_local.foldmethod = "expr"
+-- 					vim.wo.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+-- 					vim.opt_local.list = true
+-- 					vim.bo.expandtab = false
+-- 					vim.bo.tabstop = 4
+-- 					vim.bo.softtabstop = 4
+-- 					vim.bo.shiftwidth = 4
+-- 				end,
+-- 			},
+-- 			{
+-- 				"ruby",
+-- 				function()
+-- 					vim.wo.foldmethod = "indent"
+-- 					vim.wo.wrap = true
+
+-- 					vim.bo.expandtab = false
+-- 					vim.bo.tabstop = 4
+-- 					vim.bo.softtabstop = 4
+-- 					vim.bo.shiftwidth = 4
+-- 				end,
+-- 			},
+-- 			{
+-- 				"xtcl",
+-- 				function()
+-- 					vim.wo.foldmethod = "indent"
+-- 					vim.wo.wrap = true
+
+-- 					vim.bo.expandtab = false
+-- 					vim.bo.tabstop = 4
+-- 					vim.bo.softtabstop = 4
+-- 					vim.bo.shiftwidth = 4
+-- 				end,
+-- 			},
+-- 		},
+-- 	},
+-- }
+
 Augroup {
 	AutoResizeSplits = {
 		{

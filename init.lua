@@ -56,6 +56,10 @@ vim.g.maplocalleader = ","
 -- log file location: ~/.cache/nvim/lsp.log
 -- vim.lsp.set_log_level("debug")
 
+if vim.g.neovide then
+	require "neovide"
+end
+
 require "utils"
 
 require "general"
