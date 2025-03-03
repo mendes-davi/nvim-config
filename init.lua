@@ -35,8 +35,12 @@ end
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
--- log file location: ~/.cache/nvim/lsp.log
--- vim.lsp.set_log_level("debug")
+local _lsp_debug = os.getenv "LSP_DEBUG" or false
+if _lsp_debug then
+	vim.lsp.set_log_level "trace"
+	require("vim.lsp.log").set_format_func(vim.inspect)
+	print [[You can find your log at $HOME/.local/state/nvim/lsp.log]]
+end
 
 if vim.g.neovide then
 	require "neovide"

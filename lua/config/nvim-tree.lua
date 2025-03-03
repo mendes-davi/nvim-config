@@ -52,6 +52,9 @@ require("nvim-tree").setup {
 		auto_open = false,
 	},
 	sync_root_with_cwd = true,
+	view = {
+        width = 55,
+    },
 	actions = {
 		open_file = {
 			quit_on_open = true,
@@ -70,13 +73,14 @@ require("nvim-tree").setup {
 		enable = false,
 	},
 	renderer = {
+        indent_width = 1,
 		special_files = { "go.mod", "Cargo.toml", "README.md", "Makefile", "MAKEFILE" },
 		indent_markers = {
 			enable = true,
 		},
 	},
 	diagnostics = {
-		enable = true,
+		enable = false,
 		show_on_dirs = false,
 		show_on_open_dirs = true,
 	},

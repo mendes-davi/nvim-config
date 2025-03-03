@@ -17,11 +17,10 @@ return require("lazy").setup {
 	{
 		"JoosepAlviste/nvim-ts-context-commentstring",
 		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		config = function()
-			require("ts_context_commentstring").setup {
-				enable_autocmd = false,
-			}
-		end,
+		main = "ts_context_commentstring",
+		opts = {
+			enable_autocmd = false,
+		},
 	},
 
 	{
@@ -44,12 +43,11 @@ return require("lazy").setup {
 	{
 		"lervag/vimtex",
 		ft = { "tex", "latex", "bib" },
-		config = function()
+		init = function()
 			local viewer = "zathura"
 			if vim.fn.has "mac" == 1 then
 				viewer = "skim"
 			end
-
 			Variable.g {
 				vimtex_quickfix_mode = 0,
 				vimtex_view_method = viewer,
@@ -65,6 +63,7 @@ return require("lazy").setup {
 				},
 			}
 		end,
+		opts = {},
 	},
 
 	{
@@ -92,15 +91,19 @@ return require("lazy").setup {
 	},
 
 	{
+		lazy = true,
 		"kyazdani42/nvim-tree.lua",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = function()
+		init = function()
 			map { "<F4>", "<cmd> NvimTreeToggle<CR>", "NvimTree" }
+		end,
+		config = function()
 			require "config.nvim-tree"
 		end,
 	},
 
 	{
+		lazy = true,
 		"nvim-neotest/neotest",
 		dependencies = {
 			"olimorris/neotest-rspec",
@@ -123,7 +126,8 @@ return require("lazy").setup {
 					},
 				},
 			}
-
+		end,
+		init = function()
 			Augroup {
 				NeotestConfig = {
 					{
@@ -147,7 +151,7 @@ return require("lazy").setup {
 	{
 		"simeji/winresizer",
 		keys = "<C-e>",
-		config = function()
+		init = function()
 			Variable.g {
 				winresizer_start_key = "<C-e>",
 			}
@@ -156,7 +160,7 @@ return require("lazy").setup {
 
 	{
 		"junegunn/vim-easy-align",
-		config = function()
+		init = function()
 			-- Start interactive EasyAlign for a motion/text object (e.g. gaip)
 			nmap { "ga", "<Plug>(EasyAlign)" }
 			-- Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -167,8 +171,7 @@ return require("lazy").setup {
 	-- https://simnalamburt.github.io/vim-mundo/#configuration
 	{
 		"simnalamburt/vim-mundo",
-		cmd = { "MundoHide", "MundoShow", "MundoToggle" },
-		config = function()
+		init = function()
 			nnoremap { "<F9>", "<cmd> MundoToggle<CR>", "Toggle Mundo" }
 			require "config.vim-mundo"
 		end,
@@ -195,6 +198,7 @@ return require("lazy").setup {
 	-- https://github.com/folke/lsp-trouble.nvim
 	{
 		"folke/lsp-trouble.nvim",
+		cmd = "Trouble",
 		config = function()
 			require "config.lsp-trouble"
 		end,
@@ -246,7 +250,7 @@ return require("lazy").setup {
 		"ms-jpq/coq_nvim",
 		branch = "coq",
 		dependencies = { "windwp/nvim-autopairs" },
-		config = function()
+		init = function()
 			Variable.g {
 				coq_settings = {
 					display = { icons = { mappings = require("lsp").icons } },
@@ -263,6 +267,8 @@ return require("lazy").setup {
 					},
 				},
 			}
+		end,
+		config = function()
 			require "config.coq"
 		end,
 	},
@@ -276,6 +282,7 @@ return require("lazy").setup {
 	},
 
 	{
+		lazy = true,
 		"mfussenegger/nvim-dap",
 		dependencies = { "theHamsta/nvim-dap-virtual-text" },
 		config = function()
@@ -284,6 +291,7 @@ return require("lazy").setup {
 	},
 
 	{
+		lazy = true,
 		"theHamsta/nvim-dap-virtual-text",
 		config = function()
 			require("nvim-dap-virtual-text").setup {
@@ -304,8 +312,8 @@ return require("lazy").setup {
 	},
 
 	{
+		lazy = true,
 		"rcarriga/nvim-dap-ui",
-		module = "dapui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
 		config = function()
 			require("dapui").setup {
@@ -386,7 +394,7 @@ return require("lazy").setup {
 
 	{
 		"luochen1990/rainbow",
-		config = function()
+		init = function()
 			Variable.g {
 				rainbow_active = 1,
 			}
@@ -413,17 +421,6 @@ return require("lazy").setup {
 	},
 
 	{
-		"j-hui/fidget.nvim",
-		config = function()
-			require("fidget").setup {
-				notification = {
-					window = { winblend = 0 },
-				},
-			}
-		end,
-	},
-
-	{
 		"mhartington/formatter.nvim",
 		config = function()
 			require "config.formatter"
@@ -436,7 +433,6 @@ return require("lazy").setup {
 
 	{
 		"numToStr/Comment.nvim",
-		event = "BufRead",
 		config = function()
 			require("Comment").setup {
 				-- ignore empty lines for comments
@@ -444,6 +440,8 @@ return require("lazy").setup {
 
 				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 			}
+        end,
+        init = function()
 			nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
 			vmap { "<A-/>", "<esc><cmd> lockmarks lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
 			imap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
@@ -460,7 +458,6 @@ return require("lazy").setup {
 
 	{
 		"mfussenegger/nvim-lint",
-		event = "BufRead",
 		config = function()
 			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>", "Lint" }
 			require "config.nvim-lint"
@@ -469,7 +466,6 @@ return require("lazy").setup {
 
 	{
 		"lewis6991/gitsigns.nvim",
-		event = "BufRead",
 		dependencies = { "nvim-lua/plenary.nvim" },
 		config = function()
 			require "config.gitsigns"
@@ -506,8 +502,10 @@ return require("lazy").setup {
 	{
 		"folke/zen-mode.nvim",
 		cmd = { "ZenMode" },
-		config = function()
+		init = function()
 			nnoremap { "<A-d>", "<cmd> ZenMode<CR>" }
+		end,
+		config = function()
 			require("zen-mode").setup {
 				plugins = { tmux = { enabled = true }, alacritty = { enabled = true, font = "13" } },
 			}
@@ -516,11 +514,12 @@ return require("lazy").setup {
 
 	{
 		"numToStr/Navigator.nvim",
-		config = function()
-			require("Navigator").setup {
-				auto_save = "current",
-				disable_on_zoom = false,
-			}
+		lazy = true,
+		opts = {
+			auto_save = "current",
+			disable_on_zoom = false,
+		},
+		init = function()
 			nnoremap { "<A-h>", "<cmd> lua require('Navigator').left()<CR>" }
 			nnoremap { "<A-k>", "<cmd> lua require('Navigator').up()<CR>" }
 			nnoremap { "<A-l>", "<cmd> lua require('Navigator').right()<CR>" }
@@ -531,23 +530,52 @@ return require("lazy").setup {
 
 	{
 		"bfredl/nvim-miniyank",
-		config = function()
+		init = function()
 			require "config.nvim-miniyank"
 		end,
 	},
 
 	{
 		"olimorris/persisted.nvim",
-		config = function()
-			require "config.persisted"
+		opts = {
+			save_dir = vim.fn.expand(vim.fn.stdpath "data" .. "/sessions/"),
+			use_git_branch = true,
+			autostart = true,
+			autoload = true,
+			on_autoload_no_session = function()
+				vim.notify "No existing session to load :("
+			end,
+		},
+		init = function()
+			Augroup {
+				Persisted = {
+					{
+						"User",
+						"PersistedSavePre",
+						function()
+							vim.api.nvim_exec_autocmds("User", { pattern = "SessionSavePre" })
+							pcall(vim.cmd, "ScopeSaveState")
+						end,
+					},
+					{
+						"User",
+						"PersistedLoadPost",
+						function()
+							pcall(vim.cmd, "ScopeLoadState")
+						end,
+					},
+				},
+			}
 		end,
 	},
 
 	{
 		"kevinhwang91/rnvimr",
-		config = function()
+		cmd = { "RnvimrToggle", "RnvimrResize", "RnvimrStartBackground" },
+		init = function()
 			nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
 			tnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
+
 			Variable.g {
 				rnvimr_ranger_cmd = { require("utils.python").get_ranger_cmd(), "--cmd=set draw_borders both" },
 				rnvimr_enable_ex = 1,
@@ -580,14 +608,10 @@ return require("lazy").setup {
 			"PerfPickEvent",
 			"PerfToggleAnnotations",
 		},
-
 		config = function()
 			local perfanno = require "perfanno"
 			local util = require "perfanno.util"
-
-			perfanno.setup {
-				-- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300"
-				line_highlights = util.make_bg_highlights("#37343A", "#CC3300", 4),
+			perfanno.setup { -- Creates a 10-step RGB color gradient beween bgcolor and "#CC3300" line_highlights = util.make_bg_highlights("#37343A", "#CC3300", 4),
 				vt_highlight = util.make_fg_highlight "#CC3300",
 			}
 		end,
@@ -595,6 +619,7 @@ return require("lazy").setup {
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
 		config = function()
 			require("ibl").setup {
 				indent = {
@@ -614,7 +639,8 @@ return require("lazy").setup {
 
 	{
 		"sainnhe/sonokai",
-		config = function()
+		priority = 1000,
+		init = function()
 			Variable.g {
 				sonokai_better_performance = 1,
 				sonokai_disable_terminal_colors = 1,
@@ -625,6 +651,8 @@ return require("lazy").setup {
 				sonokai_transparent_background = 1,
 				-- sonokai_current_word = "underline",
 			}
+		end,
+		config = function()
 			vim.go.background = "dark"
 			vim.cmd [[ silent! colorscheme sonokai ]]
 			vim.cmd [[ hi PmenuSel blend=0 ]]
@@ -633,8 +661,8 @@ return require("lazy").setup {
 
 	{
 		"sainnhe/everforest",
-		opt = true,
-		config = function()
+		lazy = true,
+		init = function()
 			Variable.g {
 				everforest_better_performance = 1,
 				everforest_disable_terminal_colors = 1,
@@ -645,9 +673,11 @@ return require("lazy").setup {
 				everforest_disable_italic_comment = 0,
 				everforest_transparent_background = 1,
 			}
-			-- vim.go.background = "dark"
+		end,
+		config = function()
+			vim.go.background = "dark"
 			-- vim.cmd [[ silent! colorscheme everforest ]]
-			-- vim.cmd [[ hi PmenuSel blend=0]]
+			vim.cmd [[ hi PmenuSel blend=0]]
 		end,
 	},
 
