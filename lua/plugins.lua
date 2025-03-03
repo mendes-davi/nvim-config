@@ -5,6 +5,12 @@ require "utils"
 vim.loader.enable()
 
 return require("lazy").setup {
+
+	{
+		"nvim-treesitter/nvim-treesitter-context",
+		opts = {},
+	},
+
 	{
 		"nvim-treesitter/nvim-treesitter",
 		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
@@ -91,7 +97,6 @@ return require("lazy").setup {
 	},
 
 	{
-		lazy = true,
 		"kyazdani42/nvim-tree.lua",
 		dependencies = { "kyazdani42/nvim-web-devicons" },
 		init = function()
@@ -146,7 +151,32 @@ return require("lazy").setup {
 		end,
 	},
 
-	-- nnoremap { "<F3>", "<cmd> Vista!!<CR>", "Vista Outline" }
+	{
+		"stevearc/aerial.nvim",
+		init = function()
+			nnoremap { "<F3>", "<cmd> AerialToggle<CR>", "Aerial Outline" }
+		end,
+		opts = {
+			attach_mode = "global",
+			backends = { "lsp", "treesitter", "markdown", "man" },
+			show_guides = true,
+			layout = {
+				resize_to_content = false,
+				win_opts = {
+					winhl = "Normal:NormalFloat,FloatBorder:NormalFloat,SignColumn:SignColumnSB",
+					signcolumn = "yes",
+					statuscolumn = " ",
+				},
+			},
+			filter_kind = false,
+			guides = {
+				mid_item = "├╴",
+				last_item = "└╴",
+				nested_top = "│ ",
+				whitespace = "  ",
+			},
+		},
+	},
 
 	{
 		"simeji/winresizer",
@@ -440,8 +470,8 @@ return require("lazy").setup {
 
 				pre_hook = require("ts_context_commentstring.integrations.comment_nvim").create_pre_hook(),
 			}
-        end,
-        init = function()
+		end,
+		init = function()
 			nmap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }
 			vmap { "<A-/>", "<esc><cmd> lockmarks lua require('Comment.api').toggle.linewise(vim.fn.visualmode())<CR>" }
 			imap { "<A-/>", "<cmd> lua require('Comment.api').toggle.linewise.current()<CR>" }

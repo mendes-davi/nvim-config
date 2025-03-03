@@ -140,6 +140,7 @@ local mappings = {
 		w = { require("utils.functions").toggle_opt("o", "wrap"), "Wrap" },
 		r = { require("utils.functions").toggle_opt("o", "relativenumber"), "Relative" },
 		I = { "<cmd>IndentBlanklineToggle<CR>", "Indent Blankline" },
+		c = { "<cmd>lua require('treesitter-context').toggle()<CR>", "TS Context" },
 	},
 
 	f = {

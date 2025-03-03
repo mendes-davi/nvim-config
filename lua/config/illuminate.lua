@@ -5,7 +5,10 @@ require("illuminate").configure {
 		"regex",
 	},
 	delay = 100,
-	filetype_overrides = {},
+	large_file_cutoff = 2000,
+	filetype_overrides = {
+		providers = { "lsp" },
+	},
 	filetypes_denylist = {
 		"alpha",
 		"NvimTree",

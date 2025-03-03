@@ -36,8 +36,8 @@ Option.g {
 	-- enable cursorline
 	cursorline = true,
 
-    -- for mksession
-    sessionoptions = "buffers,globals,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
+	-- for mksession
+	sessionoptions = "buffers,globals,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions",
 
 	-- for simnalamburt/vim-mundo
 	-- enable persistent undo so that undo history persists across vim sessions
