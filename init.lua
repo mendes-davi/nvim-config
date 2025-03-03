@@ -1,42 +1,24 @@
 --
 -- bootstrapping
 --
-local pluginman_opt = true
-local pluginman_repo = "https://github.com/wbthomason/packer.nvim"
 local print_err = vim.api.nvim_err_writeln
-local execute = vim.api.nvim_command
 
 local bootstrap = function()
-	local fn = vim.fn
-
-	-- opt:   site/pack/packer/opt/packer.nvim
-	-- start: site/pack/packer/start/packer.nvim
-	local install_path = fn.stdpath "data" .. "/site/pack/packer/start/packer.nvim"
-	if pluginman_opt then
-		install_path = fn.stdpath "data" .. "/site/pack/packer/opt/packer.nvim"
+	local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
+	if not vim.loop.fs_stat(lazypath) then
+		vim.fn.system {
+			"git",
+			"clone",
+			"--filter=blob:none",
+			"https://github.com/folke/lazy.nvim.git",
+			"--branch=stable", -- latest stable release
+			lazypath,
+		}
 	end
-
-	if fn.empty(fn.glob(install_path)) > 0 then
-		print("packer.nvim not found in " .. install_path .. ", try install ...")
-		fn.system { "git", "clone", pluginman_repo, install_path }
-		if pluginman_opt then
-			execute "packadd packer.nvim"
-		end
-		print("packer.nvim installed to " .. install_path)
-	end
+	vim.opt.rtp:prepend(lazypath)
 end
 
 bootstrap()
-
--- Only required if you have packer in your `opt` pack
-if pluginman_opt then
-	execute "packadd packer.nvim"
-end
-
-vim.api.nvim_create_autocmd("BufWritePost", {
-	pattern = { "general.lua", "plugins.lua" },
-	command = "source <afile> | PackerCompile",
-})
 
 -- https://github.com/neovim/neovim/issues/11330
 if os.getenv("TERM"):match "alacritty" ~= nil then
