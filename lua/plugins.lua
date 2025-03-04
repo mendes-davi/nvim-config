@@ -7,26 +7,22 @@ vim.loader.enable()
 return require("lazy").setup {
 
 	{
-		"nvim-treesitter/nvim-treesitter-context",
-		opts = {},
-	},
-
-	{
 		"nvim-treesitter/nvim-treesitter",
-		dependencies = { "nvim-treesitter/nvim-treesitter-textobjects" },
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter-textobjects",
+			"nvim-treesitter/nvim-treesitter-context",
+			{
+				"JoosepAlviste/nvim-ts-context-commentstring",
+				main = "ts_context_commentstring",
+				opts = { enable_autocmd = false },
+			},
+		},
+		event = { "BufReadPost", "BufNewFile" },
+		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
 		build = ":TSUpdate",
 		config = function()
 			require "config.nvim-treesitter"
 		end,
-	},
-
-	{
-		"JoosepAlviste/nvim-ts-context-commentstring",
-		dependencies = { "nvim-treesitter/nvim-treesitter" },
-		main = "ts_context_commentstring",
-		opts = {
-			enable_autocmd = false,
-		},
 	},
 
 	{
@@ -73,19 +69,17 @@ return require("lazy").setup {
 	},
 
 	{
-		"kyazdani42/nvim-web-devicons",
-		config = function()
-			require("nvim-web-devicons").setup {
-				override = {
-					tcl = {
-						icon = "",
-						color = "#1e5cb3",
-						cterm_color = "25",
-						name = "Tcl",
-					},
+		"nvim-tree/nvim-web-devicons",
+		opts = {
+			override = {
+				tcl = {
+					icon = "",
+					color = "#1e5cb3",
+					cterm_color = "25",
+					name = "Tcl",
 				},
-			}
-		end,
+			},
+		},
 	},
 
 	{
@@ -93,12 +87,12 @@ return require("lazy").setup {
 		config = function()
 			require "config.barbar"
 		end,
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 	},
 
 	{
-		"kyazdani42/nvim-tree.lua",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
+		"nvim-tree/nvim-tree.lua",
+		dependencies = { "nvim-tree/nvim-web-devicons" },
 		init = function()
 			map { "<F4>", "<cmd> NvimTreeToggle<CR>", "NvimTree" }
 		end,
@@ -216,13 +210,12 @@ return require("lazy").setup {
 
 	{
 		"neovim/nvim-lspconfig",
-		dependencies = { "rcarriga/nvim-notify", "p00f/clangd_extensions.nvim" },
+		dependencies = { "rcarriga/nvim-notify", "p00f/clangd_extensions.nvim", "ray-x/lsp_signature.nvim" },
+		event = "User FilePost",
 		config = function()
 			require "config.nvim-lspconfig"
 		end,
 	},
-
-	"ray-x/lsp_signature.nvim",
 
 	-- A pretty diagnostics list to help you solve all the trouble your code is causing.
 	-- https://github.com/folke/lsp-trouble.nvim
@@ -236,6 +229,7 @@ return require("lazy").setup {
 
 	{
 		"folke/todo-comments.nvim",
+		cmd = { "TodoTrouble", "TodoLocList", "TodoTelescope", "TodoQuickFix" },
 		dependencies = "nvim-lua/plenary.nvim",
 		config = function()
 			require("todo-comments").setup {}
@@ -245,24 +239,25 @@ return require("lazy").setup {
 	-- notification
 	{
 		"rcarriga/nvim-notify",
-		config = function()
-			local notify = require "notify"
-			notify.setup {
-				animate = false,
-				stages = "static",
-				-- For stages that change opacity this is treated as the highlight behind the window
-				-- Set this to either a highlight group or an RGB hex value e.g. "#000000"
-				background_colour = function()
-					local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Normal"), "bg#")
+		opts = {
+			animate = false,
+			stages = "static",
+			-- For stages that change opacity this is treated as the highlight behind the window
+			-- Set this to either a highlight group or an RGB hex value e.g. "#000000"
+			background_colour = function()
+				local group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Normal"), "bg#")
+				if group_bg == "" or group_bg == "none" then
+					group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Float"), "bg#")
 					if group_bg == "" or group_bg == "none" then
-						group_bg = vim.fn.synIDattr(vim.fn.synIDtrans(vim.fn.hlID "Float"), "bg#")
-						if group_bg == "" or group_bg == "none" then
-							return "#000000"
-						end
+						return "#000000"
 					end
-					return group_bg
-				end,
-			}
+				end
+				return group_bg
+			end,
+		},
+		config = function(_, opts)
+			local notify = require "notify"
+			notify.setup(opts)
 			vim.notify = notify
 		end,
 	},
@@ -271,6 +266,7 @@ return require("lazy").setup {
 
 	{
 		"L3MON4D3/LuaSnip",
+		event = "InsertEnter",
 		config = function()
 			require "config.luasnip"
 		end,
@@ -279,7 +275,15 @@ return require("lazy").setup {
 	{
 		"ms-jpq/coq_nvim",
 		branch = "coq",
-		dependencies = { "windwp/nvim-autopairs" },
+		dependencies = {
+			{
+				"windwp/nvim-autopairs",
+				opts = {
+					disable_filetype = { "TelescopePrompt", "vim" },
+				},
+			},
+		},
+		event = "InsertEnter",
 		init = function()
 			Variable.g {
 				coq_settings = {
@@ -305,6 +309,8 @@ return require("lazy").setup {
 
 	{
 		"ms-jpq/coq.thirdparty",
+		event = "InsertEnter",
+		dependencies = { "ms-jpq/coq_nvim" },
 		branch = "3p",
 		config = function()
 			require "config.coq_3p"
@@ -312,8 +318,8 @@ return require("lazy").setup {
 	},
 
 	{
-		lazy = true,
 		"mfussenegger/nvim-dap",
+		lazy = true,
 		dependencies = { "theHamsta/nvim-dap-virtual-text" },
 		config = function()
 			require "config.nvim-dap"
@@ -321,8 +327,8 @@ return require("lazy").setup {
 	},
 
 	{
-		lazy = true,
 		"theHamsta/nvim-dap-virtual-text",
+		lazy = true,
 		config = function()
 			require("nvim-dap-virtual-text").setup {
 				enabled = true, -- enable this plugin (the default)
@@ -342,9 +348,9 @@ return require("lazy").setup {
 	},
 
 	{
-		lazy = true,
 		"rcarriga/nvim-dap-ui",
 		dependencies = { "mfussenegger/nvim-dap", "nvim-neotest/nvim-nio" },
+		lazy = true,
 		config = function()
 			require("dapui").setup {
 				layouts = {
@@ -410,6 +416,7 @@ return require("lazy").setup {
 				build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 			},
 		},
+		cmd = "Telescope",
 		config = function()
 			require "config.telescope"
 		end,
@@ -424,6 +431,7 @@ return require("lazy").setup {
 
 	{
 		"luochen1990/rainbow",
+		event = "User FilePost",
 		init = function()
 			Variable.g {
 				rainbow_active = 1,
@@ -433,12 +441,14 @@ return require("lazy").setup {
 
 	{
 		"johnfrankmorgan/whitespace.nvim",
-		config = function()
-			require("whitespace-nvim").setup {
-				highlight = "DiffDelete",
-				ignored_filetypes = { "TelescopePrompt", "Trouble", "help" },
-				ignore_terminal = true,
-			}
+		event = "User FilePost",
+		main = "whitespace-nvim",
+		opts = {
+			highlight = "DiffDelete",
+			ignored_filetypes = { "TelescopePrompt", "Trouble", "help" },
+			ignore_terminal = true,
+		},
+		init = function()
 			nmap { "<Leader><Leader>t", require("whitespace-nvim").trim, "Trim Whitespace" }
 		end,
 	},
@@ -452,8 +462,10 @@ return require("lazy").setup {
 
 	{
 		"mhartington/formatter.nvim",
-		config = function()
-			require "config.formatter"
+		cmd = "Format",
+		opts = require("config.formatter").opts,
+		init = function()
+			nnoremap { "<A-f>", "<cmd> Format<CR>" }
 		end,
 	},
 
@@ -463,6 +475,7 @@ return require("lazy").setup {
 
 	{
 		"numToStr/Comment.nvim",
+		lazy = true,
 		config = function()
 			require("Comment").setup {
 				-- ignore empty lines for comments
@@ -488,6 +501,7 @@ return require("lazy").setup {
 
 	{
 		"mfussenegger/nvim-lint",
+		ft = { "matlab", "sh" },
 		config = function()
 			nnoremap { "gl", "<cmd> lua require('lint').try_lint()<CR>", "Lint" }
 			require "config.nvim-lint"
@@ -497,9 +511,9 @@ return require("lazy").setup {
 	{
 		"lewis6991/gitsigns.nvim",
 		dependencies = { "nvim-lua/plenary.nvim" },
-		config = function()
-			require "config.gitsigns"
-		end,
+		event = "User FilePost",
+		opts = require("config.gitsigns").opts,
+		init = require("config.gitsigns").init,
 	},
 
 	{
@@ -516,16 +530,12 @@ return require("lazy").setup {
 	},
 
 	{
-		"norcalli/nvim-colorizer.lua",
-		config = function()
-			require("colorizer").setup()
-		end,
-	},
-
-	{
 		"rrethy/vim-illuminate",
-		config = function()
-			require "config.illuminate"
+		event = "User FilePost",
+		opts = require("config.illuminate").opts,
+		config = function(_, opts)
+			require("illuminate").configure(opts)
+			require("config.illuminate").map_keys()
 		end,
 	},
 
@@ -535,11 +545,9 @@ return require("lazy").setup {
 		init = function()
 			nnoremap { "<A-d>", "<cmd> ZenMode<CR>" }
 		end,
-		config = function()
-			require("zen-mode").setup {
-				plugins = { tmux = { enabled = true }, alacritty = { enabled = true, font = "13" } },
-			}
-		end,
+		opts = {
+			plugins = { tmux = { enabled = true }, alacritty = { enabled = true, font = "13" } },
+		},
 	},
 
 	{
@@ -567,6 +575,7 @@ return require("lazy").setup {
 
 	{
 		"olimorris/persisted.nvim",
+		lazy = false,
 		opts = {
 			save_dir = vim.fn.expand(vim.fn.stdpath "data" .. "/sessions/"),
 			use_git_branch = true,
@@ -649,21 +658,22 @@ return require("lazy").setup {
 
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		event = "User FilePost",
 		main = "ibl",
-		config = function()
-			require("ibl").setup {
-				indent = {
-					char = "▏",
-				},
-				scope = {
-					show_start = false,
-					show_end = false,
-				},
-			}
-
+		opts = {
+			indent = {
+				char = "▏",
+			},
+			scope = {
+				show_start = false,
+				show_end = false,
+			},
+		},
+		config = function(_, opts)
 			local hooks = require "ibl.hooks"
 			hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
 			hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+			require("ibl").setup(opts)
 		end,
 	},
 

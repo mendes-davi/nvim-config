@@ -1,6 +1,6 @@
-nnoremap { "<A-f>", "<cmd> Format<CR>" }
+local M = {}
 
-require("formatter").setup {
+M.opts = {
 	logging = true,
 	filetype = {
 		matlab = {
@@ -53,3 +53,5 @@ require("formatter").setup {
 		},
 	},
 }
+
+return M

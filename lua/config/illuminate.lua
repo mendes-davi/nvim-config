@@ -1,4 +1,6 @@
-require("illuminate").configure {
+local M = {}
+
+M.opts = {
 	providers = {
 		"lsp",
 		"treesitter",
@@ -20,48 +22,52 @@ require("illuminate").configure {
 	under_cursor = true,
 }
 
-local cword = function()
-	local line = vim.fn.getline "."
-	local col = vim.fn.col "." - 1
-	local left_part = vim.fn.strpart(line, 0, col + 1)
-	local right_part = vim.fn.strpart(line, col, vim.fn.col "$")
-	local word = vim.fn.matchstr(left_part, [[\k*$]]) .. string.sub(vim.fn.matchstr(right_part, [[^\k*]]), 2)
-	return [[\<]] .. vim.fn.escape(word, [[/\]]) .. [[\>]]
-end
-
-local next_ref_cword = function(opt)
-	local opt = opt or {}
-
-	local next = require("illuminate").next_reference { wrap = true, reverse = opt.reverse }
-	if next == nil then
-		local word = cword()
-		if word == [[\<\>]] then
-			return
-		end
-
-		local flag = "w"
-		if opt.reverse then
-			flag = flag .. "b"
-		end
-
-		vim.fn.search(word, flag)
-		local sc = vim.fn.searchcount { pattern = word }
-		print("[" .. sc.current .. "/" .. sc.total .. "]")
+M.map_keys = function()
+	local cword = function()
+		local line = vim.fn.getline "."
+		local col = vim.fn.col "." - 1
+		local left_part = vim.fn.strpart(line, 0, col + 1)
+		local right_part = vim.fn.strpart(line, col, vim.fn.col "$")
+		local word = vim.fn.matchstr(left_part, [[\k*$]]) .. string.sub(vim.fn.matchstr(right_part, [[^\k*]]), 2)
+		return [[\<]] .. vim.fn.escape(word, [[/\]]) .. [[\>]]
 	end
+
+	local next_ref_cword = function(opt)
+		local opt = opt or {}
+
+		local next = require("illuminate").next_reference { wrap = true, reverse = opt.reverse }
+		if next == nil then
+			local word = cword()
+			if word == [[\<\>]] then
+				return
+			end
+
+			local flag = "w"
+			if opt.reverse then
+				flag = flag .. "b"
+			end
+
+			vim.fn.search(word, flag)
+			local sc = vim.fn.searchcount { pattern = word }
+			print("[" .. sc.current .. "/" .. sc.total .. "]")
+		end
+	end
+
+	nnoremap {
+		"<A-n>",
+		function()
+			next_ref_cword()
+		end,
+		silent = true,
+	}
+
+	nnoremap {
+		"<A-p>",
+		function()
+			next_ref_cword { reverse = true }
+		end,
+		silent = true,
+	}
 end
 
-nnoremap {
-	"<A-n>",
-	function()
-		next_ref_cword()
-	end,
-	silent = true,
-}
-
-nnoremap {
-	"<A-p>",
-	function()
-		next_ref_cword { reverse = true }
-	end,
-	silent = true,
-}
+return M

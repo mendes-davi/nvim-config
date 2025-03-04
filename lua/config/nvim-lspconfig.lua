@@ -26,7 +26,7 @@ local mix_attach = function(client, bufnr)
 	nnoremap {
 		"<Leader>wl",
 		function()
-			return vim.pretty_print(vim.lsp.buf.list_workspace_folders())
+			print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
 		end,
 		"LSP List Workspace Folders",
 		silent = true,

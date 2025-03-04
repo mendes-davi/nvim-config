@@ -1,27 +1,29 @@
-local gs = require "gitsigns"
+local M = {}
 
-vim.api.nvim_set_hl(0, "GitSignsAdd", { link = "DiffAdd" })
-vim.api.nvim_set_hl(0, "GitSignsAddNr", { link = "GitSignsAddNr" })
-vim.api.nvim_set_hl(0, "GitSignsChange", { link = "DiffChange" })
-vim.api.nvim_set_hl(0, "GitSignsChangeNr", { link = "GitSignsChangeNr" })
-vim.api.nvim_set_hl(0, "GitSignsChangedelete", { link = "DiffChange" })
-vim.api.nvim_set_hl(0, "GitSignsChangedeleteNr", { link = "GitSignsChangeNr" })
-vim.api.nvim_set_hl(0, "GitSignsDelete", { link = "DiffDelete" })
-vim.api.nvim_set_hl(0, "GitSignsTopdelete", { link = "DiffDelete" })
-vim.api.nvim_set_hl(0, "GitSignsTopdeleteNr", { link = "GitSignsDeleteNr" })
+M.init = function()
+	vim.api.nvim_set_hl(0, "GitSignsAdd", { link = "DiffAdd" })
+	vim.api.nvim_set_hl(0, "GitSignsAddNr", { link = "GitSignsAddNr" })
+	vim.api.nvim_set_hl(0, "GitSignsChange", { link = "DiffChange" })
+	vim.api.nvim_set_hl(0, "GitSignsChangeNr", { link = "GitSignsChangeNr" })
+	vim.api.nvim_set_hl(0, "GitSignsChangedelete", { link = "DiffChange" })
+	vim.api.nvim_set_hl(0, "GitSignsChangedeleteNr", { link = "GitSignsChangeNr" })
+	vim.api.nvim_set_hl(0, "GitSignsDelete", { link = "DiffDelete" })
+	vim.api.nvim_set_hl(0, "GitSignsTopdelete", { link = "DiffDelete" })
+	vim.api.nvim_set_hl(0, "GitSignsTopdeleteNr", { link = "GitSignsDeleteNr" })
 
--- Sets GIT_* ENV Variables for my dotfiles repo
--- https://github.com/lewis6991/gitsigns.nvim/issues/397
-if vim.fn.getcwd() == vim.fn.expand "$HOME" then
-	local jid = vim.fn.jobstart { "git", "--git-dir=$HOME/.dots", "--work-tree=$HOME", "rev-parse" }
-	local ret = vim.fn.jobwait({ jid })[1]
-	if ret > 0 then
-		vim.env.GIT_DIR = vim.fn.expand "~/.dots"
-		vim.env.GIT_WORK_TREE = vim.fn.expand "~"
+	-- Sets GIT_* ENV Variables for my dotfiles repo
+	-- https://github.com/lewis6991/gitsigns.nvim/issues/397
+	if vim.fn.getcwd() == vim.fn.expand "$HOME" then
+		local jid = vim.fn.jobstart { "git", "--git-dir=$HOME/.dots", "--work-tree=$HOME", "rev-parse" }
+		local ret = vim.fn.jobwait({ jid })[1]
+		if ret > 0 then
+			vim.env.GIT_DIR = vim.fn.expand "~/.dots"
+			vim.env.GIT_WORK_TREE = vim.fn.expand "~"
+		end
 	end
 end
 
-gs.setup {
+M.opts = {
 	signs = {
 		add = { text = "│" },
 		change = { text = "│" },
@@ -124,3 +126,5 @@ gs.setup {
 	diff_opts = { internal = true },
 	status_formatter = nil, -- Use default
 }
+
+return M

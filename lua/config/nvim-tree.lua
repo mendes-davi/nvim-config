@@ -70,7 +70,10 @@ require("nvim-tree").setup {
 		custom = { ".git", "node_modules", ".cache", ".idea", "__pycache__" },
 	},
 	git = {
-		enable = false,
+		enable = true,
+		show_on_dirs = false,
+		show_on_open_dirs = false,
+		timeout = 1000,
 	},
 	renderer = {
 		indent_width = 1,
@@ -83,6 +86,13 @@ require("nvim-tree").setup {
 		enable = false,
 		show_on_dirs = false,
 		show_on_open_dirs = true,
+	},
+	filesystem_watchers = {
+		enable = true,
+		debounce_delay = 300,
+		ignore_dirs = {
+			"node_modules",
+		},
 	},
 }
 
