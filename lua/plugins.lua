@@ -152,7 +152,10 @@ return require("lazy").setup {
 		end,
 		opts = {
 			attach_mode = "global",
-			backends = { "lsp", "treesitter", "markdown", "man" },
+			backends = {
+				["_"] = { "lsp", "treesitter", "markdown", "man" },
+				vhdl = { "treesitter" },
+			},
 			show_guides = true,
 			layout = {
 				resize_to_content = false,
