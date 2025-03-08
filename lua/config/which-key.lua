@@ -145,7 +145,9 @@ local mappings = {
 
 	f = {
 		name = "Find",
+		a = { "<cmd>Telescope aerial<cr>", "Aerial Symbols" },
 		b = { "<cmd>Telescope git_branches<cr>", "Checkout branch" },
+		d = { "<cmd>Telescope frecency workspace=CWD<cr>", "Frecency" },
 		s = { "<cmd>Telescope git_status<cr>", "Repo Status" },
 		c = { "<cmd>Telescope colorscheme<cr>", "Colorscheme" },
 		f = {
@@ -209,6 +211,7 @@ local mappings = {
 	x = { "<cmd>Trouble diagnostics toggle<CR>", "Toggle Trouble" },
 
 	E = { "<cmd>lua vim.diagnostic.open_float()<CR>", "Diagnostics" },
+	F = { "<cmd>lua MiniFiles.open()<cr>", "MiniFiles" },
 	U = { "<cmd>MundoToggle<cr>", "Toggle Mundo" },
 	X = { require("utils.functions").toggle_qf, "Toggle QF" },
 

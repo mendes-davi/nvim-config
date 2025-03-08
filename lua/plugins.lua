@@ -419,6 +419,7 @@ return require("lazy").setup {
 				"nvim-telescope/telescope-fzf-native.nvim",
 				build = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
 			},
+			"nvim-telescope/telescope-frecency.nvim",
 		},
 		cmd = "Telescope",
 		config = function()
@@ -614,6 +615,7 @@ return require("lazy").setup {
 
 	{
 		"kevinhwang91/rnvimr",
+		enabled = (vim.fn.has "win32" == 0),
 		cmd = { "RnvimrToggle", "RnvimrResize", "RnvimrStartBackground" },
 		init = function()
 			nnoremap { "<A-o>", "<cmd> RnvimrToggle<CR>" }
