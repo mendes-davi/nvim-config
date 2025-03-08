@@ -155,6 +155,7 @@ return require("lazy").setup {
 			backends = {
 				["_"] = { "lsp", "treesitter", "markdown", "man" },
 				vhdl = { "treesitter" },
+				ruby = { "treesitter" },
 			},
 			show_guides = true,
 			layout = {

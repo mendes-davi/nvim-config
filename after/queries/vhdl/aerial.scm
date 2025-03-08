@@ -1,3 +1,7 @@
+;; extends
+;;
+;; inherits: vhdl
+
 (entity_declaration
   entity: (identifier) @name
   (#set! "kind" "Class")) @symbol
@@ -156,10 +160,10 @@
 (architecture_definition
   (concurrent_block
     (process_statement
-      (label_declaration (label) @name) @symbol
+      (label_declaration (label) @name)?
       (sequential_block) @selection
       (#set! "kind" "File")
-      )
+      ) @symbol
     )
   )
 
