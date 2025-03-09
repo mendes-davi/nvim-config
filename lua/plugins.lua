@@ -635,6 +635,14 @@ return require("lazy").setup {
 	},
 
 	{
+		"justinmk/vim-gtfo",
+		-- enabled = (vim.fn.has "win32" == 1),
+		init = function()
+			vim.cmd [[let g:gtfo#terminals = { 'win': 'cmd.exe /k', 'unix': 'setsid -f alacritty --working-directory ' }]]
+		end,
+	},
+
+	{
 		"t-troebst/perfanno.nvim",
 		cmd = {
 			"PerfAnnotate",
@@ -685,21 +693,30 @@ return require("lazy").setup {
 
 	{
 		"sainnhe/sonokai",
+		-- lazy = true,
 		priority = 1000,
 		init = function()
+			vim.go.background = "dark"
 			Variable.g {
 				sonokai_better_performance = 1,
 				sonokai_disable_terminal_colors = 1,
-				sonokai_style = "espresso",
+				sonokai_style = "maia",
 				sonokai_enable_italic = 1,
 				sonokai_diagnostic_virtual_text = "colored",
 				sonokai_disable_italic_comment = 0,
 				sonokai_transparent_background = 1,
+				sonokai_diagnostic_text_highlight = 0,
+				sonokai_inlay_hints_background = "none",
 				-- sonokai_current_word = "underline",
 			}
+
+			if vim.g.neovide then
+				Variable.g {
+					sonokai_transparent_background = 0,
+				}
+			end
 		end,
 		config = function()
-			vim.go.background = "dark"
 			vim.cmd [[ silent! colorscheme sonokai ]]
 			vim.cmd [[ hi PmenuSel blend=0 ]]
 		end,
@@ -709,6 +726,7 @@ return require("lazy").setup {
 		"sainnhe/everforest",
 		lazy = true,
 		init = function()
+			vim.go.background = "dark"
 			Variable.g {
 				everforest_better_performance = 1,
 				everforest_disable_terminal_colors = 1,
@@ -719,13 +737,49 @@ return require("lazy").setup {
 				everforest_disable_italic_comment = 0,
 				everforest_transparent_background = 1,
 			}
+
+			if vim.g.neovide then
+				Variable.g {
+					everforest_transparent_background = 0,
+				}
+			end
 		end,
 		config = function()
-			vim.go.background = "dark"
 			-- vim.cmd [[ silent! colorscheme everforest ]]
 			vim.cmd [[ hi PmenuSel blend=0]]
 		end,
 	},
+
+	-- {
+	-- 	"sainnhe/edge",
+	-- 	-- lazy = true,
+	-- 	priority = 1000,
+	-- 	init = function()
+	-- 		vim.go.background = "dark"
+	-- 		Variable.g {
+	-- 			edge_better_performance = 1,
+	-- 			edge_disable_terminal_colors = 1,
+	-- 			edge_style = "neon",
+	-- 			edge_enable_italic = 1,
+	-- 			edge_diagnostic_virtual_text = "colored",
+	-- 			edge_disable_italic_comment = 0,
+	-- 			edge_transparent_background = 1,
+	-- 			edge_diagnostic_text_highlight = 0,
+	-- 			edge_inlay_hints_background = "none",
+	-- 			-- edge_current_word = "underline",
+	-- 		}
+
+	-- 		if vim.g.neovide then
+	-- 			Variable.g {
+	-- 				edge_transparent_background = 0,
+	-- 			}
+	-- 		end
+	-- 	end,
+	-- 	config = function()
+	-- 		vim.cmd [[ silent! colorscheme edge ]]
+	-- 		vim.cmd [[ hi PmenuSel blend=0 ]]
+	-- 	end,
+	-- },
 
 	{
 		"tweekmonster/startuptime.vim",
