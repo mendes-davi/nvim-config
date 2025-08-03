@@ -84,14 +84,8 @@ local mappings = {
 		s = { ":source ~/.config/nvim/lua/config/luasnip.lua<CR>", "Reload LuaSnips", silent = false },
 	},
 
-	p = {
-		name = "Packer",
-		c = { "<cmd>PackerCompile<cr>", "Compile" },
-		i = { "<cmd>PackerInstall<cr>", "Install" },
-		s = { "<cmd>PackerSync<cr>", "Sync" },
-		S = { "<cmd>PackerStatus<cr>", "Status" },
-		u = { "<cmd>PackerUpdate<cr>", "Update" },
-	},
+	-- p = {},
+	-- r = {},
 
 	d = {
 		name = "Debug",
@@ -220,7 +214,7 @@ local mappings = {
 				require("telescope.builtin").find_files(opts)
 			end
 		end,
-		"FFF",
+		"Files",
 	},
 
 	-- " Automatically fix the last misspelled word and jump back to where you were.

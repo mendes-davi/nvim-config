@@ -81,7 +81,6 @@ local mix_attach = function(client, bufnr)
 	end
 
 	if supports "textDocument/rename" then
-		nnoremap { "<Leader>rn", lsp.rename, "LSP Rename", silent = true, buffer = bufnr }
 		nnoremap { "<F2>", lsp.rename, "LSP Rename", silent = true, buffer = bufnr }
 	end
 
