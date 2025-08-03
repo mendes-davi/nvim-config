@@ -141,6 +141,13 @@ local mappings = {
 		r = { require("utils.functions").toggle_opt("o", "relativenumber"), "Relative" },
 		I = { "<cmd>IndentBlanklineToggle<CR>", "Indent Blankline" },
 		c = { "<cmd>lua require('treesitter-context').toggle()<CR>", "TS Context" },
+		d = {
+			function()
+				local new_config = not vim.diagnostic.config().virtual_lines
+				vim.diagnostic.config { virtual_lines = new_config }
+			end,
+			"Diagnostic virtual_lines",
+		},
 	},
 
 	f = {
@@ -267,6 +274,12 @@ local no_prefix_mappings = {
 		d = { "<cmd>lua vim.diagnostic.goto_next()<CR>", "Next Diagnostic" },
 	},
 	["["] = {
+		a = {
+			function()
+				require("treesitter-context").go_to_context(vim.v.count1)
+			end,
+			"Upwards Context",
+		},
 		d = { "<cmd>lua vim.diagnostic.goto_prev()<CR>", "Previous Diagnostic" },
 	},
 }

@@ -61,6 +61,7 @@ local lsp_status = {
 	fmt = function(str)
 		return str:upper()
 	end,
+	cond = checkwidth,
 	-- List of LSP names to ignore (e.g., `null-ls`):
 	ignore_lsp = {},
 }
@@ -78,6 +79,7 @@ local diagnostics = {
 	colored = true,
 	update_in_insert = true,
 	always_visible = false,
+	cond = checkwidth,
 }
 
 local diff = {
@@ -99,6 +101,7 @@ local diff = {
 	},
 	colored = true,
 	always_visible = false,
+	cond = checkwidth,
 }
 
 lualine.setup {
@@ -124,13 +127,19 @@ lualine.setup {
 			filetype,
 			{ "filename", path = 1, symbols = { modified = "●", readonly = "🔒", unamed = "" }, component_separators = { left = "", right = "" } },
 		},
-		lualine_x = { spell, lsp_status, {
-			"encoding",
-			fmt = function(str)
-				return str:upper()
-			end,
-		}, "fileformat" },
-		lualine_y = { "progress" },
+		lualine_x = {
+			spell,
+			lsp_status,
+			{
+				"encoding",
+				fmt = function(str)
+					return str:upper()
+				end,
+				cond = checkwidth,
+			},
+			{ "fileformat", cond = checkwidth },
+		},
+		lualine_y = { { "progress", cond = checkwidth } },
 		lualine_z = { "location" },
 	},
 }

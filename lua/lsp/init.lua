@@ -10,31 +10,23 @@ M.formatting_sync = function()
 	vim.lsp.buf.format { async = false, timeout_ms = 1000 }
 end
 
--- https://www.reddit.com/r/neovim/comments/l00zzb/improve_style_of_builtin_lsp_diagnostic_messages/gjt2hek/
--- https://github.com/glepnir/lspsaga.nvim/blob/cb0e35d2e594ff7a9c408d2e382945d56336c040/lua/lspsaga/diagnostic.lua#L202
 M.setup_diagnostic_sign = function()
-	local group = {
-		err_group = {
-			highlight = "DiagnosticSignError",
-			sign = [[❌]],
-		},
-		warn_group = {
-			highlight = "DiagnosticSignWarn",
-			sign = [[⚠️]],
-		},
-		hint_group = {
-			highlight = "DiagnosticSignHint",
-			sign = [[💡]],
-		},
-		infor_group = {
-			highlight = "DiagnosticSignInfo",
-			sign = [[ℹ️]],
+	vim.diagnostic.config {
+		signs = {
+			text = {
+				[vim.diagnostic.severity.ERROR] = [[❌]],
+				[vim.diagnostic.severity.WARN] = [[⚠️]],
+				[vim.diagnostic.severity.INFO] = [[ ]],
+				[vim.diagnostic.severity.HINT] = [[💡]],
+			},
+			linehl = {
+				[vim.diagnostic.severity.ERROR] = "Error",
+				[vim.diagnostic.severity.WARN] = "Warn",
+				[vim.diagnostic.severity.INFO] = "Info",
+				[vim.diagnostic.severity.HINT] = "Hint",
+			},
 		},
 	}
-
-	for _, g in pairs(group) do
-		vim.fn.sign_define(g.highlight, { text = g.sign, texthl = g.highlight, linehl = "", numhl = "" })
-	end
 end
 
 -- replace https://github.com/onsails/lspkind-nvim/blob/master/lua/lspkind/init.lua
