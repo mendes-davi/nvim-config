@@ -34,18 +34,17 @@ local colors = {
 	grey_dim    = "#6a5e59",
 }
 
-local my_highlights = {
-	root = { "StatusComponentRootDir", "", colors.grey, colors.bg },
-	base = { "StatusComponentBaseDir", "gui=bold,underline", colors.fg, colors.bg },
-	trunk = { "StatusComponentTrunkDir", "", colors.fg, colors.bg },
-}
-
 Augroup {
 	MyFelineHighlights = {
 		{
 			"UIEnter",
 			"*",
 			function()
+				local my_highlights = {
+					root = { "StatusComponentRootDir", "", colors.grey, colors.bg },
+					base = { "StatusComponentBaseDir", "gui=bold,underline", colors.fg, colors.bg },
+					trunk = { "StatusComponentTrunkDir", "", colors.fg, colors.bg },
+				}
 				for _, val in pairs(my_highlights) do
 					vim.cmd(string.format("highlight clear %s", val[1]))
 					vim.cmd(string.format("highlight %s %s guifg=%s guibg=%s", val[1], val[2], val[3], val[4]))

@@ -459,9 +459,10 @@ return require("lazy").setup {
 	},
 
 	{
-		"freddiehaddad/feline.nvim",
+		"nvim-lualine/lualine.nvim",
+		requires = { "nvim-tree/nvim-web-devicons", opt = true },
 		config = function()
-			require "config.feline"
+			require "config.lualine"
 		end,
 	},
 

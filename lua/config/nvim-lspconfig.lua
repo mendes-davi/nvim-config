@@ -1,4 +1,3 @@
-local lsp = require "lspconfig"
 local util = require "lspconfig.util"
 local coq = require "coq"
 
@@ -40,12 +39,12 @@ local mix_attach = function(client, bufnr)
 
 	-- omnifunc
 	if supports "textDocument/completion" then
-		vim.api.nvim_buf_set_option(bufnr, "omnifunc", "v:lua.vim.lsp.omnifunc")
+		vim.bo[bufnr].omnifunc = "v:lua.vim.lsp.omnifunc"
 	end
 
 	-- formatting
 	if supports "textDocument/formatting" then
-		vim.api.nvim_buf_set_option(bufnr, "formatexpr", "v:lua.vim.lsp.formatexpr()")
+		vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
 		nnoremap { "<leader>gq", "<cmd>lua vim.lsp.buf.format({ async = true })<CR>", "LSP Format", silent = true, buffer = bufnr }
 	end
 	if supports "textDocument/rangeFormatting" then
@@ -57,6 +56,7 @@ local mix_attach = function(client, bufnr)
 	end
 
 	if supports "textDocument/definition" then
+		vim.bo[bufnr].tagfunc = "v:lua.vim.lsp.tagfunc"
 		nnoremap { "gd", lsp.definition, "LSP Definition", silent = true, buffer = bufnr }
 	end
 
@@ -137,161 +137,190 @@ local mix_attach = function(client, bufnr)
 	end
 end
 
-lsp.vhdl_ls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-	cmd = { vim.fn.stdpath "data" .. "/vhdl_ls/bin/vhdl_ls" },
-})
+vim.lsp.config(
+	"vhdl_ls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+		cmd = { vim.fn.stdpath "data" .. "/vhdl_ls/bin/vhdl_ls" },
+	}
+)
+vim.lsp.enable "vhdl_ls"
 
 -- https://github.com/mathworks/MATLAB-language-server
-lsp.matlab_ls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-	cmd = { "node", vim.fn.stdpath "data" .. "/MATLAB-language-server/out/index.js", "--stdio" },
-	root_dir = function(fname)
-		return util.root_pattern ".matlab_ls"(fname) or util.find_git_ancestor(fname)
-	end,
-	settings = {
-		matlab = {
-			indexWorkspace = true,
-			installPath = "",
-			matlabConnectionTiming = "onStart",
-			telemetry = false,
+vim.lsp.config(
+	"matlab_ls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+		cmd = { "node", vim.fn.stdpath "data" .. "/MATLAB-language-server/out/index.js", "--stdio" },
+		root_dir = function(fname)
+			return util.root_pattern ".matlab_ls"(fname) or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+		end,
+		settings = {
+			matlab = {
+				indexWorkspace = true,
+				installPath = "",
+				matlabConnectionTiming = "onStart",
+				telemetry = false,
+			},
 		},
-	},
-})
+	}
+)
+vim.lsp.enable "matlab_ls"
 
-lsp.texlab.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-	chktex = {
-		onEdit = false,
-		onOpenAndSave = true,
-	},
-})
+vim.lsp.config(
+	"texlab",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+		chktex = {
+			onEdit = false,
+			onOpenAndSave = true,
+		},
+	}
+)
+vim.lsp.enable "texlab"
 
--- lsp.ltex.setup(coq.lsp_ensure_capabilities {
--- 	on_attach = mix_attach,
--- 	capabilities = capabilities,
--- 	filetypes = { "markdown", "org", "plaintex", "tex" },
--- 	root_dir = function(fname)
--- 		return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
--- 	end,
--- 	single_file_support = true,
--- 	settings = {
--- 		ltex = {
--- 			language = "pt-BR",
--- 			diagnosticSeverity = "hint",
--- 			sentenceCacheSize = 2000,
--- 			additionalRules = {
--- 				enablePickyRules = true,
--- 				motherTongue = "pt-BR",
+-- vim.lsp.config(
+-- 	"ltex",
+-- 	coq.lsp_ensure_capabilities {
+-- 		on_attach = mix_attach,
+-- 		capabilities = capabilities,
+-- 		filetypes = { "markdown", "org", "plaintex", "tex" },
+-- 		root_dir = function(fname)
+-- 			return util.root_pattern "ltex_config.json"(fname) or util.find_git_ancestor(fname)
+-- 		end,
+-- 		single_file_support = true,
+-- 		settings = {
+-- 			ltex = {
+-- 				language = "pt-BR",
+-- 				diagnosticSeverity = "hint",
+-- 				sentenceCacheSize = 2000,
+-- 				additionalRules = {
+-- 					enablePickyRules = true,
+-- 					motherTongue = "pt-BR",
+-- 				},
+-- 				trace = { server = "off" },
+-- 				dictionary = {},
+-- 				disabledRules = {},
+-- 				hiddenFalsePositives = {},
 -- 			},
--- 			trace = { server = "off" },
--- 			dictionary = {},
--- 			disabledRules = {},
--- 			hiddenFalsePositives = {},
 -- 		},
--- 	},
--- })
+-- 	}
+-- )
+-- vim.lsp.enable("ltex", false)
 
-lsp.bashls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+vim.lsp.config(
+	"bashls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "bashls"
 
 -- https://clangd.llvm.org/features.html
-lsp.clangd.setup(coq.lsp_ensure_capabilities {
-	settings = {
-		clangd = {
-			Index = { Background = "Build" },
+vim.lsp.config(
+	"clangd",
+	coq.lsp_ensure_capabilities {
+		settings = {
+			clangd = {
+				Index = { Background = "Build" },
+			},
 		},
-	},
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "clangd"
 
--- https://github.com/neovim/nvim-lspconfig/blob/master/CONFIG.md#ccls
--- https://github.com/MaskRay/ccls/wiki
--- lsp.ccls.setup {
---   init_options = {
--- 	  compilationDatabaseDirectory = "build";
---     index = {
---       threads = 0;
---     };
---     clang = {
---       excludeArgs = { "-frounding-math"} ;
---     };
---   }
--- }
-
--- lsp.pyright.setup{}
 local pythonPath = require("utils.python").get_python_path()
 local stubPath = require("utils.python").get_stubs_path()
 
-lsp.pyright.setup(coq.lsp_ensure_capabilities {
-	flags = { debounce_text_changes = 150 },
-	settings = {
-		python = {
-			pythonPath = pythonPath,
-			workspaceSymbols = { enabled = true },
-			analysis = { autoSearchPaths = false, useLibraryCodeForTypes = true, diagnosticMode = "openFilesOnly", stubPath = stubPath },
-		},
-	},
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
-
-lsp.lua_ls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-	log_level = vim.lsp.protocol.MessageType.Log,
-	message_level = vim.lsp.protocol.MessageType.Log,
-	settings = {
-		Lua = {
-			runtime = {
-				version = "Lua 5.1",
-				-- version = 'LuaJIT',
-				-- path = vim.split(package.path, ';')
-				path = {
-					"?.lua",
-					"?/init.lua",
-					vim.fn.expand "~/.luarocks/share/lua/5.1/?.lua",
-					vim.fn.expand "~/.luarocks/share/lua/5.1/?/init.lua",
-					"/usr/share/lua/5.1/?.lua",
-					"/usr/share/lua/5.1/?/init.lua",
-				},
-			},
-			diagnostics = {
-				enable = true,
-				globals = { "vim", "describe", "it", "before_each", "after_each" },
-			},
-			hint = {
-				enable = true,
-			},
-			workspace = {
-				library = {
-					[vim.fn.expand "$VIMRUNTIME/lua"] = true,
-					[vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
-				},
-				maxPreload = 3000, -- default 1000
-				preloadFileSize = 1024, -- default 100 ( KiB )
+vim.lsp.config(
+	"pyright",
+	coq.lsp_ensure_capabilities {
+		flags = { debounce_text_changes = 150 },
+		settings = {
+			python = {
+				pythonPath = pythonPath,
+				workspaceSymbols = { enabled = true },
+				analysis = { autoSearchPaths = false, useLibraryCodeForTypes = true, diagnosticMode = "openFilesOnly", stubPath = stubPath },
 			},
 		},
-	}, -- end settings
-})
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "pyright"
 
-lsp.vimls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+vim.lsp.config(
+	"lua_ls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+		log_level = vim.lsp.protocol.MessageType.Log,
+		message_level = vim.lsp.protocol.MessageType.Log,
+		settings = {
+			Lua = {
+				runtime = {
+					version = "Lua 5.1",
+					-- version = 'LuaJIT',
+					-- path = vim.split(package.path, ';')
+					path = {
+						"?.lua",
+						"?/init.lua",
+						vim.fn.expand "~/.luarocks/share/lua/5.1/?.lua",
+						vim.fn.expand "~/.luarocks/share/lua/5.1/?/init.lua",
+						"/usr/share/lua/5.1/?.lua",
+						"/usr/share/lua/5.1/?/init.lua",
+					},
+				},
+				diagnostics = {
+					enable = true,
+					globals = { "vim", "describe", "it", "before_each", "after_each" },
+				},
+				hint = {
+					enable = true,
+				},
+				workspace = {
+					library = {
+						[vim.fn.expand "$VIMRUNTIME/lua"] = true,
+						[vim.fn.expand "$VIMRUNTIME/lua/vim/lsp"] = true,
+					},
+					maxPreload = 3000, -- default 1000
+					preloadFileSize = 1024, -- default 100 ( KiB )
+				},
+			},
+		}, -- end settings
+	}
+)
+vim.lsp.enable "lua_ls"
 
-lsp.jsonls.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+vim.lsp.config(
+	"vimls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "vimls"
 
-lsp.solargraph.setup(coq.lsp_ensure_capabilities {
-	on_attach = mix_attach,
-	capabilities = capabilities,
-})
+vim.lsp.config(
+	"jsonls",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "jsonls"
+
+vim.lsp.config(
+	"solargraph",
+	coq.lsp_ensure_capabilities {
+		on_attach = mix_attach,
+		capabilities = capabilities,
+	}
+)
+vim.lsp.enable "solargraph"

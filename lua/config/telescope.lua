@@ -81,7 +81,8 @@ require("telescope").setup {
 			show_untracked = false,
 		},
 		find_files = {
-			find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+			-- find_command = { "fd", "--type", "f", "--strip-cwd-prefix" },
+			find_command = { "rg", "--no-config", "--files", "--sortr=modified" },
 			entry_maker = utils.files_entry_maker,
 		},
 		lsp_references = {

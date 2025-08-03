@@ -204,6 +204,18 @@ local mappings = {
 	},
 
 	e = { "<cmd>NvimTreeToggle<CR>", "NvimTree" },
+
+	h = {
+		function()
+			local opts = {}
+			local ok = pcall(require("telescope.builtin").git_files, opts)
+			if not ok then
+				require("telescope.builtin").find_files(opts)
+			end
+		end,
+		"FFF",
+	},
+
 	-- " Automatically fix the last misspelled word and jump back to where you were.
 	-- "   Taken from this talk: https://www.youtube.com/watch?v=lwD8G1P52Sk
 	s = { "<cmd>normal! mz[s1z=`z<CR>", "Fix Last Misspelled Word" },
