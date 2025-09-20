@@ -609,6 +609,13 @@ return require("lazy").setup {
 							pcall(vim.cmd, "ScopeLoadState")
 						end,
 					},
+					{
+						"User",
+						"PersistedLoadPre",
+						function()
+							pcall(require, "statuscol")
+						end,
+					},
 				},
 			}
 		end,
