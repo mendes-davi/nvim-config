@@ -290,6 +290,7 @@ return require("lazy").setup {
 		event = "InsertEnter",
 		init = function()
 			Variable.g {
+				coq_v1 = true, -- TODO: remove after #712 gets fixed (https://github.com/ms-jpq/coq_nvim/issues/712)
 				coq_settings = {
 					display = { icons = { mappings = require("lsp").icons } },
 					keymap = {

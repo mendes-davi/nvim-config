@@ -26,6 +26,17 @@ M.setup_diagnostic_sign = function()
 				[vim.diagnostic.severity.HINT] = "Hint",
 			},
 		},
+		underline = {
+			severity = {
+				min = vim.diagnostic.severity.INFO,
+			},
+		},
+		virtual_text = {
+			spacing = 4,
+			severity = {
+				min = vim.diagnostic.severity.WARN,
+			},
+		},
 	}
 end
 

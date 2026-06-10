@@ -2,18 +2,6 @@ local lsp = vim.lsp
 
 local notify = require "notify"
 
-lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(lsp.diagnostic.on_publish_diagnostics, {
-	-- Enable underline, use default values
-	underline = {
-		severity = { min = vim.diagnostic.severity.INFO },
-	},
-	-- Enable virtual text only on Warning or above, override spacing to 2
-	virtual_text = {
-		spacing = 4,
-		severity = { min = vim.diagnostic.severity.WARN },
-	},
-})
-
 lsp.handlers["window/showMessage"] = function(_, result, ctx)
 	local client = vim.lsp.get_client_by_id(ctx.client_id)
 	local lvl = ({
@@ -28,12 +16,6 @@ lsp.handlers["window/showMessage"] = function(_, result, ctx)
 		keep = false,
 	})
 end
-
--- bordered hover
-lsp.handlers["textDocument/hover"] = lsp.with(vim.lsp.handlers.hover, {
-	border = "rounded",
-	focusable = true,
-})
 
 -- populate qf list with changes (if multiple files modified)
 -- https://github.com/ViRu-ThE-ViRuS/configs/blob/master/nvim/lua/lsp-setup/handlers.lua
