@@ -1,28 +1,6 @@
-require("nvim-treesitter.configs").setup {
-	ensure_installed = {
-		"bash",
-		"c",
-		"cpp",
-		"css",
-		"go",
-		"hcl",
-		"vimdoc",
-		"html",
-		"json",
-		"latex",
-		"lua",
-		"markdown",
-		"markdown_inline",
-		"php",
-		"python",
-		"query",
-		"rust",
-		"ruby",
-		"toml",
-		"verilog",
-		"vim",
-		"vue",
-	},
+local ts = require "nvim-treesitter"
+
+ts.setup {
 	highlight = {
 		enable = true, -- false will disable the whole extension
 		disable = function(lang, buf)
@@ -121,25 +99,29 @@ require("nvim-treesitter.configs").setup {
 	},
 }
 
--- MATLAB
-local parser_config = require("nvim-treesitter.parsers").get_parser_configs()
-parser_config.matlab = {
-	install_info = {
-		url = "https://github.com/mstanciu552/tree-sitter-matlab.git",
-		files = { "src/parser.c" },
-		branch = "main",
-	},
-	filetype = "matlab", -- if filetype does not agrees with parser name
-}
-
--- VHDL
-parser_config.vhdl = {
-	install_info = {
-		url = "https://github.com/jpt13653903/tree-sitter-vhdl.git",
-		files = { "src/parser.c", "src/scanner.c" },
-		branch = "develop",
-		generate_requires_npm = false,
-		requires_generate_from_grammar = false,
-	},
-	filetype = "vhdl",
+ts.install {
+	"bash",
+	"c",
+	"cpp",
+	"css",
+	"go",
+	"hcl",
+	"vimdoc",
+	"html",
+	"json",
+	"latex",
+	"lua",
+	"markdown",
+	"markdown_inline",
+	"php",
+	"python",
+	"query",
+	"rust",
+	"ruby",
+	"toml",
+	"verilog",
+	"vim",
+	"vue",
+	"matlab",
+	"vhdl",
 }

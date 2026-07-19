@@ -8,6 +8,8 @@ return require("lazy").setup {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
+		branch = "main",
+		lazy = false,
 		dependencies = {
 			"nvim-treesitter/nvim-treesitter-textobjects",
 			"nvim-treesitter/nvim-treesitter-context",
@@ -17,8 +19,6 @@ return require("lazy").setup {
 				opts = { enable_autocmd = false },
 			},
 		},
-		event = { "BufReadPost", "BufNewFile" },
-		cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
 		build = ":TSUpdate",
 		config = function()
 			require "config.nvim-treesitter"
