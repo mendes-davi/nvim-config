@@ -11,7 +11,7 @@ return require("lazy").setup {
 		branch = "main",
 		lazy = false,
 		dependencies = {
-			"nvim-treesitter/nvim-treesitter-textobjects",
+			{ "nvim-treesitter/nvim-treesitter-textobjects", branch = "main" },
 			"nvim-treesitter/nvim-treesitter-context",
 			{
 				"JoosepAlviste/nvim-ts-context-commentstring",
@@ -292,6 +292,10 @@ return require("lazy").setup {
 			Variable.g {
 				coq_v1 = true, -- TODO: remove after #712 gets fixed (https://github.com/ms-jpq/coq_nvim/issues/712)
 				coq_settings = {
+					limits = {
+						completion_auto_timeout = 0.166,
+						completion_manual_timeout = 1.966,
+					},
 					display = { icons = { mappings = require("lsp").icons } },
 					keymap = {
 						recommended = false,
