@@ -276,54 +276,123 @@ return require("lazy").setup {
 		end,
 	},
 
+	-- {
+	-- 	"ms-jpq/coq_nvim",
+	-- 	branch = "coq",
+	-- 	dependencies = {
+	-- 		{
+	-- 			"windwp/nvim-autopairs",
+	-- 			opts = {
+	-- 				disable_filetype = { "TelescopePrompt", "vim" },
+	-- 			},
+	-- 		},
+	-- 	},
+	-- 	event = "InsertEnter",
+	-- 	init = function()
+	-- 		Variable.g {
+	-- 			coq_v1 = true, -- TODO: remove after #712 gets fixed (https://github.com/ms-jpq/coq_nvim/issues/712)
+	-- 			coq_settings = {
+	-- 				limits = {
+	-- 					completion_auto_timeout = 0.166,
+	-- 					completion_manual_timeout = 1.966,
+	-- 				},
+	-- 				display = { icons = { mappings = require("lsp").icons } },
+	-- 				keymap = {
+	-- 					recommended = false,
+	-- 					jump_to_mark = "",
+	-- 					bigger_preview = "",
+	-- 					manual_complete = "<A-Space>",
+	-- 				},
+	-- 				auto_start = "shut-up",
+	-- 				clients = {
+	-- 					tabnine = { enabled = false },
+	-- 					snippets = { enabled = false },
+	-- 				},
+	-- 			},
+	-- 		}
+	-- 	end,
+	-- 	config = function()
+	-- 		require "config.coq"
+	-- 	end,
+	-- },
+
+	-- {
+	-- 	"ms-jpq/coq.thirdparty",
+	-- 	event = "InsertEnter",
+	-- 	dependencies = { "ms-jpq/coq_nvim" },
+	-- 	branch = "3p",
+	-- 	config = function()
+	-- 		require "config.coq_3p"
+	-- 	end,
+	-- },
+
 	{
-		"ms-jpq/coq_nvim",
-		branch = "coq",
-		dependencies = {
-			{
-				"windwp/nvim-autopairs",
-				opts = {
-					disable_filetype = { "TelescopePrompt", "vim" },
-				},
-			},
-		},
+		"windwp/nvim-autopairs",
 		event = "InsertEnter",
-		init = function()
-			Variable.g {
-				coq_v1 = true, -- TODO: remove after #712 gets fixed (https://github.com/ms-jpq/coq_nvim/issues/712)
-				coq_settings = {
-					limits = {
-						completion_auto_timeout = 0.166,
-						completion_manual_timeout = 1.966,
-					},
-					display = { icons = { mappings = require("lsp").icons } },
-					keymap = {
-						recommended = false,
-						jump_to_mark = "",
-						bigger_preview = "",
-						manual_complete = "<A-Space>",
-					},
-					auto_start = "shut-up",
-					clients = {
-						tabnine = { enabled = false },
-						snippets = { enabled = false },
-					},
-				},
-			}
-		end,
-		config = function()
-			require "config.coq"
-		end,
+		config = true,
 	},
 
 	{
-		"ms-jpq/coq.thirdparty",
-		event = "InsertEnter",
-		dependencies = { "ms-jpq/coq_nvim" },
-		branch = "3p",
-		config = function()
-			require "config.coq_3p"
+		"saghen/blink.cmp",
+		dependencies = {
+			"saghen/blink.lib",
+		},
+		build = function()
+			-- you can use `gb` in `:Lazy` to rebuild the plugin as needed
+			require("blink.cmp").build():pwait()
 		end,
+
+		opts = {
+			snippets = { preset = "luasnip" },
+			keymap = {
+				preset = "none",
+				["<C-e>"] = { "show", "cancel", "fallback" },
+				["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
+				["<C-n>"] = { "select_next", "fallback" },
+				["<C-p>"] = { "select_prev", "fallback" },
+				["<C-y>"] = { "select_and_accept" },
+				["<CR>"] = { "select_and_accept", "fallback" },
+				["<S-Tab>"] = { "select_prev", "fallback" },
+				["<Tab>"] = { "select_next", "fallback" },
+				["<Esc>"] = {
+					function(cmp)
+						if cmp.is_visible() then
+							cmp.cancel {
+								callback = function()
+									vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+								end,
+							}
+						else
+							vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-c>", true, true, true), "n", true)
+						end
+					end,
+				},
+				["<C-e>S"] = {
+					function(cmp)
+						return cmp.show { providers = { "snippets" } }
+					end,
+				},
+			},
+
+			completion = {
+				documentation = { auto_show = true },
+				list = {
+					selection = {
+						preselect = false,
+						auto_insert = true,
+					},
+				},
+				ghost_text = { enabled = true },
+				menu = {
+					draw = {
+						columns = { { "label", "label_description", gap = 1 }, { "kind_icon" } },
+					},
+				},
+			},
+
+			sources = { default = { "lsp", "path", "snippets", "buffer" } },
+			fuzzy = { implementation = "rust" },
+		},
 	},
 
 	{
@@ -713,7 +782,7 @@ return require("lazy").setup {
 			Variable.g {
 				sonokai_better_performance = 1,
 				sonokai_disable_terminal_colors = 1,
-				sonokai_style = "maia",
+				sonokai_style = "shusia",
 				sonokai_enable_italic = 1,
 				sonokai_diagnostic_virtual_text = "colored",
 				sonokai_disable_italic_comment = 0,
