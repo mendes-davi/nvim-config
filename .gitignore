@@ -5,3 +5,4 @@ CMakeFiles
 *.log
 tags
 /plugin/packer_compiled.lua
+lazy-lock.json
