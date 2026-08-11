@@ -1,6 +1,7 @@
-vim.o.guifont = "InconsolataLGC Nerd Font Mono:h10.5"
 if vim.fn.has "win32" == 1 then
-	vim.o.guifont = "Inconsolata LGC Nerd Font Mono:h11"
+	vim.o.guifont = "Inconsolata LGC Nerd Font:h11"
+else
+	vim.o.guifont = "InconsolataLGC Nerd Font:h11"
 end
 
 vim.g.neovide_text_gamma = 0.8
@@ -38,6 +39,9 @@ local alpha = function()
 	return string.format("%x", math.floor(255 * vim.g.transparency or 0.8))
 end
 -- g:neovide_transparency should be 0 if you want to unify transparency of content and title bar.
-vim.g.neovide_transparency = 1
+vim.g.neovide_opacity = 1
 vim.g.transparency = 1.0
 vim.g.neovide_background_color = "#312c2b" .. alpha()
+
+vim.g.neovide_no_idle = true
+vim.g.neovide_refresh_rate = 120

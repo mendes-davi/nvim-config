@@ -18,3 +18,9 @@
       (call) @name
     ])?
   (#set! "kind" "Method")) @symbol @selection
+
+(call
+  method: (identifier) @method @name
+  (#any-of? @method "traceto"; Shoulda
+    )
+  (#set! "kind" "Method")) @symbol @selection
