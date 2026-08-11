@@ -298,4 +298,4 @@ vim.lsp.config("solargraph", {
 	on_attach = mix_attach,
 	capabilities = capabilities,
 })
-vim.lsp.enable "solargraph"
+vim.lsp.enable("solargraph", false)
